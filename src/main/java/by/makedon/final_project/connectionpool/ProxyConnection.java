@@ -71,6 +71,14 @@ public class ProxyConnection implements Connection {
 
     }
 
+    void closeConnection() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public boolean isClosed() throws SQLException {
         return false;

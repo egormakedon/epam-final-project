@@ -7,24 +7,25 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
+import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.Enumeration;
 import java.util.MissingResourceException;
 import java.util.Properties;
 import java.util.ResourceBundle;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
 public final class ConnectionPool {
     private static final Logger LOGGER = LogManager.getLogger(ConnectionPool.class);
-
     private static ConnectionPool instance;
     private static AtomicBoolean instanceCreated = new AtomicBoolean(false);
     private static ReentrantLock lock = new ReentrantLock();
-
-    private static Deque<ProxyConnection> connectionDeque = new ArrayDeque<ProxyConnection>();
+    private static BlockingQueue<ProxyConnection> connectionQueue;
+    private static int poolSize;
 
     private ConnectionPool() {
         if (instanceCreated.get()) {
@@ -50,6 +51,34 @@ public final class ConnectionPool {
         return instance;
     }
 
+    public ProxyConnection getConnection() {
+        ProxyConnection proxyConnection = null;
+        try {
+            proxyConnection = connectionQueue.take();
+        } catch (InterruptedException e) {
+            LOGGER.log(Level.WARN, e);
+        }
+        return proxyConnection;
+    }
+    public void destroyConnections() {
+        for (int index = 0; index < poolSize; index++) {
+            try {
+                ProxyConnection proxyConnection = connectionQueue.take();
+                proxyConnection.closeConnection();
+            } catch (InterruptedException e) {
+                LOGGER.log(Level.WARN, e);
+            }
+        }
+        try {
+            Enumeration<Driver> drivers = DriverManager.getDrivers();
+            while (drivers.hasMoreElements()) {
+                Driver driver = drivers.nextElement();
+                DriverManager.deregisterDriver(driver);
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.WARN, e);
+        }
+    }
     @Override
     public Object clone() throws CloneNotSupportedException {
         if (instanceCreated.get()) {
@@ -67,9 +96,8 @@ public final class ConnectionPool {
             throw new FatalException("Mysql jdbc driver hasn't loaded");
         }
     }
-
     private static void initPool() {
-        ResourceBundle resourceBundle = null;
+        ResourceBundle resourceBundle;
         try {
             resourceBundle = ResourceBundle.getBundle("db");
         } catch (MissingResourceException e) {
@@ -92,8 +120,8 @@ public final class ConnectionPool {
             USE_UNICODE = resourceBundle.getString("db.useUnicode");
             POOL_SIZE = resourceBundle.getString("db.poolSize");
         } catch (MissingResourceException e) {
-            LOGGER.log(Level.FATAL, e);
-            throw new FatalException(e);
+            LOGGER.log(Level.FATAL, "Wrong case in db.properties");
+            throw new FatalException("Wrong case in db.properties");
         }
 
         Properties properties = new Properties();
@@ -102,16 +130,23 @@ public final class ConnectionPool {
         properties.put("characterEncoding", CHARACTER_ENCODING);
         properties.put("useUnicode", USE_UNICODE);
 
-        for (int index = 0; index < Integer.parseInt(POOL_SIZE); index++) {
-            Connection connection = null;
+        poolSize = Integer.parseInt(POOL_SIZE);
+        connectionQueue = new ArrayBlockingQueue<ProxyConnection>(poolSize);
+
+        for (int index = 0; index < poolSize; index++) {
+            Connection connection;
             try {
                 connection = DriverManager.getConnection(URL, properties);
             } catch (SQLException e) {
-                LOGGER.log(Level.FATAL, e);
-                throw new FatalException(e);
+                LOGGER.log(Level.FATAL, "Hasn't found connection with DB");
+                throw new FatalException("Hasn't found connection with DB");
             }
             ProxyConnection proxyConnection = new ProxyConnection(connection);
-            connectionDeque.push(proxyConnection);
+            try {
+                connectionQueue.put(proxyConnection);
+            } catch (InterruptedException e) {
+                LOGGER.log(Level.WARN, e);
+            }
         }
     }
 }

@@ -4,6 +4,27 @@ import by.makedon.final_project.connectionpool.ConnectionPool;
 
 public class Main {
     public static void main(String[] args) {
-        ConnectionPool.getInstance();
+        ConnectionPool.getInstance().getConnection();
+        ConnectionPool.getInstance().getConnection();
+        ConnectionPool.getInstance().getConnection();
+        ConnectionPool.getInstance().getConnection();
+        ConnectionPool.getInstance().getConnection();
+        ConnectionPool.getInstance().getConnection();
+        ConnectionPool.getInstance().getConnection();
+        ConnectionPool.getInstance().getConnection();
+        ConnectionPool.getInstance().getConnection();
+        ConnectionPool.getInstance().getConnection();
+        ConnectionPool.getInstance().getConnection();
+        ConnectionPool.getInstance().getConnection();
+        ConnectionPool.getInstance().getConnection();
+        ConnectionPool.getInstance().getConnection();
+        ConnectionPool.getInstance().getConnection();
+        ConnectionPool.getInstance().getConnection();
+        ConnectionPool.getInstance().getConnection();
+        ConnectionPool.getInstance().getConnection();
+        ConnectionPool.getInstance().getConnection();
+        ConnectionPool.getInstance().getConnection();
+        ConnectionPool.getInstance().getConnection();
+        System.out.println("1");
     }
 }
