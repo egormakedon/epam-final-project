@@ -88,6 +88,14 @@ public final class ConnectionPool {
         return super.clone();
     }
 
+    void releaseConnection(ProxyConnection proxyConnection) {
+        try {
+            connectionQueue.put(proxyConnection);
+        } catch (InterruptedException e) {
+            LOGGER.log(Level.WARN, e);
+        }
+    }
+
     private static void registerJDBCDriver() {
         try {
             DriverManager.registerDriver(new com.mysql.jdbc.Driver());
