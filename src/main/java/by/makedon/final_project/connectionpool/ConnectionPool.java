@@ -107,7 +107,7 @@ public final class ConnectionPool {
     private static void initPool() {
         ResourceBundle resourceBundle;
         try {
-            resourceBundle = ResourceBundle.getBundle("db");
+            resourceBundle = ResourceBundle.getBundle("db_property.db");
         } catch (MissingResourceException e) {
             LOGGER.log(Level.FATAL, "Hasn't found db.properties");
             throw new FatalException("Hasn't found db.properties");
