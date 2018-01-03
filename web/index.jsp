@@ -4,8 +4,8 @@
     <title>$Title$</title>
   </head>
   <body>
-    <form action="zalupa" method="post">
-        <input type="submit" value="Узнать, является ли антон пидором"/>
-     </form>
+    <form action="TestServlet" method="post">
+        <input type="submit" value="button"/>
+    </form>
   </body>
 </html>

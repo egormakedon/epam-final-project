@@ -11,8 +11,7 @@ public class TestServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
         response.getWriter().print("This is " + this.getClass().getName()
-                + ", using the GET method");
-        //req.getRequestDispatcher("test.jsp").forward(req, resp);
+                + ", using the POST method");
     }
 
     @Override
@@ -20,6 +19,5 @@ public class TestServlet extends HttpServlet {
         response.setContentType("text/html");
         response.getWriter().print("This is " + this.getClass().getName()
                 + ", using the GET method");
-        //req.getRequestDispatcher("test.jsp").forward(req, resp);
     }
 }
