@@ -2,22 +2,45 @@
 
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://java.sun.com/xml/ns/javaee"
-         xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
          id="WebApp_ID" version="2.5">
 
-    <display-name>FirstProject</display-name>
+    <!--<filter>-->
+        <!--<filter-name>CharacterEncodingFilter</filter-name>-->
+        <!--<filter-class>-->
+            <!--by.tr.final_project.controller.filter.CharacterEncodingFilter-->
+        <!--</filter-class>-->
+        <!--<init-param>-->
+            <!--<param-name>encoding</param-name>-->
+            <!--<param-value>UTF-8</param-value>-->
+        <!--</init-param>-->
+    <!--</filter>-->
 
-    <!--<servlet>-->
-        <!--<display-name>FirstServletdisplay</display-name>-->
-        <!--<servlet-name>FirstServletname</servlet-name>-->
-        <!--<servlet-class>by.bsu.first.servlet.FirstServlet</servlet-class>-->
-    <!--</servlet>-->
+    <!--<filter-mapping>-->
+        <!--<filter-name>CharacterEncodingFilter</filter-name>-->
+        <!--<servlet-name>FrontController</servlet-name>-->
+    <!--</filter-mapping>-->
 
-    <!--<servlet-mapping>-->
-        <!--<servlet-name>FirstServletname</servlet-name>-->
-        <!--<url-pattern>/FirstServlettest</url-pattern>-->
-    <!--</servlet-mapping>-->
+    <servlet>
+        <servlet-name>TestServlet</servlet-name>
+        <servlet-class>by.makedon.final_project.servlet.TestServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>TestServlet</servlet-name>
+        <url-pattern>/zalupa</url-pattern>
+    </servlet-mapping>
+
+    <!--<listener>-->
+        <!--<listener-class>-->
+            <!--by.tr.final_project.controller.listener.LoggerInitializeListener-->
+        <!--</listener-class>-->
+    <!--</listener>-->
+
+    <!--<context-param>-->
+        <!--<param-name>log4j-config-location</param-name>-->
+        <!--<param-value>WEB-INF/log4j.properties</param-value>-->
+    <!--</context-param>-->
 
     <session-config>
         <session-timeout>30</session-timeout>
@@ -26,4 +49,5 @@
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
+
 </web-app>

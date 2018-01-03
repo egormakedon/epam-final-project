@@ -4,6 +4,8 @@
     <title>$Title$</title>
   </head>
   <body>
-  $END$
+    <form action="zalupa" method="post">
+        <input type="submit" value="Узнать, является ли антон пидором"/>
+     </form>
   </body>
 </html>
