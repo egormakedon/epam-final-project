@@ -13,7 +13,7 @@
 		<div id="header-wrapper">
 			<div id="header" class="container">
 				<div id="logo">
-					<h1><a href="../jsp/welcome.jsp">Selection Committee</a></h1>
+					<h1><a href="welcome.jsp">Selection Committee</a></h1>
 				</div>
 				<div id="menu">
 					<ul>
