@@ -5,13 +5,13 @@
          id="WebApp_ID" version="2.5">
     <display-name>final_project</display-name>
     <servlet>
-        <display-name>FirstServlet</display-name>
-        <servlet-name>FirstServlet</servlet-name>
-        <servlet-class>by.makedon.final_project.servlet.TestServlet</servlet-class>
+        <display-name>Controller</display-name>
+        <servlet-name>Controller</servlet-name>
+        <servlet-class>by.makedon.final_project.controller.Controller</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>FirstServlet</servlet-name>
-        <url-pattern>/TestServlet</url-pattern>
+        <servlet-name>Controller</servlet-name>
+        <url-pattern>/Controller</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

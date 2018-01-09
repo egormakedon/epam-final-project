@@ -8,8 +8,8 @@ import org.apache.logging.log4j.Logger;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public interface DAOInterface {
-    Logger LOGGER = LogManager.getLogger(DAOInterface.class);
+public interface IDAO {
+    Logger LOGGER = LogManager.getLogger(IDAO.class);
 
     /////////
 
