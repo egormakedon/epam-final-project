@@ -1,27 +1,28 @@
 package by.makedon.final_project.controller;
 
+import by.makedon.final_project.command.ActionFactory;
+import by.makedon.final_project.command.Command;
 import by.makedon.final_project.connectionpool.ConnectionPool;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Optional;
 
 public class Controller extends HttpServlet {
     private static final Logger LOGGER = LogManager.getLogger(Controller.class);
+    private static final String COMMAND_LITERAL = "command";
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+    public void init() throws ServletException {
+        //ConnectionPool.getInstance();
+        //LOGGER.log(Level.INFO, "Init " + Controller.class);
     }
 
     @Override
@@ -31,8 +32,25 @@ public class Controller extends HttpServlet {
     }
 
     @Override
-    public void init() throws ServletException {
-        ConnectionPool.getInstance();
-        LOGGER.log(Level.INFO, "Init " + Controller.class);
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        processRequest(req, resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        processRequest(req, resp);
+    }
+
+    private void processRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Optional<Command> commandOptional = ActionFactory.defineCommand(req.getParameter(COMMAND_LITERAL));
+        Command command = commandOptional.get();
+        Router router = command.execute(req);
+
+        if (router.getRoute() == Router.RouteType.FORWARD) {
+            RequestDispatcher dispatcher = req.getRequestDispatcher(router.getPagePath());
+            dispatcher.forward(req, resp);
+        } else {
+            resp.sendRedirect(router.getPagePath());
+        }
     }
 }

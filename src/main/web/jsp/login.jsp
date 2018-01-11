@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <html lang="en">
     <head>
       <title>Login</title>
-      <meta charset="UTF-8">
+
       <link rel="shortcut icon" href="../images/pageLogo.png" type="image/png">
       <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900" rel="stylesheet" />
       <link href="../css/default.css" rel="stylesheet" type="text/css" media="all" />
@@ -40,8 +40,9 @@
             </form>
           </div>
         </div>
-        <div id="copyright" class="container">
-          <p>&copy; 2018. CREATED BY EGOR MAKEDON FOR <a href="epam.by">epam.by</a>. All rights reserved.</p>
-        </div>
+        <form id="copyright" class="container" action="/Controller" method="get">
+            <input type="hidden" name="command" value="epamlink">
+            <p>&copy; 2018. CREATED BY EGOR MAKEDON FOR EPAM SYSTEMS. <input class="ignore-css" type="submit" value="epam.by" style="color: white; background: #2b2b2b"> All rights reserved.</p>
+        </form>
     </body>
 </html>

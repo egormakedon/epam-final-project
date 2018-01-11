@@ -937,3 +937,8 @@ ul.contact li a.icon-rss:before
 {
 	float: right;
 }
+
+.ignore-css
+{
+	all:unset;
+}

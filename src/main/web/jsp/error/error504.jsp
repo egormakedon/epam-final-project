@@ -1,9 +1,8 @@
 <%@ page isErrorPage="true" language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<!DOCTYPE html>
 <html lang="en">
     <head>
         <title>Error 504</title>
-        <meta charset="UTF-8">
+
         <link rel="shortcut icon" href="../../images/pageLogo.png" type="image/png">
         <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900" rel="stylesheet" />
         <link href="../../css/default.css" rel="stylesheet" type="text/css" media="all" />
