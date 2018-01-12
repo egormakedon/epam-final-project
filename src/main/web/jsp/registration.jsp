@@ -32,7 +32,7 @@
                     </p>
                     <p>
                         <label for="login">username:</label>
-                        <input type="text" name="login" id="login" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{3,15}$" minlength="3" maxlength="16" required>
+                        <input type="text" name="username" id="login" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{3,15}$" minlength="3" maxlength="16" required>
                         <span class="form_error">min:3, max:16, first:letter, without special symbols </span>
                     </p>
                     <p>

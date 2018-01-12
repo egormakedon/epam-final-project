@@ -10,7 +10,7 @@
         <link rel="stylesheet" href="../css/login.css">
     </head>
     <body>
-        <%--<h1>${pageContext.errorData.requestURI}</h1>--%>
+        <h1>${wrongdata}</h1>
         <h1><a href="../jsp/welcome.jsp">back to welcome page</a></h1>
     </body>
 </html>
