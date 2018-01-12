@@ -25,7 +25,7 @@
                 <form class="login" name="" action="welcome.jsp" method="post">
                     <p>
                         <label for="login">email:</label>
-                        <input type="email" name="email" id="login" required>
+                        <input type="text" name="email" id="login" pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$" required>
                         <span class="form_error">example@site.com</span>
                     </p>
                     <p class="login-submit">

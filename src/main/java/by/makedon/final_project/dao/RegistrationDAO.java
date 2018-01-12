@@ -11,6 +11,7 @@ import java.sql.SQLException;
 public class RegistrationDAO implements DAO {
     private static final DAO INSTANCE = new RegistrationDAO();
     private static final String SQL_SELECT_USER_ID_BY_EMAIL_USERNAME = "SELECT user_id FROM user WHERE email=? OR username=?";
+    private static final String SQL_INSERT_USER = "INSERT INTO user(email,username,password) VALUES(?,?,SHA1(?))";
 
     private RegistrationDAO(){}
 
@@ -19,11 +20,31 @@ public class RegistrationDAO implements DAO {
     }
 
     @Override
-    public boolean isUserExist(String emailValue, String usernameValue) throws DAOException {
+    public boolean addUser(String emailValue, String usernameValue, String passwordValue) throws DAOException {
         ProxyConnection connection = null;
         PreparedStatement statement = null;
         try {
             connection = ConnectionPool.getInstance().getConnection();
+            if (isUserExist(connection, emailValue, usernameValue)) {
+                return false;
+            }
+            statement = connection.prepareStatement(SQL_INSERT_USER);
+            statement.setString(1, emailValue);
+            statement.setString(2, usernameValue);
+            statement.setString(3, passwordValue);
+            statement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            close(statement);
+            close(connection);
+        }
+    }
+
+    private boolean isUserExist(ProxyConnection connection, String emailValue, String usernameValue) throws DAOException {
+        PreparedStatement statement = null;
+        try {
             statement = connection.prepareStatement(SQL_SELECT_USER_ID_BY_EMAIL_USERNAME);
             statement.setString(1, emailValue);
             statement.setString(2, usernameValue);
@@ -33,7 +54,6 @@ public class RegistrationDAO implements DAO {
             throw new DAOException(e);
         } finally {
             close(statement);
-            close(connection);
         }
     }
 }

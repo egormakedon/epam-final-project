@@ -27,7 +27,7 @@
                     <input type="hidden" name="command" value="registration">
                     <p>
                         <label for="email">email:</label>
-                        <input type="email" name="email" id="email" maxlength="64" required>
+                        <input type="text" name="email" id="email" maxlength="64" pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$" required>
                         <span class="form_error">example@site.com</span>
                     </p>
                     <p>

@@ -12,7 +12,7 @@ import java.sql.Statement;
 public interface DAO {
     Logger LOGGER = LogManager.getLogger(DAO.class);
 
-    boolean isUserExist(String emailValue, String usernameValue) throws DAOException;
+    boolean addUser(String emailValue, String usernameValue, String passwordValue) throws DAOException;
 
     default void close(Statement statement) {
         try {

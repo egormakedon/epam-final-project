@@ -21,6 +21,7 @@ public class Controller extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
+        ConnectionPool.getInstance();
         LOGGER.log(Level.INFO, "Init " + Controller.class);
     }
 

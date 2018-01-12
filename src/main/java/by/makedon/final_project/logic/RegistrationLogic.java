@@ -11,8 +11,8 @@ public class RegistrationLogic {
                 Validator.validatePassword(password1Value) && Validator.arePasswordsEqual(password1Value, password2Value);
     }
 
-    public boolean isUserExist(String emailValue, String usernameValue) throws DAOException {
+    public boolean addUser(String emailValue, String usernameValue, String passwordValue) throws DAOException {
         DAO dao = RegistrationDAO.getInstance();
-        return dao.isUserExist(emailValue, usernameValue);
+        return dao.addUser(emailValue, usernameValue, passwordValue);
     }
 }

@@ -38,10 +38,14 @@ public class RegistrationCommand implements Command {
         }
 
         try {
-            if (logic.isUserExist(emailValue, usernameValue)) {
+            if (!logic.addUser(emailValue, usernameValue, password1Value)) {
                 req.setAttribute("userExist", "this user already exist");
                 router.setRoute(Router.RouteType.FORWARD);
                 router.setPagePath(PageConstant.MESSAGE_PAGE);
+                return router;
+            } else {
+                router.setRoute(Router.RouteType.REDIRECT);
+                router.setPagePath(PageConstant.MESSAGE_PAGE + "?userRegistered=" + usernameValue + " registered successfully");
                 return router;
             }
         } catch (DAOException e) {
@@ -51,7 +55,5 @@ public class RegistrationCommand implements Command {
             router.setPagePath(PageConstant.MESSAGE_PAGE);
             return router;
         }
-
-        return null;
     }
 }
