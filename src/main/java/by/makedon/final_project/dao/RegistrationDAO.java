@@ -42,6 +42,16 @@ public class RegistrationDAO implements DAO {
         }
     }
 
+    @Override
+    public boolean match(String usernameValue, String passwordValue) throws DAOException {
+        throw new DAOException("NotSupportedMethod");
+    }
+
+    @Override
+    public String takeUserType(String usernameValue) throws DAOException {
+        throw new DAOException("NotSupportedMethod");
+    }
+
     private boolean isUserExist(ProxyConnection connection, String emailValue, String usernameValue) throws DAOException {
         PreparedStatement statement = null;
         try {

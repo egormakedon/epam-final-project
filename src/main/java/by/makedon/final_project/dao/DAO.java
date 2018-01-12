@@ -13,6 +13,8 @@ public interface DAO {
     Logger LOGGER = LogManager.getLogger(DAO.class);
 
     boolean addUser(String emailValue, String usernameValue, String passwordValue) throws DAOException;
+    boolean match(String usernameValue, String passwordValue) throws DAOException;
+    String takeUserType(String usernameValue) throws DAOException;
 
     default void close(Statement statement) {
         try {
@@ -23,7 +25,6 @@ public interface DAO {
             LOGGER.log(Level.WARN, e);
         }
     }
-
     default void close(ProxyConnection proxyConnection) {
         try {
             if (proxyConnection != null) {

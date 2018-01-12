@@ -1,10 +1,11 @@
 package by.makedon.final_project.command;
 
+import by.makedon.final_project.logic.LoginLogic;
 import by.makedon.final_project.logic.RegistrationLogic;
 
 public enum CommandType {
-    EPAMLINK(new EpamLinkCommand()),
-    REGISTRATION(new RegistrationCommand(new RegistrationLogic()));
+    REGISTRATION(new RegistrationCommand(new RegistrationLogic())),
+    LOGIN(new LoginCommand(new LoginLogic()));
 
     private Command command;
 

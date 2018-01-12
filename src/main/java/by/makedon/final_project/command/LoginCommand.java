@@ -3,33 +3,30 @@ package by.makedon.final_project.command;
 import by.makedon.final_project.constant.PageConstant;
 import by.makedon.final_project.controller.Router;
 import by.makedon.final_project.exception.DAOException;
-import by.makedon.final_project.logic.RegistrationLogic;
+import by.makedon.final_project.logic.LoginLogic;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
-public class RegistrationCommand implements Command {
-    private static final Logger LOGGER = LogManager.getLogger(RegistrationCommand.class);
-    private static final String EMAIL = "email";
+public class LoginCommand implements Command {
+    private static final Logger LOGGER = LogManager.getLogger(LoginCommand.class);
     private static final String USERNAME = "username";
-    private static final String PASSWORD1 = "password1";
-    private static final String PASSWORD2 = "password2";
-    private RegistrationLogic logic;
+    private static final String PASSWORD = "password";
+    private LoginLogic logic;
 
-    RegistrationCommand(RegistrationLogic logic) {
-        this.logic = logic;
+    LoginCommand(LoginLogic logic) {
+        this.logic=logic;
     }
 
     @Override
     public Router execute(HttpServletRequest req) {
         Router router = new Router();
-        String emailValue = req.getParameter(EMAIL);
         String usernameValue = req.getParameter(USERNAME);
-        String password1Value = req.getParameter(PASSWORD1);
-        String password2Value = req.getParameter(PASSWORD2);
+        String passwordValue = req.getParameter(PASSWORD);
 
-        if (!logic.validate(emailValue, usernameValue, password1Value, password2Value)) {
+        if (!logic.validate(usernameValue, passwordValue)) {
             req.setAttribute("wrongdata", "input error");
             router.setRoute(Router.RouteType.FORWARD);
             router.setPagePath(PageConstant.MESSAGE_PAGE);
@@ -37,14 +34,19 @@ public class RegistrationCommand implements Command {
         }
 
         try {
-            if (!logic.addUser(emailValue, usernameValue, password1Value)) {
-                req.setAttribute("userExist", "this user already exist");
+            if (!logic.match(usernameValue, passwordValue)) {
+                req.setAttribute("wrongdata", "wrong username or password");
                 router.setRoute(Router.RouteType.FORWARD);
                 router.setPagePath(PageConstant.MESSAGE_PAGE);
                 return router;
             } else {
-                router.setRoute(Router.RouteType.REDIRECT);
-                router.setPagePath(PageConstant.MESSAGE_PAGE + "?userRegistered=" + usernameValue + " registered successfully");
+                String type = logic.takeUserType(usernameValue);
+                HttpSession session = req.getSession();
+                session.setAttribute("username", usernameValue);
+                session.setAttribute("type", type);
+                session.setAttribute("login", "true");
+                router.setRoute(Router.RouteType.FORWARD);
+                router.setPagePath(PageConstant.USER);
                 return router;
             }
         } catch (DAOException e) {

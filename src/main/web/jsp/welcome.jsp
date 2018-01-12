@@ -23,9 +23,8 @@
 			</div>
 		</div>
 		<img src="../images/banner.png" style="width: 100%; height: 100%">
-		<form id="copyright" class="container" action="/Controller" method="get">
-			<input type="hidden" name="command" value="epamlink">
-			<p>&copy; 2018. CREATED BY EGOR MAKEDON FOR EPAM SYSTEMS. <input class="ignore-css" type="submit" value="epam.by" style="color: white; background: #2b2b2b"> All rights reserved.</p>
-		</form>
+		<div id="copyright" class="container">
+			<p>&copy; 2018. CREATED BY EGOR MAKEDON FOR EPAM SYSTEMS. <a href="http://epam.by" style="color: white">epam.by</a> All rights reserved.</p>
+		</div>
 	</body>
 </html>
