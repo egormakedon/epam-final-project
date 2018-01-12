@@ -12,14 +12,26 @@
 		<div id="header-wrapper">
 			<div id="header" class="container">
 				<div id="logo">
-					<h1><a href="welcome.jsp">Selection Committee</a></h1>
+					<h1><a href="../jsp/welcome.jsp">Selection Committee</a></h1>
 				</div>
-				<div id="menu">
+				<form id="menu" action="/Controller" method="get">
 					<ul>
-						<li><a href="login.jsp" accesskey="1" title="">Login</a></li>
-						<li><a href="registration.jsp" accesskey="2" title="">Registration</a></li>
+						<li>
+							<a>
+								<input type="hidden" name="command" value="profile">
+								<input type="submit" style="background:none!important;
+    														 color:inherit;
+     														 border:none;
+    														 padding:0!important;
+  														   	 font: inherit;
+    														 cursor: pointer;"
+									  accesskey="1" value="PROFILE">
+							</a>
+						</li>
+						<li><a href="../jsp/login.jsp" accesskey="2" title="">Login</a></li>
+						<li><a href="../jsp/registration.jsp" accesskey="3" title="">Registration</a></li>
 					</ul>
-				</div>
+				</form>
 			</div>
 		</div>
 		<img src="../images/banner.png" style="width: 100%; height: 100%">

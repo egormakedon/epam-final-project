@@ -13,7 +13,7 @@
         <div id="header-wrapper">
           <div id="header" class="container">
             <div id="logo">
-              <h1><a href="welcome.jsp">Selection Committee</a></h1>
+              <h1><a href="../jsp/welcome.jsp">Selection Committee</a></h1>
             </div>
           </div>
         </div>
@@ -37,7 +37,7 @@
                 <p class="login-submit">
                   <button type="submit" class="login-button">login</button>
                 </p>
-                <p class="forgot-password"><a href="forgotpassword.jsp"> forget password?</a></p>
+                <p class="forgot-password"><a href="../jsp/forgotpassword.jsp"> forget password?</a></p>
             </form>
           </div>
         </div>
