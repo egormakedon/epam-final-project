@@ -1,6 +1,7 @@
 package by.makedon.final_project.dao;
 
 import by.makedon.final_project.connectionpool.ProxyConnection;
+import by.makedon.final_project.exception.DAOException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -8,10 +9,10 @@ import org.apache.logging.log4j.Logger;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public interface IDAO {
-    Logger LOGGER = LogManager.getLogger(IDAO.class);
+public interface DAO {
+    Logger LOGGER = LogManager.getLogger(DAO.class);
 
-    /////////
+    boolean isUserExist(String emailValue, String usernameValue) throws DAOException;
 
     default void close(Statement statement) {
         try {

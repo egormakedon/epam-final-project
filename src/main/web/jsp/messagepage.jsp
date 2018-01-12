@@ -11,6 +11,8 @@
     </head>
     <body>
         <h1>${wrongdata}</h1>
+        <h1>${userExist}</h1>
+        <h1>${error}</h1>
         <h1><a href="../jsp/welcome.jsp">back to welcome page</a></h1>
     </body>
 </html>
