@@ -21,8 +21,8 @@ import java.util.MissingResourceException;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
-public class ForgotpassLogic {
-    private static final Logger LOGGER = LogManager.getLogger(ForgotpassLogic.class);
+public class ForgotPasswordLogic {
+    private static final Logger LOGGER = LogManager.getLogger(ForgotPasswordLogic.class);
     private static final String FORGOT_PASSWORD = "forgot password";
 
     private class MailThread extends Thread {
@@ -120,8 +120,9 @@ public class ForgotpassLogic {
         try {
             String usernameValue = dao.takeUsername(emailValue);
             String mailText = "your username: " + usernameValue + "<br>"+
-                    "<form action=\"http://localhost:8080/Controller\" method=\"get\">\n" +
-                    "\t\t\t\t\t<input type=\"hidden\" name=\"command\" value=\"changepassword\">\n" +
+                    "<form action=\"http://localhost:8080/Controller\" method=\"post\">\n" +
+                    "\t\t\t\t\t<input type=\"hidden\" name=\"username\" value=\""+usernameValue+"\">\n" +
+                    "\t\t\t\t\t<input type=\"hidden\" name=\"command\" value=\"forwardchangepassword\">\n" +
                     "\t\t\t\t\t<input type=\"submit\" style=\"background:none!important;\n" +
                     "     color:purple;\n" +
                     "     border:none; \n" +

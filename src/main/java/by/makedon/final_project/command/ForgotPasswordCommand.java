@@ -2,15 +2,15 @@ package by.makedon.final_project.command;
 
 import by.makedon.final_project.constant.PageConstant;
 import by.makedon.final_project.controller.Router;
-import by.makedon.final_project.logic.ForgotpassLogic;
+import by.makedon.final_project.logic.ForgotPasswordLogic;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class ForgotpassCommand implements Command {
+public class ForgotPasswordCommand implements Command {
     private static final String EMAIL = "email";
-    private ForgotpassLogic logic;
+    private ForgotPasswordLogic logic;
 
-    ForgotpassCommand(ForgotpassLogic logic) {
+    ForgotPasswordCommand(ForgotPasswordLogic logic) {
         this.logic = logic;
     }
 

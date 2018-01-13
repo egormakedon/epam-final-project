@@ -8,4 +8,5 @@ public class PageConstant {
     public static final String WELCOME = "/jsp/welcome.jsp";
     public static final String ADMIN = "/WEB-INF/admin.jsp";
     public static final String USER = "/WEB-INF/user.jsp";
+    public static final String CHANGE_PASSWORD = "/WEB-INF/changepassword.jsp";
 }

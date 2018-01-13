@@ -66,6 +66,11 @@ public class LoginDAO implements DAO {
     public String takeUsername(String emailValue) throws DAOException {
         throw new DAOException("NotSupportedMethod");
     }
+
+    @Override
+    public void changePassword(String usernameValue, String passwordValue) throws DAOException {
+        throw new DAOException("NotSupportedMethod");
+    }
 }
 
 

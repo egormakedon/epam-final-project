@@ -16,6 +16,7 @@ public interface DAO {
     boolean match(String usernameValue, String passwordValue) throws DAOException;
     String takeUserType(String usernameValue) throws DAOException;
     String takeUsername(String emailValue) throws DAOException;
+    void changePassword(String usernameValue, String passwordValue) throws DAOException;
 
     default void close(Statement statement) {
         try {
