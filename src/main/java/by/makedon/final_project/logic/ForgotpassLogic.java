@@ -119,7 +119,17 @@ public class ForgotpassLogic {
         DAO dao = MailDAO.getInstance();
         try {
             String usernameValue = dao.takeUsername(emailValue);
-            String mailText = "http://127.0.0.1/jsp/welcome.jsp";
+            String mailText = "your username: " + usernameValue + "<br>"+
+                    "<form action=\"http://localhost:8080/Controller\" method=\"get\">\n" +
+                    "\t\t\t\t\t<input type=\"hidden\" name=\"command\" value=\"changepassword\">\n" +
+                    "\t\t\t\t\t<input type=\"submit\" style=\"background:none!important;\n" +
+                    "     color:purple;\n" +
+                    "     border:none; \n" +
+                    "     padding:0!important;\n" +
+                    "     font: inherit;\n" +
+                    "     border-bottom:1px solid #444; \n" +
+                    "     cursor: pointer;\" value=\"change password\">\n" +
+                    "\t\t\t\t</form>";
             MailThread thread = new MailThread(emailValue, FORGOT_PASSWORD, mailText, properties);
             thread.start();
         } catch (DAOException e) {
