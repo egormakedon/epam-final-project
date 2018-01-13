@@ -1,5 +1,6 @@
 package by.makedon.final_project.command;
 
+import by.makedon.final_project.constant.LoginState;
 import by.makedon.final_project.constant.PageConstant;
 import by.makedon.final_project.controller.Router;
 import by.makedon.final_project.exception.DAOException;
@@ -44,8 +45,8 @@ public class LoginCommand implements Command {
                 HttpSession session = req.getSession();
                 session.setAttribute("username", usernameValue);
                 session.setAttribute("type", type);
-                session.setAttribute("login", "true");
-                router.setRoute(Router.RouteType.FORWARD);
+                session.setAttribute("login", LoginState.TRUE);
+                router.setRoute(Router.RouteType.REDIRECT);
                 router.setPagePath(PageConstant.USER);
                 return router;
             }

@@ -7,7 +7,8 @@ import by.makedon.final_project.logic.RegistrationLogic;
 public enum CommandType {
     REGISTRATION(new RegistrationCommand(new RegistrationLogic())),
     LOGIN(new LoginCommand(new LoginLogic())),
-    PROFILE(new ProfileCommand(new ProfileLogic()));
+    PROFILE(new ProfileCommand(new ProfileLogic())),
+    LOGOUT(new LogoutCommand());
 
     private Command command;
 
