@@ -22,7 +22,8 @@
                 <div class="tittle">
                     <p>FORGOT PASSWORD?</p>
                 </div>
-                <form class="login" name="" action="welcome.jsp" method="post">
+                <form class="login" action="/Controller" method="post">
+                    <input type="hidden" name="command" value="forgotpass">
                     <p>
                         <label for="login">email:</label>
                         <input type="text" name="email" id="login" pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$" required>
