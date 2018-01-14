@@ -27,7 +27,7 @@ public enum CommandType {
     FORWARDCHANGEPASSWORD(new ForwardChangePasswordCommand()),
     CHANGEPASSWORD(new ChangePasswordCommand(new ChangePasswordLogic())),
     ACCEPTREGISTRATION(new AcceptRegistrationCommand(new AcceptRegistrationLogic())),
-    FILLFORM(new FillFormCommand(new FillFormLogic()));
+    FILLFORMPAGE(new FillFormCommand(new FillFormLogic()));
 
     private Command command;
 
