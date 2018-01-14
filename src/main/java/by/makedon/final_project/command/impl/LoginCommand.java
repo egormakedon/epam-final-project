@@ -49,7 +49,7 @@ public class LoginCommand implements Command {
                 session.setAttribute("type", type);
                 session.setAttribute("login", LoginState.TRUE);
                 router.setRoute(Router.RouteType.REDIRECT);
-                router.setPagePath(PageConstant.USER);
+                router.setPagePath(PageConstant.FORWARD_PAGE + "?pagePath=" + PageConstant.USER);
                 return router;
             }
         } catch (DAOException e) {
