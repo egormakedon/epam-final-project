@@ -1,5 +1,6 @@
 package by.makedon.final_project.command;
 
+import by.makedon.final_project.logic.AcceptRegistrationLogic;
 import by.makedon.final_project.logic.ChangePasswordLogic;
 import by.makedon.final_project.logic.ForgotPasswordLogic;
 import by.makedon.final_project.logic.LoginLogic;
@@ -13,7 +14,8 @@ public enum CommandType {
     LOGOUT(new LogoutCommand()),
     FORGOTPASSWORD(new ForgotPasswordCommand(new ForgotPasswordLogic())),
     FORWARDCHANGEPASSWORD(new ForwardChangePasswordCommand()),
-    CHANGEPASSWORD(new ChangePasswordCommand(new ChangePasswordLogic()));
+    CHANGEPASSWORD(new ChangePasswordCommand(new ChangePasswordLogic())),
+    ACCEPTREGISTRATION(new AcceptRegistrationCommand(new AcceptRegistrationLogic()));
 
     private Command command;
 

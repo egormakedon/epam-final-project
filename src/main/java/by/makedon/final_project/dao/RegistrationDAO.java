@@ -43,16 +43,15 @@ public class RegistrationDAO implements DAO {
         ProxyConnection connection = null;
         PreparedStatement statement = null;
         try {
-            connection = ConnectionPool.getInstance().getConnection();
-            if (isUserExist(connection, emailValue, usernameValue)) {
-                return false;
+            if (match(emailValue, usernameValue)) {
+                throw new DAOException(emailValue + " " + usernameValue + " already exist");
             }
+            connection = ConnectionPool.getInstance().getConnection();
             statement = connection.prepareStatement(SQL_INSERT_USER);
             statement.setString(1, emailValue);
             statement.setString(2, usernameValue);
             statement.setString(3, passwordValue);
             statement.executeUpdate();
-            return true;
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {

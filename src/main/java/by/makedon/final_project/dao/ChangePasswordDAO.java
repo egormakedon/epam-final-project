@@ -47,7 +47,7 @@ public class ChangePasswordDAO implements DAO {
     }
 
     @Override
-    public boolean addUser(String emailValue, String usernameValue, String passwordValue) throws DAOException {
+    public void addUser(String emailValue, String usernameValue, String passwordValue) throws DAOException {
         throw new DAOException("NotSupportedMethod");
     }
     @Override
