@@ -2,6 +2,7 @@ package by.makedon.final_project.logic;
 
 import by.makedon.final_project.dao.DAO;
 import by.makedon.final_project.dao.RegistrationDAO;
+import by.makedon.final_project.entity.User;
 import by.makedon.final_project.exception.DAOException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -12,7 +13,11 @@ public class AcceptRegistrationLogic {
     public String doAction(String emailValue, String usernameValue, String password) {
         DAO dao = RegistrationDAO.getInstance();
         try {
-            dao.addUser(emailValue, usernameValue, password);
+            User user = new User();
+            user.setEmailValue(emailValue);
+            user.setUsernameValue(usernameValue);
+            user.setPasswordValue(password);
+            dao.addUser(user);
             return usernameValue + " register successfully";
         } catch (DAOException e) {
             LOGGER.log(Level.ERROR, e);

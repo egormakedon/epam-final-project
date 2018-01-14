@@ -2,6 +2,7 @@ package by.makedon.final_project.dao;
 
 import by.makedon.final_project.connectionpool.ConnectionPool;
 import by.makedon.final_project.connectionpool.ProxyConnection;
+import by.makedon.final_project.entity.User;
 import by.makedon.final_project.exception.DAOException;
 
 import java.sql.PreparedStatement;
@@ -20,7 +21,7 @@ public class LoginDAO implements DAO {
     }
 
     @Override
-    public void addUser(String emailValue, String usernameValue, String passwordValue) throws DAOException {
+    public void addUser(User user) throws DAOException {
         throw new DAOException("NotSupportedMethod");
     }
 
@@ -68,7 +69,7 @@ public class LoginDAO implements DAO {
     }
 
     @Override
-    public void changePassword(String usernameValue, String passwordValue) throws DAOException {
+    public void changePassword(User user) throws DAOException {
         throw new DAOException("NotSupportedMethod");
     }
 }

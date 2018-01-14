@@ -2,6 +2,7 @@ package by.makedon.final_project.logic;
 
 import by.makedon.final_project.dao.ChangePasswordDAO;
 import by.makedon.final_project.dao.DAO;
+import by.makedon.final_project.entity.User;
 import by.makedon.final_project.exception.DAOException;
 import by.makedon.final_project.validator.Validator;
 import org.apache.logging.log4j.Level;
@@ -19,7 +20,10 @@ public class ChangePasswordLogic {
         DAO dao = ChangePasswordDAO.getInstance();
         String result;
         try {
-            dao.changePassword(usernameValue, password1Value);
+            User user = new User();
+            user.setUsernameValue(usernameValue);
+            user.setPasswordValue(password1Value);
+            dao.changePassword(user);
             result = "password changed successfully";
         } catch (DAOException e) {
             LOGGER.log(Level.ERROR, e);
