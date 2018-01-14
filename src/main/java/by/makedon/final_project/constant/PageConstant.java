@@ -9,4 +9,6 @@ public class PageConstant {
     public static final String ADMIN = "/jsp/security/admin/admin.jsp";
     public static final String USER = "/jsp/security/user/user.jsp";
     public static final String CHANGE_PASSWORD = "/jsp/security/changepassword.jsp";
+    public static final String FILL_FORM_PAGE = "/jsp/security/user/fillFormPage.jsp";
+    public static final String CHECK_STATUS_PAGE = "/jsp/security/user/checkStatusPage.jsp";
 }
