@@ -20,7 +20,26 @@ public class RegistrationDAO implements DAO {
     }
 
     @Override
-    public boolean addUser(String emailValue, String usernameValue, String passwordValue) throws DAOException {
+    public boolean match(String emailValue, String usernameValue) throws DAOException {
+        ProxyConnection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            statement = connection.prepareStatement(SQL_SELECT_USER_ID_BY_EMAIL_USERNAME);
+            statement.setString(1, emailValue);
+            statement.setString(2, usernameValue);
+            ResultSet resultSet = statement.executeQuery();
+            return resultSet.next();
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            close(statement);
+            close(connection);
+        }
+    }
+
+    @Override
+    public void addUser(String emailValue, String usernameValue, String passwordValue) throws DAOException {
         ProxyConnection connection = null;
         PreparedStatement statement = null;
         try {
@@ -43,37 +62,15 @@ public class RegistrationDAO implements DAO {
     }
 
     @Override
-    public boolean match(String usernameValue, String passwordValue) throws DAOException {
-        throw new DAOException("NotSupportedMethod");
-    }
-
-    @Override
     public String takeUserType(String usernameValue) throws DAOException {
         throw new DAOException("NotSupportedMethod");
     }
-
     @Override
     public String takeUsername(String emailValue) throws DAOException {
         throw new DAOException("NotSupportedMethod");
     }
-
     @Override
     public void changePassword(String usernameValue, String passwordValue) throws DAOException {
         throw new DAOException("NotSupportedMethod");
-    }
-
-    private boolean isUserExist(ProxyConnection connection, String emailValue, String usernameValue) throws DAOException {
-        PreparedStatement statement = null;
-        try {
-            statement = connection.prepareStatement(SQL_SELECT_USER_ID_BY_EMAIL_USERNAME);
-            statement.setString(1, emailValue);
-            statement.setString(2, usernameValue);
-            ResultSet resultSet = statement.executeQuery();
-            return resultSet.next();
-        } catch (SQLException e) {
-            throw new DAOException(e);
-        } finally {
-            close(statement);
-        }
     }
 }

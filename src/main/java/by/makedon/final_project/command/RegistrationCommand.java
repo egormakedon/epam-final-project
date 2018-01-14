@@ -2,7 +2,6 @@ package by.makedon.final_project.command;
 
 import by.makedon.final_project.constant.PageConstant;
 import by.makedon.final_project.controller.Router;
-import by.makedon.final_project.exception.DAOException;
 import by.makedon.final_project.logic.RegistrationLogic;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,27 +28,9 @@ public class RegistrationCommand implements Command {
         String password1Value = req.getParameter(PASSWORD1);
         String password2Value = req.getParameter(PASSWORD2);
 
-        if (!logic.validate(emailValue, usernameValue, password1Value, password2Value)) {
-            req.setAttribute("wrongdata", "input error");
-            router.setRoute(Router.RouteType.FORWARD);
-            router.setPagePath(PageConstant.MESSAGE_PAGE);
-            return router;
-        }
-
-        try {
-            if (!logic.addUser(emailValue, usernameValue, password1Value)) {
-                req.setAttribute("userExist", "this user already exist");
-                router.setRoute(Router.RouteType.FORWARD);
-                router.setPagePath(PageConstant.MESSAGE_PAGE);
-                return router;
-            } else {
-                router.setRoute(Router.RouteType.REDIRECT);
-                router.setPagePath(PageConstant.MESSAGE_PAGE + "?userRegistered=" + usernameValue + " registered successfully");
-                return router;
-            }
-        } catch (DAOException e) {
-            errorPrint(req, router, LOGGER, e);
-            return router;
-        }
+        String result = logic.doAction(emailValue, usernameValue, password1Value, password2Value);
+        router.setRoute(Router.RouteType.REDIRECT);
+        router.setPagePath(PageConstant.MESSAGE_PAGE + "?message=" + result);
+        return router;
     }
 }

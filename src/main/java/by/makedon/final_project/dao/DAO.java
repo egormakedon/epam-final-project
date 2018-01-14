@@ -12,8 +12,8 @@ import java.sql.Statement;
 public interface DAO {
     Logger LOGGER = LogManager.getLogger(DAO.class);
 
-    boolean addUser(String emailValue, String usernameValue, String passwordValue) throws DAOException;
-    boolean match(String usernameValue, String passwordValue) throws DAOException;
+    void addUser(String emailValue, String usernameValue, String passwordValue) throws DAOException;
+    boolean match(String param1, String param2) throws DAOException;
     String takeUserType(String usernameValue) throws DAOException;
     String takeUsername(String emailValue) throws DAOException;
     void changePassword(String usernameValue, String passwordValue) throws DAOException;
