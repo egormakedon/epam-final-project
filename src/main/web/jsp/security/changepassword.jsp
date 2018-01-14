@@ -3,18 +3,18 @@
 <head>
     <title>Change password</title>
 
-    <link rel="shortcut icon" href="../images/pageLogo.png" type="image/png">
+    <link rel="shortcut icon" href="../../images/pageLogo.png" type="image/png">
     <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900" rel="stylesheet" />
-    <link href="../css/default.css" rel="stylesheet" type="text/css" media="all" />
-    <link href="../css/fonts.css" rel="stylesheet" type="text/css" media="all" />
-    <link rel="stylesheet" href="../css/login.css">
-    <script src="../js/js.js"></script>
+    <link href="../../css/default.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="../../css/fonts.css" rel="stylesheet" type="text/css" media="all" />
+    <link rel="stylesheet" href="../../css/login.css">
+    <script src="../../js/js.js"></script>
 </head>
 <body>
 <div id="header-wrapper">
     <div id="header" class="container">
         <div id="logo">
-            <h1><a href="../jsp/welcome.jsp">Selection Committee</a></h1>
+            <h1><a href="../welcome.jsp">Selection Committee</a></h1>
         </div>
     </div>
 </div>
