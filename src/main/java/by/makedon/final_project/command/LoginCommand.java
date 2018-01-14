@@ -5,6 +5,7 @@ import by.makedon.final_project.constant.PageConstant;
 import by.makedon.final_project.controller.Router;
 import by.makedon.final_project.exception.DAOException;
 import by.makedon.final_project.logic.LoginLogic;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -51,7 +52,10 @@ public class LoginCommand implements Command {
                 return router;
             }
         } catch (DAOException e) {
-            errorPrint(req, router, LOGGER, e);
+            LOGGER.log(Level.ERROR, e);
+            req.setAttribute("error", e);
+            router.setRoute(Router.RouteType.FORWARD);
+            router.setPagePath(PageConstant.MESSAGE_PAGE);
             return router;
         }
     }

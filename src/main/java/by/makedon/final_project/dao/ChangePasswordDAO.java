@@ -10,8 +10,10 @@ import java.sql.SQLException;
 
 public class ChangePasswordDAO implements DAO {
     private static final DAO INSTANCE = new ChangePasswordDAO();
+    private static final String USERNAME = "username";
     private static final String SQL_UPDATE_PASSWORD = "UPDATE user SET password=SHA1(?) WHERE username=?";
     private static final String SQL_SELECT_USER_ID_BY_USERNAME = "SELECT user_id FROM user WHERE username=?";
+    private static final String SQL_SELECT_USERNAME_BY_EMAIL = "SELECT username FROM user WHERE email=?";
 
     private ChangePasswordDAO() {}
 
@@ -47,6 +49,28 @@ public class ChangePasswordDAO implements DAO {
     }
 
     @Override
+    public String takeUsername(String emailValue) throws DAOException {
+        ProxyConnection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            statement = connection.prepareStatement(SQL_SELECT_USERNAME_BY_EMAIL);
+            statement.setString(1, emailValue);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getString(USERNAME);
+            } else {
+                throw new DAOException("user doesn't exist");
+            }
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            close(statement);
+            close(connection);
+        }
+    }
+
+    @Override
     public void addUser(String emailValue, String usernameValue, String passwordValue) throws DAOException {
         throw new DAOException("NotSupportedMethod");
     }
@@ -56,10 +80,6 @@ public class ChangePasswordDAO implements DAO {
     }
     @Override
     public String takeUserType(String usernameValue) throws DAOException {
-        throw new DAOException("NotSupportedMethod");
-    }
-    @Override
-    public String takeUsername(String emailValue) throws DAOException {
         throw new DAOException("NotSupportedMethod");
     }
 }
