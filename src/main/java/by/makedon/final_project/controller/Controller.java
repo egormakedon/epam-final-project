@@ -1,6 +1,6 @@
 package by.makedon.final_project.controller;
 
-import by.makedon.final_project.command.ActionFactory;
+import by.makedon.final_project.command.factory.ActionFactory;
 import by.makedon.final_project.command.Command;
 import by.makedon.final_project.connectionpool.ConnectionPool;
 import org.apache.logging.log4j.Level;

@@ -1,4 +1,4 @@
-package by.makedon.final_project.logic;
+package by.makedon.final_project.logic.baselogic;
 
 import by.makedon.final_project.constant.LoginState;
 import by.makedon.final_project.constant.PageConstant;
@@ -9,7 +9,7 @@ public class ProfileLogic {
 
     public Router doAction(String loginValue, String typeValue) {
         Router router = new Router();
-        if (loginValue == null || loginValue.equals(LoginState.FALSE)) {
+        if (loginValue.equals(LoginState.FALSE)) {
             router.setRoute(Router.RouteType.FORWARD);
             router.setPagePath(PageConstant.LOGIN);
             return router;

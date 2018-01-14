@@ -1,4 +1,4 @@
-package by.makedon.final_project.logic;
+package by.makedon.final_project.logic.baselogic;
 
 import by.makedon.final_project.dao.ChangePasswordDAO;
 import by.makedon.final_project.dao.DAO;

@@ -1,8 +1,9 @@
-package by.makedon.final_project.command;
+package by.makedon.final_project.command.impl;
 
+import by.makedon.final_project.command.Command;
 import by.makedon.final_project.constant.PageConstant;
 import by.makedon.final_project.controller.Router;
-import by.makedon.final_project.logic.RegistrationLogic;
+import by.makedon.final_project.logic.baselogic.RegistrationLogic;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,7 +17,7 @@ public class RegistrationCommand implements Command {
     private static final String PASSWORD2 = "password2";
     private RegistrationLogic logic;
 
-    RegistrationCommand(RegistrationLogic logic) {
+    public RegistrationCommand(RegistrationLogic logic) {
         this.logic = logic;
     }
 

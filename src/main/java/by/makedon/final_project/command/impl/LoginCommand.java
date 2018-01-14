@@ -1,10 +1,11 @@
-package by.makedon.final_project.command;
+package by.makedon.final_project.command.impl;
 
+import by.makedon.final_project.command.Command;
 import by.makedon.final_project.constant.LoginState;
 import by.makedon.final_project.constant.PageConstant;
 import by.makedon.final_project.controller.Router;
 import by.makedon.final_project.exception.DAOException;
-import by.makedon.final_project.logic.LoginLogic;
+import by.makedon.final_project.logic.baselogic.LoginLogic;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,7 +19,7 @@ public class LoginCommand implements Command {
     private static final String PASSWORD = "password";
     private LoginLogic logic;
 
-    LoginCommand(LoginLogic logic) {
+    public LoginCommand(LoginLogic logic) {
         this.logic=logic;
     }
 

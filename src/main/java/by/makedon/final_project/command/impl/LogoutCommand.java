@@ -1,5 +1,6 @@
-package by.makedon.final_project.command;
+package by.makedon.final_project.command.impl;
 
+import by.makedon.final_project.command.Command;
 import by.makedon.final_project.constant.LoginState;
 import by.makedon.final_project.constant.PageConstant;
 import by.makedon.final_project.controller.Router;

@@ -1,4 +1,6 @@
-package by.makedon.final_project.command;
+package by.makedon.final_project.command.factory;
+
+import by.makedon.final_project.command.Command;
 
 import java.util.Optional;
 

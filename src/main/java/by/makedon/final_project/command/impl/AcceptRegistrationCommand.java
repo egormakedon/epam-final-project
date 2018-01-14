@@ -1,8 +1,9 @@
-package by.makedon.final_project.command;
+package by.makedon.final_project.command.impl;
 
+import by.makedon.final_project.command.Command;
 import by.makedon.final_project.constant.PageConstant;
 import by.makedon.final_project.controller.Router;
-import by.makedon.final_project.logic.AcceptRegistrationLogic;
+import by.makedon.final_project.logic.baselogic.AcceptRegistrationLogic;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,7 +13,7 @@ public class AcceptRegistrationCommand implements Command {
     private static final String PASSWORD = "password";
     private AcceptRegistrationLogic logic;
 
-    AcceptRegistrationCommand(AcceptRegistrationLogic logic) {
+    public AcceptRegistrationCommand(AcceptRegistrationLogic logic) {
         this.logic = logic;
     }
 

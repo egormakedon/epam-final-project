@@ -1,8 +1,9 @@
-package by.makedon.final_project.command;
+package by.makedon.final_project.command.impl;
 
+import by.makedon.final_project.command.Command;
 import by.makedon.final_project.constant.PageConstant;
 import by.makedon.final_project.controller.Router;
-import by.makedon.final_project.logic.ChangePasswordLogic;
+import by.makedon.final_project.logic.baselogic.ChangePasswordLogic;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,7 +13,7 @@ public class ChangePasswordCommand implements Command {
     private static final String PASSWORD2 = "password2";
     private ChangePasswordLogic logic;
 
-    ChangePasswordCommand(ChangePasswordLogic logic) {
+    public ChangePasswordCommand(ChangePasswordLogic logic) {
         this.logic = logic;
     }
 

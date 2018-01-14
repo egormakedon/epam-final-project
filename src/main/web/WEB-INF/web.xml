@@ -59,4 +59,7 @@
         <error-code>414</error-code>
         <location>/jsp/error/error414.jsp</location>
     </error-page>
+    <listener>
+        <listener-class>by.makedon.final_project.listener.SessionListener</listener-class>
+    </listener>
 </web-app>
