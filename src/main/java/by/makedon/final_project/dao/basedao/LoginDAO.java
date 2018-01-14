@@ -1,4 +1,4 @@
-package by.makedon.final_project.dao;
+package by.makedon.final_project.dao.basedao;
 
 import by.makedon.final_project.connectionpool.ConnectionPool;
 import by.makedon.final_project.connectionpool.ProxyConnection;
@@ -9,14 +9,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class LoginDAO implements DAO {
-    private static final DAO INSTANCE = new LoginDAO();
+public class LoginDAO implements BaseDAO {
+    private static final BaseDAO INSTANCE = new LoginDAO();
     private static final String SQL_SELECT_USER_ID_BY_USERNAME_PASSWORD = "SELECT user_id FROM user WHERE username=? AND password=SHA1(?)";
     private static final String SQL_SELECT_TYPE_BY_USERNAME = "SELECT type FROM user WHERE username=?";
 
     private LoginDAO() {}
 
-    public static DAO getInstance() {
+    public static BaseDAO getInstance() {
         return INSTANCE;
     }
 

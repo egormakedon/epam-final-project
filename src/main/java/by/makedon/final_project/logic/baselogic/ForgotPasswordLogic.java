@@ -1,7 +1,7 @@
 package by.makedon.final_project.logic.baselogic;
 
-import by.makedon.final_project.dao.ChangePasswordDAO;
-import by.makedon.final_project.dao.DAO;
+import by.makedon.final_project.dao.basedao.ChangePasswordDAO;
+import by.makedon.final_project.dao.basedao.BaseDAO;
 import by.makedon.final_project.exception.DAOException;
 import by.makedon.final_project.mail.MailProperty;
 import by.makedon.final_project.mail.MailThread;
@@ -20,7 +20,7 @@ public class ForgotPasswordLogic {
             return;
         }
 
-        DAO dao = ChangePasswordDAO.getInstance();
+        BaseDAO dao = ChangePasswordDAO.getInstance();
         try {
             String usernameValue = dao.takeUsername(emailValue);
             String mailText = "your username: " + usernameValue + "<br>"+

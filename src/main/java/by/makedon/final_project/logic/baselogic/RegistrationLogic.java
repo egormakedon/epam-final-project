@@ -1,7 +1,7 @@
 package by.makedon.final_project.logic.baselogic;
 
-import by.makedon.final_project.dao.DAO;
-import by.makedon.final_project.dao.RegistrationDAO;
+import by.makedon.final_project.dao.basedao.BaseDAO;
+import by.makedon.final_project.dao.basedao.RegistrationDAO;
 import by.makedon.final_project.exception.DAOException;
 import by.makedon.final_project.mail.MailProperty;
 import by.makedon.final_project.mail.MailThread;
@@ -21,7 +21,7 @@ public class RegistrationLogic {
                 Validator.validatePassword(password1Value) && Validator.arePasswordsEqual(password1Value, password2Value))) {
             return INPUT_ERROR_MESSAGE;
         }
-        DAO dao = RegistrationDAO.getInstance();
+        BaseDAO dao = RegistrationDAO.getInstance();
         try {
             if (dao.match(emailValue, usernameValue)) {
                 return emailValue + " " + usernameValue + " already exist";

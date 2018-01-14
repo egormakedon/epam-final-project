@@ -1,7 +1,7 @@
 package by.makedon.final_project.logic.baselogic;
 
-import by.makedon.final_project.dao.ChangePasswordDAO;
-import by.makedon.final_project.dao.DAO;
+import by.makedon.final_project.dao.basedao.ChangePasswordDAO;
+import by.makedon.final_project.dao.basedao.BaseDAO;
 import by.makedon.final_project.entity.User;
 import by.makedon.final_project.exception.DAOException;
 import by.makedon.final_project.validator.Validator;
@@ -17,7 +17,7 @@ public class ChangePasswordLogic {
         if (!(Validator.validatePassword(password1Value)&&Validator.arePasswordsEqual(password1Value, password2Value))) {
             return ERROR_MESSAGE;
         }
-        DAO dao = ChangePasswordDAO.getInstance();
+        BaseDAO dao = ChangePasswordDAO.getInstance();
         String result;
         try {
             User user = new User();

@@ -1,4 +1,4 @@
-package by.makedon.final_project.dao;
+package by.makedon.final_project.dao.basedao;
 
 import by.makedon.final_project.connectionpool.ConnectionPool;
 import by.makedon.final_project.connectionpool.ProxyConnection;
@@ -9,8 +9,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ChangePasswordDAO implements DAO {
-    private static final DAO INSTANCE = new ChangePasswordDAO();
+public class ChangePasswordDAO implements BaseDAO {
+    private static final BaseDAO INSTANCE = new ChangePasswordDAO();
     private static final String USERNAME = "username";
     private static final String SQL_UPDATE_PASSWORD = "UPDATE user SET password=SHA1(?) WHERE username=?";
     private static final String SQL_SELECT_USER_ID_BY_USERNAME = "SELECT user_id FROM user WHERE username=?";
@@ -18,7 +18,7 @@ public class ChangePasswordDAO implements DAO {
 
     private ChangePasswordDAO() {}
 
-    public static DAO getInstance() {
+    public static BaseDAO getInstance() {
         return INSTANCE;
     }
 
