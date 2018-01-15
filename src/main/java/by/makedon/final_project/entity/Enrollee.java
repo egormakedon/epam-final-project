@@ -1,5 +1,7 @@
 package by.makedon.final_project.entity;
 
+import by.makedon.final_project.exception.FatalException;
+
 import java.util.Map;
 
 public class Enrollee {
@@ -212,9 +214,87 @@ public class Enrollee {
             this.certificate = certificate;
         }
     }
+    private class Factory {
+        void set(Map.Entry<EnrolleeParameter, String> entry) {
+            String value = entry.getValue();
+            switch (entry.getKey()) {
+                case MATH:
+                    enrolleeMark.setMath(Integer.parseInt(value));
+                    break;
+                case NAME:
+                    enrolleInfo.setName(value);
+                    break;
+                case PHONE:
+                    enrolleInfo.setPhone(value);
+                    break;
+                case BIOLOGY:
+                    enrolleeMark.setBiology(Integer.parseInt(value));
+                    break;
+                case FACULTY:
+                    universityInfo.setFaculty(value);
+                    break;
+                case HISTORY:
+                    enrolleeMark.setHistory(Integer.parseInt(value));
+                    break;
+                case PHYSICS:
+                    enrolleeMark.setPhysics(Integer.parseInt(value));
+                    break;
+                case SURNAME:
+                    enrolleInfo.setSurname(value);
+                    break;
+                case CHEMISTRY:
+                    enrolleeMark.setChemistry(Integer.parseInt(value));
+                    break;
+                case GEOGRAPHY:
+                    enrolleeMark.setGeography(Integer.parseInt(value));
+                    break;
+                case PASSPORTID:
+                    enrolleInfo.setPassportId(value);
+                    break;
+                case SECONDNAME:
+                    enrolleInfo.setSecondName(value);
+                    break;
+                case SPECIALITY:
+                    universityInfo.setSpeciality(value);
+                    break;
+                case UNIVERSITY:
+                    universityInfo.setUniversity(value);
+                    break;
+                case CERTIFICATE:
+                    enrolleeMark.setCertificate(Integer.parseInt(value));
+                    break;
+                case FOREIGNLANG:
+                    enrolleeMark.setForeignLang(Integer.parseInt(value));
+                    break;
+                case RUSSIANLANG:
+                    enrolleeMark.setRussianLang(Integer.parseInt(value));
+                    break;
+                case COUNTRYDOMEN:
+                    enrolleInfo.setCountryDomen(value);
+                    break;
+                case SOCIALSTUDIES:
+                    enrolleeMark.setSocialStudies(Integer.parseInt(value));
+                    break;
+                case BELORUSSIANLANG:
+                    enrolleeMark.setBelorussianLang(Integer.parseInt(value));
+                    break;
+                case HISTORYOFBELARUS:
+                    enrolleeMark.setHistoryOfBelarus(Integer.parseInt(value));
+                    break;
+                default:
+                    throw new FatalException("unknown parameter");
+            }
+        }
+    }
 
     public Enrollee(Map<EnrolleeParameter, String> parameters) {
-        ///////
+        universityInfo = new UniversityInfo();
+        enrolleInfo = new EnrolleeInfo();
+        enrolleeMark = new EnrolleeMark();
+        Factory factory = new Factory();
+        for (Map.Entry<EnrolleeParameter, String> entry : parameters.entrySet()) {
+            factory.set(entry);
+        }
     }
 
     public String getStatement() {
