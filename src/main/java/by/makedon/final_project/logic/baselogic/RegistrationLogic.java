@@ -5,7 +5,7 @@ import by.makedon.final_project.dao.basedao.RegistrationDAO;
 import by.makedon.final_project.exception.DAOException;
 import by.makedon.final_project.mail.MailProperty;
 import by.makedon.final_project.mail.MailThread;
-import by.makedon.final_project.validator.Validator;
+import by.makedon.final_project.validator.UserValidator;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,8 +17,8 @@ public class RegistrationLogic {
     private static final String MAIL_SUBJECT = "confirm registration";
 
     public String doAction(String emailValue, String usernameValue, String password1Value, String password2Value) {
-        if (!(Validator.validateEmail(emailValue) && Validator.validateUsername(usernameValue) &&
-                Validator.validatePassword(password1Value) && Validator.arePasswordsEqual(password1Value, password2Value))) {
+        if (!(UserValidator.validateEmail(emailValue) && UserValidator.validateUsername(usernameValue) &&
+                UserValidator.validatePassword(password1Value) && UserValidator.arePasswordsEqual(password1Value, password2Value))) {
             return INPUT_ERROR_MESSAGE;
         }
         BaseDAO dao = RegistrationDAO.getInstance();

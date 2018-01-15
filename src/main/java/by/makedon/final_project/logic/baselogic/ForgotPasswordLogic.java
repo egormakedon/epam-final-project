@@ -5,7 +5,7 @@ import by.makedon.final_project.dao.basedao.BaseDAO;
 import by.makedon.final_project.exception.DAOException;
 import by.makedon.final_project.mail.MailProperty;
 import by.makedon.final_project.mail.MailThread;
-import by.makedon.final_project.validator.Validator;
+import by.makedon.final_project.validator.UserValidator;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,7 +15,7 @@ public class ForgotPasswordLogic {
     private static final String FORGOT_PASSWORD = "forgot password";
 
     public void doAction(String emailValue) {
-        if (!Validator.validateEmail(emailValue)) {
+        if (!UserValidator.validateEmail(emailValue)) {
             LOGGER.log(Level.ERROR, "invalid email");
             return;
         }

@@ -1,6 +1,6 @@
 package by.makedon.final_project.entity;
 
-import java.util.List;
+import java.util.Map;
 
 public class Enrollee {
     private UniversityInfo universityInfo;
@@ -213,7 +213,7 @@ public class Enrollee {
         }
     }
 
-    public Enrollee(List<String> params) {
+    public Enrollee(Map<EnrolleeParameter, String> parameters) {
         ///////
     }
 
