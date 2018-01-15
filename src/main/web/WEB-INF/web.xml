@@ -16,6 +16,14 @@
         <filter-name>Encodingfilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+    <filter>
+        <filter-name>SessionFilter</filter-name>
+        <filter-class>by.makedon.final_project.filter.SessionFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>SessionFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
     <servlet>
         <display-name>Controller</display-name>
         <servlet-name>Controller</servlet-name>

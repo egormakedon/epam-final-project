@@ -10,6 +10,7 @@ import by.makedon.final_project.command.impl.LogoutCommand;
 import by.makedon.final_project.command.impl.ProfileCommand;
 import by.makedon.final_project.command.impl.RegistrationCommand;
 import by.makedon.final_project.command.usercommand.FillFormCommand;
+import by.makedon.final_project.command.usercommand.RefreshFillFormCommand;
 import by.makedon.final_project.command.usercommand.SendFillFormCommand;
 import by.makedon.final_project.logic.baselogic.AcceptRegistrationLogic;
 import by.makedon.final_project.logic.baselogic.ChangePasswordLogic;
@@ -18,6 +19,7 @@ import by.makedon.final_project.logic.baselogic.LoginLogic;
 import by.makedon.final_project.logic.baselogic.ProfileLogic;
 import by.makedon.final_project.logic.baselogic.RegistrationLogic;
 import by.makedon.final_project.logic.userlogic.FillFormLogic;
+import by.makedon.final_project.logic.userlogic.RefreshFillFormLogic;
 import by.makedon.final_project.logic.userlogic.SendFillFormLogic;
 
 public enum CommandType {
@@ -29,7 +31,9 @@ public enum CommandType {
     FORWARDCHANGEPASSWORD(new ForwardChangePasswordCommand()),
     CHANGEPASSWORD(new ChangePasswordCommand(new ChangePasswordLogic())),
     ACCEPTREGISTRATION(new AcceptRegistrationCommand(new AcceptRegistrationLogic())),
+
     FILLFORMPAGE(new FillFormCommand(new FillFormLogic())),
+    REFRESHFILLFORM(new RefreshFillFormCommand(new RefreshFillFormLogic())),
     SENDFILLFORM(new SendFillFormCommand(new SendFillFormLogic()));
 
     private Command command;

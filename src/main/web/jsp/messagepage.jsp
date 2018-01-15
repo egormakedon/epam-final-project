@@ -13,6 +13,7 @@
         <h1>${wrongdata}</h1>
         <h1>${userExist}</h1>
         <h1>${error}</h1>
+        <h1>${message}</h1>
         <h1>${param.userRegistered}</h1>
         <h1>${param.message}</h1>
         <h1><a href="../jsp/welcome.jsp">back to welcome page</a></h1>

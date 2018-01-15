@@ -12,5 +12,4 @@ public class PageConstant {
     public static final String USER = "/WEB-INF/security/user/user.jsp";
     public static final String CHANGE_PASSWORD = "/WEB-INF/security/changepassword.jsp";
     public static final String FILL_FORM_PAGE = "/WEB-INF/security/user/fillFormPage.jsp";
-    public static final String CHECK_STATUS_PAGE = "/WEB-INF/security/user/checkStatusPage.jsp";
 }

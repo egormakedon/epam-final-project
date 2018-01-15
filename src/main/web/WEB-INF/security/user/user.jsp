@@ -36,12 +36,12 @@
     <div id="banner-wrapper">
         <div id="banner" class="container">
             <form action="/Controller" method="post">
-                <input type="hidden" name="command" value="changeuserdatapage">
-                <input class="button" value="change user data" type="submit">
-            </form>
-            <form action="/Controller" method="post">
                 <input type="hidden" name="command" value="fillformpage">
                 <input class="button" value="fill form" type="submit">
+            </form>
+            <form action="/Controller" method="post">
+                <input type="hidden" name="command" value="refreshfillform">
+                <input class="button" value="refresh fill form" type="submit">
             </form>
         </div>
     </div>

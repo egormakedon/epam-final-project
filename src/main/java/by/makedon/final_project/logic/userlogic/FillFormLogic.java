@@ -17,7 +17,7 @@ public class FillFormLogic {
         try {
             if(dao.isFormFilled(usernameValue)) {
                 router.setRoute(Router.RouteType.FORWARD);
-                router.setPagePath(PageConstant.CHECK_STATUS_PAGE);
+                //router.setPagePath(PageConstant.CHECK_STATUS_PAGE);
                 return router;
             } else {
                 router.setRoute(Router.RouteType.FORWARD);
