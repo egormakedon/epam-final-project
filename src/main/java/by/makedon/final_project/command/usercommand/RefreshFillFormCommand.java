@@ -26,17 +26,15 @@ public class RefreshFillFormCommand implements Command {
         HttpSession session = req.getSession();
         String usernameValue = (String) session.getAttribute(USERNAME);
         Router router;
-//        try {
-//            router = logic.doAction(usernameValue);
-//            return router;
-//        } catch (DAOException e) {
-//            LOGGER.log(Level.ERROR, e);
-//            router = new Router();
-//            router.setRoute(Router.RouteType.FORWARD);
-//            router.setPagePath(PageConstant.MESSAGE_PAGE);
-//            req.setAttribute("message", e.getMessage());
-//            return router;
-//        }
-        return null;
+        try {
+            router = logic.doAction(usernameValue);
+            return router;
+        } catch (DAOException e) {
+            LOGGER.log(Level.ERROR, e);
+            router = new Router();
+            router.setRoute(Router.RouteType.REDIRECT);
+            router.setPagePath(PageConstant.MESSAGE_PAGE + "?message=" + e.getMessage());
+            return router;
+        }
     }
 }

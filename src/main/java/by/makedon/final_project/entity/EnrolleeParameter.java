@@ -21,7 +21,8 @@ public enum EnrolleeParameter {
     SOCIALSTUDIES("socialStudies"),
     GEOGRAPHY("geography"),
     HISTORY("history"),
-    CERTIFICATE("certificate");
+    CERTIFICATE("certificate"),
+    STATEMENT("statement");
 
     private String parameter;
 
