@@ -18,11 +18,11 @@ public class UserDAOImpl implements UserDAO {
     }
 
     private static final String RESULT = "result";
-    private static final String STATEMENT_IN_PROCESS = "в процессе";
+    private static final String STATEMENT_IN_PROCESS = "В процессе";
 
     private static final String SQL_SELECT_IS_NULL_E_ID_BY_USERNAME = "SELECT isNull(e_id) result FROM user WHERE username=?";
     private static final String SQL_SELECT_STATEMENT_BY_USERNAME = "SELECT e.statement statement FROM user u INNER JOIN enrollee e ON u.e_id = e.e_id WHERE username=?";
-    private static final String SQL_UPDATE_FROM_BY_USERNAME = "DELETE FROM enrolle e WHERE e.e_id IN (SELECT u.e_id FROM user u WHERE username=?)";
+    private static final String SQL_UPDATE_FROM_BY_USERNAME = "DELETE FROM enrollee WHERE enrollee.e_id IN (SELECT u.e_id FROM user u WHERE username=?);";
 
     @Override
     public boolean isFormFilled(String usernameValue) throws DAOException {
@@ -35,7 +35,7 @@ public class UserDAOImpl implements UserDAO {
             ResultSet resultSet = statement.executeQuery();
             resultSet.next();
             int value = Integer.parseInt(resultSet.getString(RESULT));
-            return value == 1;
+            return value == 0;
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {
