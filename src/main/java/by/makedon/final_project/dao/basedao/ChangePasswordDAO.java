@@ -53,6 +53,11 @@ public class ChangePasswordDAO implements BaseDAO {
     }
 
     @Override
+    public boolean isUsernameExist(String usernameValue) throws DAOException {
+        throw new DAOException("NotSupportedMethod");
+    }
+
+    @Override
     public String takeUsername(String emailValue) throws DAOException {
         ProxyConnection connection = null;
         PreparedStatement statement = null;

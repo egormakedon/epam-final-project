@@ -77,4 +77,9 @@ public class RegistrationDAO implements BaseDAO {
     public void changePassword(User user) throws DAOException {
         throw new DAOException("NotSupportedMethod");
     }
+
+    @Override
+    public boolean isUsernameExist(String usernameValue) throws DAOException {
+        throw new DAOException("NotSupportedMethod");
+    }
 }

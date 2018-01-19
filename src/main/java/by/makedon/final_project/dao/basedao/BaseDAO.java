@@ -10,4 +10,5 @@ public interface BaseDAO extends DAO {
     String takeUserType(String usernameValue) throws DAOException;
     String takeUsername(String emailValue) throws DAOException;
     void changePassword(User user) throws DAOException;
+    boolean isUsernameExist(String usernameValue) throws DAOException;
 }
