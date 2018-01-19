@@ -40,6 +40,10 @@
                 <input class="button" value="fill form" type="submit">
             </form>
             <form action="/Controller" method="post">
+                <input type="hidden" name="command" value="showformpage">
+                <input class="button" value="show form" type="submit">
+            </form>
+            <form action="/Controller" method="post">
                 <input type="hidden" name="command" value="refreshfillform">
                 <input class="button" value="refresh fill form" type="submit">
             </form>

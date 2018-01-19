@@ -2,7 +2,6 @@ package by.makedon.final_project.dao.userdao;
 
 import by.makedon.final_project.connectionpool.ConnectionPool;
 import by.makedon.final_project.connectionpool.ProxyConnection;
-import by.makedon.final_project.dao.DAO;
 import by.makedon.final_project.entity.EnrolleeParameter;
 import by.makedon.final_project.exception.DAOException;
 
@@ -43,7 +42,6 @@ public class UserDAOImpl implements UserDAO {
             close(connection);
         }
     }
-
     @Override
     public void refreshFillForm(String usernameValue) throws DAOException {
         if (isFormFilled(usernameValue)) {
@@ -56,6 +54,8 @@ public class UserDAOImpl implements UserDAO {
             throw new DAOException("form is empty yet");
         }
     }
+
+
 
     private boolean couldRefreshForm(String usernameValue) throws DAOException {
         ProxyConnection connection = null;
@@ -75,7 +75,6 @@ public class UserDAOImpl implements UserDAO {
             close(connection);
         }
     }
-
     private void refreshForm(String usernameValue) throws DAOException {
         ProxyConnection connection = null;
         PreparedStatement statement = null;

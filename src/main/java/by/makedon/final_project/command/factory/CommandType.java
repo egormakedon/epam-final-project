@@ -12,15 +12,16 @@ import by.makedon.final_project.command.impl.RegistrationCommand;
 import by.makedon.final_project.command.usercommand.FillFormCommand;
 import by.makedon.final_project.command.usercommand.RefreshFillFormCommand;
 import by.makedon.final_project.command.usercommand.SendFillFormCommand;
+import by.makedon.final_project.command.usercommand.ShowFormCommand;
 import by.makedon.final_project.logic.baselogic.AcceptRegistrationLogic;
 import by.makedon.final_project.logic.baselogic.ChangePasswordLogic;
 import by.makedon.final_project.logic.baselogic.ForgotPasswordLogic;
 import by.makedon.final_project.logic.baselogic.LoginLogic;
 import by.makedon.final_project.logic.baselogic.ProfileLogic;
 import by.makedon.final_project.logic.baselogic.RegistrationLogic;
-import by.makedon.final_project.logic.userlogic.FillFormLogic;
 import by.makedon.final_project.logic.userlogic.RefreshFillFormLogic;
 import by.makedon.final_project.logic.userlogic.SendFillFormLogic;
+import by.makedon.final_project.logic.userlogic.ShowFormLogic;
 
 public enum CommandType {
     REGISTRATION(new RegistrationCommand(new RegistrationLogic())),
@@ -32,9 +33,10 @@ public enum CommandType {
     CHANGEPASSWORD(new ChangePasswordCommand(new ChangePasswordLogic())),
     ACCEPTREGISTRATION(new AcceptRegistrationCommand(new AcceptRegistrationLogic())),
 
-    FILLFORMPAGE(new FillFormCommand(new FillFormLogic())),
+    FILLFORMPAGE(new FillFormCommand()),
     REFRESHFILLFORM(new RefreshFillFormCommand(new RefreshFillFormLogic())),
     SENDFILLFORM(new SendFillFormCommand(new SendFillFormLogic()));
+    //SHOWFORMPAGE(new ShowFormCommand(new ShowFormLogic()));
 
     private Command command;
 
