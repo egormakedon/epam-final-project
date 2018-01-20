@@ -10,6 +10,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 
 public class UserDAOImpl implements UserDAO {
     private static final UserDAO INSTANCE = new UserDAOImpl();
@@ -30,6 +32,14 @@ public class UserDAOImpl implements UserDAO {
     private static final String SQL_INSERT_ENROLLEE = "INSERT INTO enrollee(passport_id,country_domen,s_id,surname,name,second_name,phone,russian_lang,belorussian_lang,physics,math,chemistry,biology,foreign_lang,history_of_belarus,social_studies,geography,history,certificate) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
     private static final String SQL_SELECT_E_ID_BY_PASSPORT_ID_COUNTRY_DOMEN = "SELECT e_id result FROM enrollee WHERE passport_id=? AND country_domen=?";
     private static final String SQL_UPDATE_E_ID_IN_USER = "UPDATE user SET e_id=? WHERE username=?;";
+    private static final String SQL_SELECT_ENROLLE_DATA = "SELECT u.u_name UNIVERSITY, f.f_name FACULTY, s.s_name SPECIALITY," +
+            " e.passport_id PASSPORTID, e.country_domen COUNTRYDOMEN," +
+            " e.surname SURNAME, e.name NAME, e.second_name SECONDNAME, e.phone PHONE, e.statement STATEMENT, e.russian_lang RUSSIANLANG, " +
+            " e.belorussian_lang BELORUSSIANLANG, e.physics PHYSICS, e.math MATH, e.chemistry CHEMISTRY, e.biology BIOLOGY," +
+            " e.foreign_lang FOREIGNLANG, e.history_of_belarus HISTORYOFBELARUS, e.social_studies SOCIALSTUDIES, e.geography GEOGRAPHY," +
+            " e.history HISTORY, e.certificate CERTIFICATE FROM university u INNER JOIN faculty f ON u.u_id = f.u_id" +
+            " INNER JOIN speciality s ON f.f_id = s.f_id INNER JOIN enrollee e ON s.s_id = e.s_id INNER JOIN user ON e.e_id = user.e_id" +
+            " WHERE user.username=?;";
 
     @Override
     public boolean isFormFilled(String usernameValue) throws DAOException {
@@ -62,7 +72,6 @@ public class UserDAOImpl implements UserDAO {
             throw new DAOException("form is empty yet");
         }
     }
-
     @Override
     public void addForm(String usernameValue, Enrollee enrollee) throws DAOException {
         if (isFormFilled(usernameValue)) {
@@ -72,6 +81,75 @@ public class UserDAOImpl implements UserDAO {
             addFormAction(usernameValue, enrollee);
         } else {
             throw new DAOException("you can't add form");
+        }
+    }
+    @Override
+    public Enrollee takeEnrollee(String usernameValue) throws DAOException {
+        ProxyConnection connection = null;
+        PreparedStatement statement = null;String s = "1";
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            statement = connection.prepareStatement(SQL_SELECT_ENROLLE_DATA);
+            statement.setString(1, usernameValue);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                String universityValue = resultSet.getString(EnrolleeParameter.UNIVERSITY.toString());
+                String facultyValue = resultSet.getString(EnrolleeParameter.FACULTY.toString());
+                String specialityValue = resultSet.getString(EnrolleeParameter.SPECIALITY.toString());
+                String nameValue = resultSet.getString(EnrolleeParameter.NAME.toString());
+                String surnameValue = resultSet.getString(EnrolleeParameter.SURNAME.toString());
+                String secondNameValue = resultSet.getString(EnrolleeParameter.SECONDNAME.toString());
+                String passportIdValue = resultSet.getString(EnrolleeParameter.PASSPORTID.toString());
+                String countryDomenValue = resultSet.getString(EnrolleeParameter.COUNTRYDOMEN.toString());
+                String phoneValue = resultSet.getString(EnrolleeParameter.PHONE.toString());
+                String russianLangValue = resultSet.getString(EnrolleeParameter.RUSSIANLANG.toString());
+                String belorussianLangValue = resultSet.getString(EnrolleeParameter.BELORUSSIANLANG.toString());
+                String physicsValue = resultSet.getString(EnrolleeParameter.PHYSICS.toString());
+                String mathValue = resultSet.getString(EnrolleeParameter.MATH.toString());
+                String chemistryValue = resultSet.getString(EnrolleeParameter.CHEMISTRY.toString());
+                String biologyValue = resultSet.getString(EnrolleeParameter.BIOLOGY.toString());
+                String foreignLangValue = resultSet.getString(EnrolleeParameter.FOREIGNLANG.toString());
+                String historyOfBelarusValue = resultSet.getString(EnrolleeParameter.HISTORYOFBELARUS.toString());
+                String socialStudiesValue = resultSet.getString(EnrolleeParameter.SOCIALSTUDIES.toString());
+                String geographyValue = resultSet.getString(EnrolleeParameter.GEOGRAPHY.toString());
+                String historyValue = resultSet.getString(EnrolleeParameter.HISTORY.toString());
+                String certificateValue = resultSet.getString(EnrolleeParameter.CERTIFICATE.toString());
+                String statementValue = resultSet.getString(EnrolleeParameter.STATEMENT.toString());
+
+                Map<EnrolleeParameter, String> parameters = new HashMap<EnrolleeParameter, String>();
+                parameters.put(EnrolleeParameter.UNIVERSITY, universityValue);
+                parameters.put(EnrolleeParameter.FACULTY, facultyValue);
+                parameters.put(EnrolleeParameter.SPECIALITY, specialityValue);
+                parameters.put(EnrolleeParameter.NAME, nameValue);
+                parameters.put(EnrolleeParameter.SURNAME, surnameValue);
+                parameters.put(EnrolleeParameter.SECONDNAME, secondNameValue);
+                parameters.put(EnrolleeParameter.PASSPORTID, passportIdValue);
+                parameters.put(EnrolleeParameter.COUNTRYDOMEN, countryDomenValue);
+                parameters.put(EnrolleeParameter.PHONE, phoneValue);
+                parameters.put(EnrolleeParameter.RUSSIANLANG, russianLangValue);
+                parameters.put(EnrolleeParameter.BELORUSSIANLANG, belorussianLangValue);
+                parameters.put(EnrolleeParameter.PHYSICS, physicsValue);
+                parameters.put(EnrolleeParameter.MATH, mathValue);
+                parameters.put(EnrolleeParameter.CHEMISTRY, chemistryValue);
+                parameters.put(EnrolleeParameter.BIOLOGY, biologyValue);
+                parameters.put(EnrolleeParameter.FOREIGNLANG, foreignLangValue);
+                parameters.put(EnrolleeParameter.HISTORYOFBELARUS, historyOfBelarusValue);
+                parameters.put(EnrolleeParameter.SOCIALSTUDIES, socialStudiesValue);
+                parameters.put(EnrolleeParameter.GEOGRAPHY, geographyValue);
+                parameters.put(EnrolleeParameter.HISTORY, historyValue);
+                parameters.put(EnrolleeParameter.CERTIFICATE, certificateValue);
+                parameters.put(EnrolleeParameter.STATEMENT, statementValue);
+
+                Enrollee enrollee = new Enrollee(parameters);
+                return enrollee;
+            } else {
+                throw new DAOException("enrollee form hasn't found");
+            }
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            close(statement);
+            close(connection);
         }
     }
 

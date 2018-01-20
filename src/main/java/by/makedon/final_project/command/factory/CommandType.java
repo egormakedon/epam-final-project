@@ -35,8 +35,8 @@ public enum CommandType {
 
     FILLFORMPAGE(new FillFormCommand()),
     REFRESHFILLFORM(new RefreshFillFormCommand(new RefreshFillFormLogic())),
-    SENDFILLFORM(new SendFillFormCommand(new SendFillFormLogic()));
-    //SHOWFORMPAGE(new ShowFormCommand(new ShowFormLogic()));
+    SENDFILLFORM(new SendFillFormCommand(new SendFillFormLogic())),
+    SHOWFORMPAGE(new ShowFormCommand(new ShowFormLogic()));
 
     private Command command;
 

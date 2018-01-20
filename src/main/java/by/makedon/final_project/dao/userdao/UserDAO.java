@@ -8,4 +8,5 @@ public interface UserDAO extends DAO {
     boolean isFormFilled(String usernameValue) throws DAOException;
     void refreshFillForm(String usernameValue) throws DAOException;
     void addForm(String usernameValue, Enrollee enrollee) throws DAOException;
+    Enrollee takeEnrollee(String usernameValue) throws DAOException;
 }
