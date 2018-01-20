@@ -11,9 +11,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 public class SendFillFormCommand implements Command {
     private static final Logger LOGGER = LogManager.getLogger(SendFillFormCommand.class);
+    private static final String USERNAME = "username";
     private SendFillFormLogic logic;
 
     public SendFillFormCommand(SendFillFormLogic logic) {
@@ -22,6 +24,9 @@ public class SendFillFormCommand implements Command {
 
     @Override
     public Router execute(HttpServletRequest req) {
+        HttpSession session = req.getSession();
+        String usernameValue = (String)session.getAttribute(USERNAME);
+
         String universityValue = req.getParameter(EnrolleeParameter.UNIVERSITY.getParameter());
         String facultyValue = req.getParameter(EnrolleeParameter.FACULTY.getParameter());
         String specialityValue = req.getParameter(EnrolleeParameter.SPECIALITY.getParameter());
@@ -48,7 +53,7 @@ public class SendFillFormCommand implements Command {
         try {
             logic.doAction(universityValue, facultyValue, specialityValue, countryDomenValue, nameValue, surnameValue, secondNameValue, passportIdValue, phoneValue,
                     russianLangValue, belorussianLangValue, physicsValue, mathValue, chemistryValue, biologyValue,
-                    foreignLangValue, historyOfBelarusValue, socialStudiesValue, geographyValue, historyValue, certificateValue);
+                    foreignLangValue, historyOfBelarusValue, socialStudiesValue, geographyValue, historyValue, certificateValue, usernameValue);
             router.setPagePath(PageConstant.MESSAGE_PAGE + "?message=" + "form sent successfully");
             router.setRoute(Router.RouteType.REDIRECT);
             return router;

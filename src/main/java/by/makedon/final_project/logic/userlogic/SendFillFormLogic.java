@@ -16,7 +16,7 @@ public class SendFillFormLogic {
                          String phoneValue, String russianLangValue, String belorussianLangValue, String physicsValue,
                          String mathValue, String chemistryValue, String biologyValue, String foreignLangValue,
                          String historyOfBelarusValue, String socialStudiesValue, String geographyValue,
-                         String historyValue, String certificateValue) throws DAOException {
+                         String historyValue, String certificateValue, String usernameValue) throws DAOException {
 
         if (!EnrolleeValidator.validate(nameValue, surnameValue, secondNameValue, passportIdValue, phoneValue,
                 russianLangValue, belorussianLangValue, physicsValue, mathValue, chemistryValue, biologyValue,
@@ -75,6 +75,6 @@ public class SendFillFormLogic {
 
         Enrollee enrollee = new Enrollee(parameters);
         UserDAO dao = UserDAOImpl.getInstance();
-        /////
+        dao.addForm(usernameValue, enrollee);
     }
 }
