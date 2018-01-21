@@ -6,4 +6,5 @@ import by.makedon.final_project.exception.DAOException;
 public interface AdminDAO extends DAO {
     void deleteUser(String usernameValue) throws DAOException;
     void refreshStatement() throws DAOException;
+
 }
