@@ -2,6 +2,7 @@ package by.makedon.final_project.command.factory;
 
 import by.makedon.final_project.command.admincommand.DeleteUserCommand;
 import by.makedon.final_project.command.admincommand.DeleteUserPageCommand;
+import by.makedon.final_project.command.admincommand.RefreshStatementCommand;
 import by.makedon.final_project.command.impl.AcceptRegistrationCommand;
 import by.makedon.final_project.command.impl.ChangePasswordCommand;
 import by.makedon.final_project.command.Command;
@@ -16,6 +17,7 @@ import by.makedon.final_project.command.usercommand.RefreshFillFormCommand;
 import by.makedon.final_project.command.usercommand.SendFillFormCommand;
 import by.makedon.final_project.command.usercommand.ShowFormCommand;
 import by.makedon.final_project.logic.adminlogic.DeleteUserLogic;
+import by.makedon.final_project.logic.adminlogic.RefreshStatementLogic;
 import by.makedon.final_project.logic.baselogic.AcceptRegistrationLogic;
 import by.makedon.final_project.logic.baselogic.ChangePasswordLogic;
 import by.makedon.final_project.logic.baselogic.ForgotPasswordLogic;
@@ -42,7 +44,8 @@ public enum CommandType {
     SHOWFORMPAGE(new ShowFormCommand(new ShowFormLogic())),
 
     DELETE_USER_PAGE(new DeleteUserPageCommand()),
-    DELETE_USER(new DeleteUserCommand(new DeleteUserLogic()));
+    DELETE_USER(new DeleteUserCommand(new DeleteUserLogic())),
+    REFRESH_STATEMENT(new RefreshStatementCommand(new RefreshStatementLogic()));
 
     private Command command;
 

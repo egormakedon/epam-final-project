@@ -16,6 +16,7 @@ public class AdminDAOImpl implements AdminDAO {
 
     private static final String SQL_DELETE_ENROLLEE_BY_USERNAME = "DELETE FROM enrollee e WHERE e.e_id IN (SELECT u.e_id FROM user u WHERE u.username=?);";
     private static final String SQL_DELETE_USER_BY_USERNAME = "DELETE FROM user WHERE username=?";
+    private static final String SQL_UPDATE_STATEMENT = "UPDATE enrollee SET statement='В процессе';";
 
     @Override
     public void deleteUser(String usernameValue) throws DAOException {
@@ -29,6 +30,22 @@ public class AdminDAOImpl implements AdminDAO {
             close(statement);
             statement = connection.prepareStatement(SQL_DELETE_USER_BY_USERNAME);
             statement.setString(1, usernameValue);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            close(statement);
+            close(connection);
+        }
+    }
+
+    @Override
+    public void refreshStatement() throws DAOException {
+        ProxyConnection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            statement = connection.prepareStatement(SQL_UPDATE_STATEMENT);
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new DAOException(e);
