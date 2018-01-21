@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <html lang="en">
 <head>
-    <title>Admin page</title>
+    <title>Delete user</title>
 
     <link rel="shortcut icon" href="../../../images/pageLogo.png" type="image/png">
     <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900" rel="stylesheet" />
@@ -14,44 +14,22 @@
         <div id="logo">
             <h1><a href="../../../jsp/welcome.jsp">Selection Committee</a></h1>
         </div>
-        <form id="menu" action="/Controller" method="get">
+        <form id="menu" action="/Controller" method="post">
             <ul>
                 <li>
                     <a>
-                        <input type="hidden" name="command" value="logout">
+                        <input type="hidden" name="command" value="profile">
                         <input type="submit" style="background:none!important;
     														 color:inherit;
      														 border:none;
     														 padding:0!important;
   														   	 font: inherit;
     														 cursor: pointer;"
-                               accesskey="1" value="LOGOUT">
+                               accesskey="1" value="PROFILE">
                     </a>
                 </li>
             </ul>
         </form>
-    </div>
-</div>
-<div id="header-featured">
-    <div id="banner-wrapper">
-        <div id="banner" class="container">
-            <form action="/Controller" method="post">
-                <input type="hidden" name="command" value="delete_user_page">
-                <input class="button" value="delete user" type="submit">
-            </form>
-            <form action="/Controller" method="post">
-                <input type="hidden" name="command" value="">
-                <input class="button" value="show form" type="submit">
-            </form>
-            <form action="/Controller" method="post">
-                <input type="hidden" name="command" value="">
-                <input class="button" value="refresh fill form" type="submit">
-            </form>
-            <form action="/Controller" method="post">
-                <input type="hidden" name="command" value="">
-                <input class="button" value="refresh fill form" type="submit">
-            </form>
-        </div>
     </div>
 </div>
 <div id="copyright" class="container">
