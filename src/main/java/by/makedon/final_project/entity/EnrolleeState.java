@@ -6,11 +6,20 @@ public class EnrolleeState {
     private long enrolleeId;
     private long specialityId;
     private int score;
+    private String statement;
 
     public EnrolleeState(long enrolleeId, long specialityId, int score) {
         this.enrolleeId = enrolleeId;
         this.specialityId = specialityId;
         this.score = score;
+    }
+
+    public String getStatement() {
+        return statement;
+    }
+
+    public void setStatement(String statement) {
+        this.statement = statement;
     }
 
     public long getEnrolleeId() {
@@ -32,20 +41,13 @@ public class EnrolleeState {
         EnrolleeState that = (EnrolleeState) o;
         return getEnrolleeId() == that.getEnrolleeId() &&
                 getSpecialityId() == that.getSpecialityId() &&
-                getScore() == that.getScore();
+                getScore() == that.getScore() &&
+                Objects.equals(getStatement(), that.getStatement());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getEnrolleeId(), getSpecialityId(), getScore());
-    }
 
-    @Override
-    public String toString() {
-        return "EnrolleeState{" +
-                "enrolleeId=" + enrolleeId +
-                ", specialityId=" + specialityId +
-                ", score=" + score +
-                '}';
+        return Objects.hash(getEnrolleeId(), getSpecialityId(), getScore(), getStatement());
     }
 }
