@@ -7,6 +7,6 @@ import by.makedon.final_project.exception.DAOException;
 public class RefreshStatementLogic {
     public void doAction() throws DAOException {
         AdminDAO dao = AdminDAOImpl.getInstance();
-        dao.refreshStatement();
+        dao.resetStatement();
     }
 }

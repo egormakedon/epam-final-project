@@ -9,7 +9,8 @@ import java.util.Set;
 
 public interface AdminDAO extends DAO {
     void deleteUser(String usernameValue) throws DAOException;
-    void refreshStatement() throws DAOException;
+    void resetStatement() throws DAOException;
     Set<EnrolleeState> takeAllEnrolleeStates() throws DAOException;
     Map<Long,Integer> takeSpecialityIdWithNumberOfSeats() throws DAOException;
+    void refreshStatement(Set<EnrolleeState> enrolleeStateSet) throws DAOException;
 }
