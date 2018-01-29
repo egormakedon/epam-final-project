@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <html lang="en">
 <head>
-    <title>User page</title>
+    <title>Change user data page</title>
 
     <link rel="shortcut icon" href="../../../images/pageLogo.png" type="image/png">
     <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900" rel="stylesheet" />
@@ -18,14 +18,14 @@
             <ul>
                 <li>
                     <a>
-                        <input type="hidden" name="command" value="logout">
+                        <input type="hidden" name="command" value="profile">
                         <input type="submit" style="background:none!important;
     														 color:inherit;
      														 border:none;
     														 padding:0!important;
   														   	 font: inherit;
     														 cursor: pointer;"
-                               accesskey="1" value="LOGOUT">
+                               accesskey="1" value="PROFILE">
                     </a>
                 </li>
             </ul>
@@ -36,20 +36,19 @@
     <div id="banner-wrapper">
         <div id="banner" class="container">
             <form action="/Controller" method="post">
-                <input type="hidden" name="command" value="fillformpage">
-                <input class="button" value="fill form" type="submit">
+                <input type="hidden" name="command" value="changeuserdata">
+                <input type="hidden" name="typechanger" value="email">
+                <input class="button" value="change email" type="submit">
             </form>
             <form action="/Controller" method="post">
-                <input type="hidden" name="command" value="showformpage">
-                <input class="button" value="show form" type="submit">
+                <input type="hidden" name="command" value="changeuserdata">
+                <input type="hidden" name="typechanger" value="username">
+                <input class="button" value="change username" type="submit">
             </form>
             <form action="/Controller" method="post">
-                <input type="hidden" name="command" value="refreshfillform">
-                <input class="button" value="refresh fill form" type="submit">
-            </form>
-            <form action="/Controller" method="post">
-                <input type="hidden" name="command" value="changeuserdatapage">
-                <input class="button" value="change user data" type="submit">
+                <input type="hidden" name="command" value="changeuserdata">
+                <input type="hidden" name="typechanger" value="password">
+                <input class="button" value="change password" type="submit">
             </form>
         </div>
     </div>
