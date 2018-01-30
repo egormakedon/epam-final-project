@@ -213,7 +213,6 @@ public class UserDAOImpl implements UserDAO {
         }
     }
 
-
     private boolean couldRefreshForm(String usernameValue) throws DAOException {
         ProxyConnection connection = null;
         PreparedStatement statement = null;

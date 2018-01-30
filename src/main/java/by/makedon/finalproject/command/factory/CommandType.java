@@ -1,5 +1,6 @@
 package by.makedon.finalproject.command.factory;
 
+import by.makedon.finalproject.command.admincommand.ChangeNumberOfSeatsCommand;
 import by.makedon.finalproject.command.admincommand.DeleteUserCommand;
 import by.makedon.finalproject.command.admincommand.DeleteUserPageCommand;
 import by.makedon.finalproject.command.admincommand.RefreshStatementCommand;
@@ -22,6 +23,7 @@ import by.makedon.finalproject.command.usercommand.FillFormCommand;
 import by.makedon.finalproject.command.usercommand.RefreshFillFormCommand;
 import by.makedon.finalproject.command.usercommand.SendFillFormCommand;
 import by.makedon.finalproject.command.usercommand.ShowFormCommand;
+import by.makedon.finalproject.logic.adminlogic.ChangeNumberOfSeatsLogic;
 import by.makedon.finalproject.logic.adminlogic.DeleteUserLogic;
 import by.makedon.finalproject.logic.adminlogic.RefreshStatementLogic;
 import by.makedon.finalproject.logic.adminlogic.SetStatementLogic;
@@ -62,7 +64,8 @@ public enum CommandType {
     DELETE_USER_PAGE(new DeleteUserPageCommand()),
     DELETE_USER(new DeleteUserCommand(new DeleteUserLogic())),
     REFRESH_STATEMENT(new RefreshStatementCommand(new RefreshStatementLogic())),
-    SET_STATEMENT(new SetStatementCommand(new SetStatementLogic()));
+    SET_STATEMENT(new SetStatementCommand(new SetStatementLogic())),
+    CHANGE_NUMBER_OF_SEATS(new ChangeNumberOfSeatsCommand(new ChangeNumberOfSeatsLogic()));
 
     private Command command;
 
