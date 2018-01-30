@@ -42,6 +42,8 @@ public class UserDAOImpl implements UserDAO {
             " INNER JOIN speciality s ON f.f_id = s.f_id INNER JOIN enrollee e ON s.s_id = e.s_id INNER JOIN user ON e.e_id = user.e_id" +
             " WHERE user.username=?;";
     private static final String SQL_SELECT_EMAIL_BY_USERNAME = "SELECT email FROM user WHERE username=?";
+    private static final String SQL_UPDATE_CHANGE_EMAIL_BY_USERNAME = "UPDATE user SET email=? WHERE username=?";
+    private static final String SQL_UPDATE_CHANGE_USERNAME = "UPDATE user SET username=? WHERE username=?";
 
     @Override
     public boolean isFormFilled(String usernameValue) throws DAOException {
@@ -168,6 +170,41 @@ public class UserDAOImpl implements UserDAO {
             } else {
                 throw new DAOException("Unknown result, username doesn't exist");
             }
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            close(statement);
+            close(connection);
+        }
+    }
+    @Override
+    public void changeEmail(String usernameValue, String newEmailValue) throws DAOException {
+        ProxyConnection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            statement = connection.prepareStatement(SQL_UPDATE_CHANGE_EMAIL_BY_USERNAME);
+            statement.setString(1,newEmailValue);
+            statement.setString(2,usernameValue);
+            statement.execute();
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            close(statement);
+            close(connection);
+        }
+    }
+    @Override
+    public boolean changeUsername(String usernameValue, String newUsernameValue) throws DAOException {
+        ProxyConnection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            statement = connection.prepareStatement(SQL_UPDATE_CHANGE_USERNAME);
+            statement.setString(1, newUsernameValue);
+            statement.setString(2, usernameValue);
+            int count = statement.executeUpdate();
+            return count == 1;
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {

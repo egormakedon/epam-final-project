@@ -4,36 +4,32 @@ import by.makedon.finalproject.command.Command;
 import by.makedon.finalproject.constant.PageConstant;
 import by.makedon.finalproject.controller.Router;
 import by.makedon.finalproject.exception.LogicException;
-import by.makedon.finalproject.logic.userlogic.ChangeUserDataLogic;
+import by.makedon.finalproject.logic.userlogic.ChangeEmailLogic;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
-public class ChangeUserDataCommand implements Command {
-    private static final Logger LOGGER = LogManager.getLogger(ChangeUserDataCommand.class);
+public class ChangeEmailCommand implements Command {
+    private static final Logger LOGGER = LogManager.getLogger(ChangeEmailCommand.class);
+    private static final String NEW_EMAIL = "newemail";
     private static final String USERNAME = "username";
-    private static final String TYPE_CHANGER = "typechanger";
-    private ChangeUserDataLogic logic;
+    private ChangeEmailLogic logic;
 
-
-    public ChangeUserDataCommand(ChangeUserDataLogic logic) {
+    public ChangeEmailCommand(ChangeEmailLogic logic) {
         this.logic = logic;
     }
 
     @Override
     public Router execute(HttpServletRequest req) {
-        HttpSession session = req.getSession();
-        String usernameValue = (String)session.getAttribute(USERNAME);
-        String typeChangerValue = req.getParameter(TYPE_CHANGER);
-
+        String newEmailValue = req.getParameter(NEW_EMAIL);
+        String usernameValue = req.getParameter(USERNAME);
         Router router = new Router();
         router.setRoute(Router.RouteType.REDIRECT);
         try {
-            logic.doAction(usernameValue, typeChangerValue);
-            router.setPagePath(PageConstant.MESSAGE_PAGE + "?message=Check email");
+            logic.doAction(usernameValue, newEmailValue);
+            router.setPagePath(PageConstant.MESSAGE_PAGE + "?message=email changed successfully");
         } catch (LogicException e) {
             LOGGER.log(Level.ERROR, e);
             router.setPagePath(PageConstant.MESSAGE_PAGE + "?message=" + e);

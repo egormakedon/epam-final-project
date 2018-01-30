@@ -14,21 +14,21 @@ public class ChangeUserDataLinkCommand implements Command {
 
     @Override
     public Router execute(HttpServletRequest req) {
-        String dataTypeValue = (String)req.getAttribute(TYPE_CHANGER);
-        String usernameValue = (String)req.getAttribute(USERNAME);
+        String dataTypeValue = req.getParameter(TYPE_CHANGER);
+        String usernameValue = req.getParameter(USERNAME);
 
         Router router = new Router();
         router.setRoute(Router.RouteType.REDIRECT);
 
         switch (dataTypeValue) {
             case EMAIL:
-                router.setPagePath(PageConstant.CHANGE_EMAIL + "?username=" + usernameValue);
+                router.setPagePath(PageConstant.FORWARD_PAGE + "?username=" + usernameValue + "&pagePath=" + PageConstant.CHANGE_EMAIL);
                 break;
             case USERNAME:
-                router.setPagePath(PageConstant.CHANGE_USERNAME + "?username=" + usernameValue);
+                router.setPagePath(PageConstant.FORWARD_PAGE + "?username=" + usernameValue + "&pagePath=" + PageConstant.CHANGE_USERNAME);
                 break;
             case PASSWORD:
-                router.setPagePath(PageConstant.CHANGE_PASSWORD + "?username=" + usernameValue);
+                router.setPagePath(PageConstant.FORWARD_PAGE + "?username=" + usernameValue + "&pagePath=" + PageConstant.CHANGE_PASSWORD);
                 break;
             default:
                 router.setPagePath(PageConstant.MESSAGE_PAGE + "?message=ChangeUserDataLinkCommand exception");

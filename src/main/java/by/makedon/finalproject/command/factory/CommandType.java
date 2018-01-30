@@ -13,9 +13,11 @@ import by.makedon.finalproject.command.impl.LoginCommand;
 import by.makedon.finalproject.command.impl.LogoutCommand;
 import by.makedon.finalproject.command.impl.ProfileCommand;
 import by.makedon.finalproject.command.impl.RegistrationCommand;
+import by.makedon.finalproject.command.usercommand.ChangeEmailCommand;
 import by.makedon.finalproject.command.usercommand.ChangeUserDataLinkCommand;
 import by.makedon.finalproject.command.usercommand.ChangeUserDataPageCommand;
 import by.makedon.finalproject.command.usercommand.ChangeUserDataCommand;
+import by.makedon.finalproject.command.usercommand.ChangeUsernameCommand;
 import by.makedon.finalproject.command.usercommand.FillFormCommand;
 import by.makedon.finalproject.command.usercommand.RefreshFillFormCommand;
 import by.makedon.finalproject.command.usercommand.SendFillFormCommand;
@@ -29,7 +31,9 @@ import by.makedon.finalproject.logic.baselogic.ForgotPasswordLogic;
 import by.makedon.finalproject.logic.baselogic.LoginLogic;
 import by.makedon.finalproject.logic.baselogic.ProfileLogic;
 import by.makedon.finalproject.logic.baselogic.RegistrationLogic;
+import by.makedon.finalproject.logic.userlogic.ChangeEmailLogic;
 import by.makedon.finalproject.logic.userlogic.ChangeUserDataLogic;
+import by.makedon.finalproject.logic.userlogic.ChangeUsernameLogic;
 import by.makedon.finalproject.logic.userlogic.RefreshFillFormLogic;
 import by.makedon.finalproject.logic.userlogic.SendFillFormLogic;
 import by.makedon.finalproject.logic.userlogic.ShowFormLogic;
@@ -52,6 +56,8 @@ public enum CommandType {
 
     CHANGEUSERDATA(new ChangeUserDataCommand(new ChangeUserDataLogic())),
     CHANGEUSERDATALINK(new ChangeUserDataLinkCommand()),
+    CHANGEEMAIL(new ChangeEmailCommand(new ChangeEmailLogic())),
+    CHANGEUSERNAME(new ChangeUsernameCommand(new ChangeUsernameLogic())),
 
     DELETE_USER_PAGE(new DeleteUserPageCommand()),
     DELETE_USER(new DeleteUserCommand(new DeleteUserLogic())),
