@@ -9,68 +9,53 @@ public class EnrolleeValidator {
     private static final String PASSPORT_REGEXP = "^([A-Z0-9]{7,10})$";
     private static final String PHONE_REGEXP = "^(375(29|33|25)[0-9]{7})$";
 
-    public static boolean validate(String nameValue, String surnameValue, String secondNameValue, String passportIdValue,
-                                   String phoneValue, String russianLangValue, String belorussianLangValue, String physicsValue,
-                                   String mathValue, String chemistryValue, String biologyValue, String foreignLangValue,
-                                   String historyOfBelarusValue, String socialStudiesValue, String geographyValue,
-                                   String historyValue, String certificateValue) {
+    public static boolean validate(List<String> parameters) {
+        String nameValue = parameters.get(0);
+        String surnameValue = parameters.get(1);
+        String secondNameValue = parameters.get(2);
+        String passportIdValue = parameters.get(3);
+        String phoneValue = parameters.get(4);
+        String russianLangValue = parameters.get(5);
+        String belorussianLangValue = parameters.get(6);
+        String physicsValue = parameters.get(7);
+        String mathValue = parameters.get(8);
+        String chemistryValue = parameters.get(9);
+        String biologyValue = parameters.get(10);
+        String foreignLangValue = parameters.get(11);
+        String historyOfBelarusValue = parameters.get(12);
+        String socialStudiesValue = parameters.get(13);
+        String geographyValue = parameters.get(14);
+        String historyValue = parameters.get(15);
+        String certificateValue = parameters.get(16);
 
-//        String nameValue, String surnameValue, String secondNameValue, String passportIdValue,
-//                String phoneValue, String russianLangValue, String belorussianLangValue, String physicsValue,
-//                String mathValue, String chemistryValue, String biologyValue, String foreignLangValue,
-//                String historyOfBelarusValue, String socialStudiesValue, String geographyValue,
-//                String historyValue, String certificateValue
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        if (!validateName(nameValue, surnameValue, secondNameValue)) {
+        if (!validateName(secondNameValue)) {
             if (!secondNameValue.isEmpty()) {
                 return false;
             }
         }
 
-        if (!validatePassport(passportIdValue)) {
-            return false;
-        }
+        boolean resultNameValidation = validateName(nameValue);
+        boolean resultSurnameValidation = validateName(surnameValue);
+        boolean resultPassportValidation = validatePassport(passportIdValue);
+        boolean resultPhoneValidation = validatePhone(phoneValue);
+        boolean resultNumbersValidation = validateNumbers(russianLangValue, belorussianLangValue, physicsValue,
+                                                          mathValue, chemistryValue, biologyValue, foreignLangValue,
+                                                          historyOfBelarusValue, socialStudiesValue, geographyValue,
+                                                          historyValue, certificateValue);
 
-        if (!validatePhone(phoneValue)) {
-            return false;
-        }
-
-        return validateNumbers(russianLangValue, belorussianLangValue, physicsValue, mathValue, chemistryValue, biologyValue,
-                foreignLangValue, historyOfBelarusValue, socialStudiesValue, geographyValue, historyValue, certificateValue);
+        return resultNameValidation && resultSurnameValidation &&
+                resultPassportValidation && resultPhoneValidation && resultNumbersValidation;
     }
 
-    private static boolean validateName(String nameValue, String surnameValue, String secondNameValue) {
-        return Pattern.matches(NAME_REGEXP, nameValue) && Pattern.matches(NAME_REGEXP, surnameValue) &&
-                Pattern.matches(NAME_REGEXP, secondNameValue);
+    private static boolean validateName(String nameValue) {
+        return Pattern.matches(NAME_REGEXP, nameValue);
     }
-
     private static boolean validatePassport(String passportIdValue) {
         return Pattern.matches(PASSPORT_REGEXP, passportIdValue);
     }
-
     private static boolean validatePhone(String phoneValue) {
         return Pattern.matches(PHONE_REGEXP, phoneValue);
     }
-
     private static boolean validateNumbers(String russianLangValue, String belorussianLangValue, String physicsValue,
                                          String mathValue, String chemistryValue, String biologyValue, String foreignLangValue,
                                          String historyOfBelarusValue, String socialStudiesValue, String geographyValue,
@@ -120,7 +105,6 @@ public class EnrolleeValidator {
         }
         return true;
     }
-
     private static boolean parseStringToInt(String parameter) {
         try {
             int num = Integer.parseInt(parameter);
