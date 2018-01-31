@@ -55,6 +55,7 @@ public final class ConnectionPool {
         ProxyConnection proxyConnection = null;
         try {
             proxyConnection = connectionQueue.take();
+            LOGGER.log(Level.INFO, "Take connection from connection pool");
         } catch (InterruptedException e) {
             LOGGER.log(Level.WARN, e);
         }
@@ -79,12 +80,15 @@ public final class ConnectionPool {
             }
         }
 
+        LOGGER.log(Level.INFO, "Close connections");
+
         try {
             Enumeration<Driver> drivers = DriverManager.getDrivers();
             while (drivers.hasMoreElements()) {
                 Driver driver = drivers.nextElement();
                 DriverManager.deregisterDriver(driver);
             }
+            LOGGER.log(Level.INFO, "Deregister drivers");
         } catch (SQLException e) {
             LOGGER.log(Level.WARN, e);
         }
@@ -102,6 +106,7 @@ public final class ConnectionPool {
     void releaseConnection(ProxyConnection proxyConnection) {
         try {
             connectionQueue.put(proxyConnection);
+            LOGGER.log(Level.INFO, "Put connection to connection pool");
         } catch (InterruptedException e) {
             LOGGER.log(Level.WARN, e);
         }
@@ -110,6 +115,7 @@ public final class ConnectionPool {
     private static void registerJDBCDriver() {
         try {
             DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+            LOGGER.log(Level.INFO, "Register MySQL JDBC driver");
         } catch (SQLException e) {
             LOGGER.log(Level.FATAL, "Mysql jdbc driver hasn't loaded", e);
             throw new RuntimeException("Mysql jdbc driver hasn't loaded", e);
@@ -165,5 +171,7 @@ public final class ConnectionPool {
                 LOGGER.log(Level.WARN, e);
             }
         }
+
+        LOGGER.log(Level.INFO, "Init connection pool");
     }
 }
