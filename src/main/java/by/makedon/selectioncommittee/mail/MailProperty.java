@@ -12,10 +12,17 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class MailProperty {
     private static final Logger LOGGER = LogManager.getLogger(MailProperty.class);
+
     private static MailProperty instance;
     private static AtomicBoolean instanceCreated = new AtomicBoolean(false);
     private static ReentrantLock lock = new ReentrantLock();
     private static Properties properties = new Properties();
+
+    private static final String PROPERTY_MAIL = "property.mail";
+    private static final String MAIL_SMTP_HOST = "mail.smtp.host";
+    private static final String MAIL_SMTP_PORT = "mail.smtp.port";
+    private static final String MAIL_USER_NAME = "mail.user.name";
+    private static final String MAIL_USER_PASSWORD = "mail.user.password";
 
     private MailProperty() {}
 
@@ -41,15 +48,22 @@ public class MailProperty {
 
     private static void init() {
         ResourceBundle resourceBundle;
+
         try {
-            resourceBundle = ResourceBundle.getBundle("config.mail");
+            resourceBundle = ResourceBundle.getBundle(PROPERTY_MAIL);
         } catch (MissingResourceException e) {
             LOGGER.log(Level.FATAL, "Hasn't mail.properties");
             throw new RuntimeException("Hasn't mail.properties");
         }
-        properties.put("mail.smtp.host", resourceBundle.getString("mail.smtp.host"));
-        properties.put("mail.smtp.port", resourceBundle.getString("mail.smtp.port"));
-        properties.put("mail.user.name", resourceBundle.getString("mail.user.name"));
-        properties.put("mail.user.password", resourceBundle.getString("mail.user.password"));
+
+        final String HOST = resourceBundle.getString("mail.smtp.host");
+        final String PORT = resourceBundle.getString("mail.smtp.port");
+        final String USERNAME = resourceBundle.getString("mail.user.name");
+        final String PASSWORD = resourceBundle.getString("mail.user.password");
+
+        properties.put(MAIL_SMTP_HOST, HOST);
+        properties.put(MAIL_SMTP_PORT, PORT);
+        properties.put(MAIL_USER_NAME, USERNAME);
+        properties.put(MAIL_USER_PASSWORD, PASSWORD);
     }
 }
