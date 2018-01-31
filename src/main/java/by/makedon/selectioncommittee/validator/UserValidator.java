@@ -10,15 +10,12 @@ public class UserValidator {
     public static boolean validateEmail(String emailValue) {
         return Pattern.matches(EMAIL_REGEXP, emailValue);
     }
-
     public static boolean validateUsername(String usernameValue) {
         return Pattern.matches(USERNAME_REGEXP, usernameValue);
     }
-
     public static boolean validatePassword(String passwordValue) {
         return Pattern.matches(PASSWORD_REGEXP, passwordValue);
     }
-
     public static boolean arePasswordsEqual(String password1Value, String password2Value) {
         return password1Value.equals(password2Value);
     }

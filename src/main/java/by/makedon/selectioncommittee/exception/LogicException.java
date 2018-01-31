@@ -3,20 +3,16 @@ package by.makedon.selectioncommittee.exception;
 public class LogicException extends Exception {
     public LogicException() {
     }
-
-    public LogicException(String message) {
-        super(message);
+    public LogicException(String m) {
+        super(m);
     }
-
-    public LogicException(String message, Throwable cause) {
-        super(message, cause);
+    public LogicException(String m, Throwable th) {
+        super(m, th);
     }
-
-    public LogicException(Throwable cause) {
-        super(cause);
+    public LogicException(Throwable th) {
+        super(th);
     }
-
-    public LogicException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
+    public LogicException(String m, Throwable th, boolean enableSuppression, boolean writableStackTrace) {
+        super(m, th, enableSuppression, writableStackTrace);
     }
 }

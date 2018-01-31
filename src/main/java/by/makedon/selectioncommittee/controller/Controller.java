@@ -17,18 +17,18 @@ import java.util.Optional;
 
 public class Controller extends HttpServlet {
     private static final Logger LOGGER = LogManager.getLogger(Controller.class);
-    private static final String COMMAND_LITERAL = "command";
+    private static final String COMMAND = "command";
 
     @Override
     public void init() throws ServletException {
         ConnectionPool.getInstance();
-        LOGGER.log(Level.INFO, "Init " + Controller.class);
+        LOGGER.log(Level.INFO, "Init servlet");
     }
 
     @Override
     public void destroy() {
         ConnectionPool.getInstance().destroyConnections();
-        LOGGER.log(Level.INFO, "Destroy " + Controller.class);
+        LOGGER.log(Level.INFO, "Destroy servlet");
     }
 
     @Override
@@ -42,10 +42,9 @@ public class Controller extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Optional<Command> commandOptional = ActionFactory.defineCommand(req.getParameter(COMMAND_LITERAL));
+        Optional<Command> commandOptional = ActionFactory.defineCommand(req.getParameter(COMMAND));
         Command command = commandOptional.get();
         Router router = command.execute(req);
-
         if (router.getRoute() == Router.RouteType.FORWARD) {
             RequestDispatcher dispatcher = req.getRequestDispatcher(router.getPagePath());
             dispatcher.forward(req, resp);
