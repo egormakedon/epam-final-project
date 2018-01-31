@@ -15,6 +15,9 @@ import java.util.Properties;
 
 public class MailThread extends Thread {
     private static final Logger LOGGER = LogManager.getLogger(MailThread.class);
+
+    private static final String TYPE = "text/html";
+
     private MimeMessage message;
     private String sendToEmail;
     private String mailSubject;
@@ -39,12 +42,13 @@ public class MailThread extends Thread {
     }
 
     private void init() {
-        Session mailSession = (new SessionCreator(properties)).createSession();
+        SessionCreator sessionCreator = new SessionCreator(properties);
+        Session mailSession = sessionCreator.createSession();
         mailSession.setDebug(true);
         message = new MimeMessage(mailSession);
         try {
             message.setSubject(mailSubject);
-            message.setContent(mailText, "text/html");
+            message.setContent(mailText, TYPE);
             message.setRecipient(Message.RecipientType.TO, new InternetAddress(sendToEmail));
         } catch (AddressException e) {
             LOGGER.log(Level.ERROR,"incorrect email:" + sendToEmail, e);
