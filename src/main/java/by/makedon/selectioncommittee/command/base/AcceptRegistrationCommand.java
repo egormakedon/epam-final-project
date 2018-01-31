@@ -1,7 +1,7 @@
 package by.makedon.selectioncommittee.command.base;
 
 import by.makedon.selectioncommittee.command.Command;
-import by.makedon.selectioncommittee.constant.PageConstant;
+import by.makedon.selectioncommittee.constant.PageJSP;
 import by.makedon.selectioncommittee.controller.Router;
 import by.makedon.selectioncommittee.logic.baselogic.AcceptRegistrationLogic;
 
@@ -26,7 +26,7 @@ public class AcceptRegistrationCommand implements Command {
         String result = logic.doAction(emailValue, usernameValue, password);
         Router router = new Router();
         router.setRoute(Router.RouteType.REDIRECT);
-        router.setPagePath(PageConstant.MESSAGE_PAGE + "?message=" + result);
+        router.setPagePath(PageJSP.MESSAGE_PAGE + "?message=" + result);
         return router;
     }
 }

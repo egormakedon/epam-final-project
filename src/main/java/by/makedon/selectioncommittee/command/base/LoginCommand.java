@@ -1,8 +1,8 @@
 package by.makedon.selectioncommittee.command.base;
 
 import by.makedon.selectioncommittee.command.Command;
-import by.makedon.selectioncommittee.constant.LoginState;
-import by.makedon.selectioncommittee.constant.PageConstant;
+//import by.makedon.selectioncommittee.constant.LoginState;
+import by.makedon.selectioncommittee.constant.PageJSP;
 import by.makedon.selectioncommittee.controller.Router;
 import by.makedon.selectioncommittee.exception.DAOException;
 import by.makedon.selectioncommittee.logic.baselogic.LoginLogic;
@@ -32,7 +32,7 @@ public class LoginCommand implements Command {
         if (!logic.validate(usernameValue, passwordValue)) {
             req.setAttribute("wrongdata", "input error");
             router.setRoute(Router.RouteType.FORWARD);
-            router.setPagePath(PageConstant.MESSAGE_PAGE);
+            router.setPagePath(PageJSP.MESSAGE_PAGE);
             return router;
         }
 
@@ -40,23 +40,23 @@ public class LoginCommand implements Command {
             if (!logic.match(usernameValue, passwordValue)) {
                 req.setAttribute("wrongdata", "wrong username or password");
                 router.setRoute(Router.RouteType.FORWARD);
-                router.setPagePath(PageConstant.MESSAGE_PAGE);
+                router.setPagePath(PageJSP.MESSAGE_PAGE);
                 return router;
             } else {
                 String type = logic.takeUserType(usernameValue);
                 HttpSession session = req.getSession();
                 session.setAttribute("username", usernameValue);
                 session.setAttribute("type", type);
-                session.setAttribute("login", LoginState.TRUE);
+                //session.setAttribute("login", LoginState.TRUE);
                 router.setRoute(Router.RouteType.REDIRECT);
-                router.setPagePath(PageConstant.FORWARD_PAGE + "?pagePath=" + PageConstant.USER);
+                router.setPagePath(PageJSP.FORWARD_PAGE + "?pagePath=" + PageJSP.USER);
                 return router;
             }
         } catch (DAOException e) {
             LOGGER.log(Level.ERROR, e);
             req.setAttribute("error", e);
             router.setRoute(Router.RouteType.FORWARD);
-            router.setPagePath(PageConstant.MESSAGE_PAGE);
+            router.setPagePath(PageJSP.MESSAGE_PAGE);
             return router;
         }
     }

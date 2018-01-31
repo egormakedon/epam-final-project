@@ -1,7 +1,7 @@
 package by.makedon.selectioncommittee.command.user;
 
 import by.makedon.selectioncommittee.command.Command;
-import by.makedon.selectioncommittee.constant.PageConstant;
+import by.makedon.selectioncommittee.constant.PageJSP;
 import by.makedon.selectioncommittee.controller.Router;
 import by.makedon.selectioncommittee.exception.LogicException;
 import by.makedon.selectioncommittee.logic.userlogic.ChangeUserDataLogic;
@@ -33,10 +33,10 @@ public class ChangeUserDataCommand implements Command {
         router.setRoute(Router.RouteType.REDIRECT);
         try {
             logic.doAction(usernameValue, typeChangerValue);
-            router.setPagePath(PageConstant.MESSAGE_PAGE + "?message=Check email");
+            router.setPagePath(PageJSP.MESSAGE_PAGE + "?message=Check email");
         } catch (LogicException e) {
             LOGGER.log(Level.ERROR, e);
-            router.setPagePath(PageConstant.MESSAGE_PAGE + "?message=" + e);
+            router.setPagePath(PageJSP.MESSAGE_PAGE + "?message=" + e);
         }
         return router;
     }

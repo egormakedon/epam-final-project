@@ -1,8 +1,8 @@
 package by.makedon.selectioncommittee.command.user;
 
 import by.makedon.selectioncommittee.command.Command;
-import by.makedon.selectioncommittee.constant.LoginState;
-import by.makedon.selectioncommittee.constant.PageConstant;
+//import by.makedon.selectioncommittee.constant.LoginState;
+import by.makedon.selectioncommittee.constant.PageJSP;
 import by.makedon.selectioncommittee.controller.Router;
 import by.makedon.selectioncommittee.exception.LogicException;
 import by.makedon.selectioncommittee.logic.userlogic.ChangeUsernameLogic;
@@ -36,17 +36,17 @@ public class ChangeUsernameCommand implements Command {
             if (logic.doAction(usernameValue, newUsernameValue)) {
                 HttpSession session = req.getSession();
                 String loginState = (String) session.getAttribute(LOGIN);
-                if (loginState != null && loginState.equals(LoginState.TRUE)) {
-                    session.removeAttribute(USERNAME);
-                    session.setAttribute(USERNAME, newUsernameValue);
-                }
-                router.setPagePath(PageConstant.MESSAGE_PAGE + "?message=username changed successfully");
+//                if (loginState != null && loginState.equals(LoginState.TRUE)) {
+//                    session.removeAttribute(USERNAME);
+//                    session.setAttribute(USERNAME, newUsernameValue);
+//                }
+                router.setPagePath(PageJSP.MESSAGE_PAGE + "?message=username changed successfully");
             } else {
-                router.setPagePath(PageConstant.MESSAGE_PAGE + "?message=user was deleted from the system");
+                router.setPagePath(PageJSP.MESSAGE_PAGE + "?message=user was deleted from the system");
             }
         } catch (LogicException e) {
             LOGGER.log(Level.ERROR, e);
-            router.setPagePath(PageConstant.MESSAGE_PAGE + "?message=" + e);
+            router.setPagePath(PageJSP.MESSAGE_PAGE + "?message=" + e);
         }
         return router;
     }

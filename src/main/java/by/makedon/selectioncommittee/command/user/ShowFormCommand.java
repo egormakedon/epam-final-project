@@ -1,7 +1,7 @@
 package by.makedon.selectioncommittee.command.user;
 
 import by.makedon.selectioncommittee.command.Command;
-import by.makedon.selectioncommittee.constant.PageConstant;
+import by.makedon.selectioncommittee.constant.PageJSP;
 import by.makedon.selectioncommittee.controller.Router;
 import by.makedon.selectioncommittee.entity.Enrollee;
 import by.makedon.selectioncommittee.exception.DAOException;
@@ -36,7 +36,7 @@ public class ShowFormCommand implements Command {
             LOGGER.log(Level.ERROR, e);
             req.setAttribute("message", e.getMessage());
             router.setRoute(Router.RouteType.FORWARD);
-            router.setPagePath(PageConstant.MESSAGE_PAGE);
+            router.setPagePath(PageJSP.MESSAGE_PAGE);
             return router;
         }
     }

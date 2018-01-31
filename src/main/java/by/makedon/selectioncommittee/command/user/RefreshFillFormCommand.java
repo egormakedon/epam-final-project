@@ -1,7 +1,7 @@
 package by.makedon.selectioncommittee.command.user;
 
 import by.makedon.selectioncommittee.command.Command;
-import by.makedon.selectioncommittee.constant.PageConstant;
+import by.makedon.selectioncommittee.constant.PageJSP;
 import by.makedon.selectioncommittee.controller.Router;
 import by.makedon.selectioncommittee.exception.DAOException;
 import by.makedon.selectioncommittee.logic.userlogic.RefreshFillFormLogic;
@@ -33,7 +33,7 @@ public class RefreshFillFormCommand implements Command {
             LOGGER.log(Level.ERROR, e);
             router = new Router();
             router.setRoute(Router.RouteType.REDIRECT);
-            router.setPagePath(PageConstant.MESSAGE_PAGE + "?message=" + e.getMessage());
+            router.setPagePath(PageJSP.MESSAGE_PAGE + "?message=" + e.getMessage());
             return router;
         }
     }

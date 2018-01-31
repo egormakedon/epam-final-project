@@ -1,7 +1,7 @@
 package by.makedon.selectioncommittee.command.user;
 
 import by.makedon.selectioncommittee.command.Command;
-import by.makedon.selectioncommittee.constant.PageConstant;
+import by.makedon.selectioncommittee.constant.PageJSP;
 import by.makedon.selectioncommittee.controller.Router;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,16 +22,16 @@ public class ChangeUserDataLinkCommand implements Command {
 
         switch (dataTypeValue) {
             case EMAIL:
-                router.setPagePath(PageConstant.FORWARD_PAGE + "?username=" + usernameValue + "&pagePath=" + PageConstant.CHANGE_EMAIL);
+                router.setPagePath(PageJSP.FORWARD_PAGE + "?username=" + usernameValue + "&pagePath=" + PageJSP.CHANGE_EMAIL);
                 break;
             case USERNAME:
-                router.setPagePath(PageConstant.FORWARD_PAGE + "?username=" + usernameValue + "&pagePath=" + PageConstant.CHANGE_USERNAME);
+                router.setPagePath(PageJSP.FORWARD_PAGE + "?username=" + usernameValue + "&pagePath=" + PageJSP.CHANGE_USERNAME);
                 break;
             case PASSWORD:
-                router.setPagePath(PageConstant.FORWARD_PAGE + "?username=" + usernameValue + "&pagePath=" + PageConstant.CHANGE_PASSWORD);
+                router.setPagePath(PageJSP.FORWARD_PAGE + "?username=" + usernameValue + "&pagePath=" + PageJSP.CHANGE_PASSWORD);
                 break;
             default:
-                router.setPagePath(PageConstant.MESSAGE_PAGE + "?message=ChangeUserDataLinkCommand exception");
+                router.setPagePath(PageJSP.MESSAGE_PAGE + "?message=ChangeUserDataLinkCommand exception");
                 break;
         }
         return router;

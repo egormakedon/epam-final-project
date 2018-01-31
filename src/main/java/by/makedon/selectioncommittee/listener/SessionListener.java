@@ -1,18 +1,21 @@
 package by.makedon.selectioncommittee.listener;
 
-import by.makedon.selectioncommittee.constant.LoginState;
-
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 import java.util.Enumeration;
 
 public class SessionListener implements HttpSessionListener {
+    private static final String LANG = "lang";
+    private static final String LOGIN = "login";
+    private static final String EN = "en";
+    private static final String FALSE = "false";
+
     @Override
     public void sessionCreated(HttpSessionEvent se) {
         HttpSession session = se.getSession();
-        session.setAttribute("lang", "en");
-        session.setAttribute("login", LoginState.FALSE);
+        session.setAttribute(LANG, EN);
+        session.setAttribute(LOGIN, FALSE);
     }
 
     @Override

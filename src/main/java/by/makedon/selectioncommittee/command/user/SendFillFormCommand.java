@@ -1,7 +1,7 @@
 package by.makedon.selectioncommittee.command.user;
 
 import by.makedon.selectioncommittee.command.Command;
-import by.makedon.selectioncommittee.constant.PageConstant;
+import by.makedon.selectioncommittee.constant.PageJSP;
 import by.makedon.selectioncommittee.controller.Router;
 import by.makedon.selectioncommittee.entity.EnrolleeParameter;
 import by.makedon.selectioncommittee.exception.DAOException;
@@ -54,12 +54,12 @@ public class SendFillFormCommand implements Command {
             logic.doAction(universityValue, facultyValue, specialityValue, countryDomenValue, nameValue, surnameValue, secondNameValue, passportIdValue, phoneValue,
                     russianLangValue, belorussianLangValue, physicsValue, mathValue, chemistryValue, biologyValue,
                     foreignLangValue, historyOfBelarusValue, socialStudiesValue, geographyValue, historyValue, certificateValue, usernameValue);
-            router.setPagePath(PageConstant.MESSAGE_PAGE + "?message=" + "form sent successfully");
+            router.setPagePath(PageJSP.MESSAGE_PAGE + "?message=" + "form sent successfully");
             router.setRoute(Router.RouteType.REDIRECT);
             return router;
         } catch (DAOException e) {
             LOGGER.log(Level.ERROR, e);
-            router.setPagePath(PageConstant.MESSAGE_PAGE + "?message=" + e.getMessage());
+            router.setPagePath(PageJSP.MESSAGE_PAGE + "?message=" + e.getMessage());
             router.setRoute(Router.RouteType.REDIRECT);
             return router;
         }

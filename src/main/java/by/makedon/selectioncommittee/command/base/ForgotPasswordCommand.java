@@ -1,7 +1,7 @@
 package by.makedon.selectioncommittee.command.base;
 
 import by.makedon.selectioncommittee.command.Command;
-import by.makedon.selectioncommittee.constant.PageConstant;
+import by.makedon.selectioncommittee.constant.PageJSP;
 import by.makedon.selectioncommittee.controller.Router;
 import by.makedon.selectioncommittee.logic.baselogic.ForgotPasswordLogic;
 
@@ -20,7 +20,7 @@ public class ForgotPasswordCommand implements Command {
         String emailValue = req.getParameter(EMAIL);
         logic.doAction(emailValue);
         Router router = new Router();
-        router.setPagePath(PageConstant.MESSAGE_PAGE + "?message=Sending in progress...");
+        router.setPagePath(PageJSP.MESSAGE_PAGE + "?message=Sending in progress...");
         router.setRoute(Router.RouteType.REDIRECT);
         return router;
     }

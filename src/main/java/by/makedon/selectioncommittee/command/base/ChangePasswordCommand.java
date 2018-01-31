@@ -1,7 +1,7 @@
 package by.makedon.selectioncommittee.command.base;
 
 import by.makedon.selectioncommittee.command.Command;
-import by.makedon.selectioncommittee.constant.PageConstant;
+import by.makedon.selectioncommittee.constant.PageJSP;
 import by.makedon.selectioncommittee.controller.Router;
 import by.makedon.selectioncommittee.logic.baselogic.ChangePasswordLogic;
 
@@ -25,7 +25,7 @@ public class ChangePasswordCommand implements Command {
         String message = logic.doAction(usernameValue, password1Value, password2Value);
         Router router = new Router();
         router.setRoute(Router.RouteType.REDIRECT);
-        router.setPagePath(PageConstant.MESSAGE_PAGE + "?message=" + message);
+        router.setPagePath(PageJSP.MESSAGE_PAGE + "?message=" + message);
         return router;
     }
 }
