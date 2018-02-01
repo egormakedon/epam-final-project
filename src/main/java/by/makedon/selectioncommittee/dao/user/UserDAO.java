@@ -1,4 +1,4 @@
-package by.makedon.selectioncommittee.dao.userdao;
+package by.makedon.selectioncommittee.dao.user;
 
 import by.makedon.selectioncommittee.dao.DAO;
 import by.makedon.selectioncommittee.entity.Enrollee;

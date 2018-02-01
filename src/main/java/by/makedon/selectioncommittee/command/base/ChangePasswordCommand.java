@@ -3,7 +3,7 @@ package by.makedon.selectioncommittee.command.base;
 import by.makedon.selectioncommittee.command.Command;
 import by.makedon.selectioncommittee.constant.PageJSP;
 import by.makedon.selectioncommittee.controller.Router;
-import by.makedon.selectioncommittee.logic.baselogic.ChangePasswordLogic;
+import by.makedon.selectioncommittee.logic.base.ChangePasswordLogic;
 
 import javax.servlet.http.HttpServletRequest;
 

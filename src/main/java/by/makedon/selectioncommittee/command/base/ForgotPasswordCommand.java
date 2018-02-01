@@ -3,7 +3,7 @@ package by.makedon.selectioncommittee.command.base;
 import by.makedon.selectioncommittee.command.Command;
 import by.makedon.selectioncommittee.constant.PageJSP;
 import by.makedon.selectioncommittee.controller.Router;
-import by.makedon.selectioncommittee.logic.baselogic.ForgotPasswordLogic;
+import by.makedon.selectioncommittee.logic.base.ForgotPasswordLogic;
 
 import javax.servlet.http.HttpServletRequest;
 

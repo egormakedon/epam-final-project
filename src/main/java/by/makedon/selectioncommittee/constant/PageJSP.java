@@ -7,6 +7,7 @@ public class PageJSP {
     public static final String REGISTRATION = "/jsp/registration.jsp";
     public static final String WELCOME = "/jsp/welcome.jsp";
     public static final String FORWARD_PAGE = "/jsp/forwardPage.jsp";
+
     public static final String ADMIN = "/WEB-INF/security/admin/admin.jsp";
     public static final String USER = "/WEB-INF/security/user/user.jsp";
     public static final String CHANGE_PASSWORD = "/WEB-INF/security/changepassword.jsp";

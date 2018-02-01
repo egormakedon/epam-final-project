@@ -1,4 +1,4 @@
-package by.makedon.selectioncommittee.dao.userdao;
+package by.makedon.selectioncommittee.dao.user;
 
 import by.makedon.selectioncommittee.connectionpool.ConnectionPool;
 import by.makedon.selectioncommittee.connectionpool.ProxyConnection;

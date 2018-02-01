@@ -3,7 +3,7 @@ package by.makedon.selectioncommittee.command.base;
 import by.makedon.selectioncommittee.command.Command;
 import by.makedon.selectioncommittee.constant.PageJSP;
 import by.makedon.selectioncommittee.controller.Router;
-import by.makedon.selectioncommittee.logic.baselogic.RegistrationLogic;
+import by.makedon.selectioncommittee.logic.base.RegistrationLogic;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

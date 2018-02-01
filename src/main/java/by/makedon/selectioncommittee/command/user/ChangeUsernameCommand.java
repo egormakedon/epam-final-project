@@ -5,7 +5,7 @@ import by.makedon.selectioncommittee.command.Command;
 import by.makedon.selectioncommittee.constant.PageJSP;
 import by.makedon.selectioncommittee.controller.Router;
 import by.makedon.selectioncommittee.exception.LogicException;
-import by.makedon.selectioncommittee.logic.userlogic.ChangeUsernameLogic;
+import by.makedon.selectioncommittee.logic.user.ChangeUsernameLogic;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

@@ -2,7 +2,7 @@ package by.makedon.selectioncommittee.command.base;
 
 import by.makedon.selectioncommittee.command.Command;
 import by.makedon.selectioncommittee.controller.Router;
-import by.makedon.selectioncommittee.logic.baselogic.ProfileLogic;
+import by.makedon.selectioncommittee.logic.base.ProfileLogic;
 
 import javax.servlet.http.HttpServletRequest;
 

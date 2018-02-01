@@ -23,22 +23,22 @@ import by.makedon.selectioncommittee.command.user.FillFormCommand;
 import by.makedon.selectioncommittee.command.user.RefreshFillFormCommand;
 import by.makedon.selectioncommittee.command.user.SendFillFormCommand;
 import by.makedon.selectioncommittee.command.user.ShowFormCommand;
-import by.makedon.selectioncommittee.logic.adminlogic.ChangeNumberOfSeatsLogic;
-import by.makedon.selectioncommittee.logic.adminlogic.DeleteUserLogic;
-import by.makedon.selectioncommittee.logic.adminlogic.RefreshStatementLogic;
-import by.makedon.selectioncommittee.logic.adminlogic.SetStatementLogic;
-import by.makedon.selectioncommittee.logic.baselogic.AcceptRegistrationLogic;
-import by.makedon.selectioncommittee.logic.baselogic.ChangePasswordLogic;
-import by.makedon.selectioncommittee.logic.baselogic.ForgotPasswordLogic;
-import by.makedon.selectioncommittee.logic.baselogic.LoginLogic;
-import by.makedon.selectioncommittee.logic.baselogic.ProfileLogic;
-import by.makedon.selectioncommittee.logic.baselogic.RegistrationLogic;
-import by.makedon.selectioncommittee.logic.userlogic.ChangeEmailLogic;
-import by.makedon.selectioncommittee.logic.userlogic.ChangeUserDataLogic;
-import by.makedon.selectioncommittee.logic.userlogic.ChangeUsernameLogic;
-import by.makedon.selectioncommittee.logic.userlogic.RefreshFillFormLogic;
-import by.makedon.selectioncommittee.logic.userlogic.SendFillFormLogic;
-import by.makedon.selectioncommittee.logic.userlogic.ShowFormLogic;
+import by.makedon.selectioncommittee.logic.admin.ChangeNumberOfSeatsLogic;
+import by.makedon.selectioncommittee.logic.admin.DeleteUserLogic;
+import by.makedon.selectioncommittee.logic.admin.RefreshStatementLogic;
+import by.makedon.selectioncommittee.logic.admin.SetStatementLogic;
+import by.makedon.selectioncommittee.logic.base.AcceptRegistrationLogic;
+import by.makedon.selectioncommittee.logic.base.ChangePasswordLogic;
+import by.makedon.selectioncommittee.logic.base.ForgotPasswordLogic;
+import by.makedon.selectioncommittee.logic.base.LoginLogic;
+import by.makedon.selectioncommittee.logic.base.ProfileLogic;
+import by.makedon.selectioncommittee.logic.base.RegistrationLogic;
+import by.makedon.selectioncommittee.logic.user.ChangeEmailLogic;
+import by.makedon.selectioncommittee.logic.user.ChangeUserDataLogic;
+import by.makedon.selectioncommittee.logic.user.ChangeUsernameLogic;
+import by.makedon.selectioncommittee.logic.user.RefreshFillFormLogic;
+import by.makedon.selectioncommittee.logic.user.SendFillFormLogic;
+import by.makedon.selectioncommittee.logic.user.ShowFormLogic;
 
 public enum CommandType {
     REGISTRATION(new RegistrationCommand(new RegistrationLogic())),

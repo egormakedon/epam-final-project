@@ -1,7 +1,7 @@
-package by.makedon.selectioncommittee.logic.baselogic;
+package by.makedon.selectioncommittee.logic.base;
 
-import by.makedon.selectioncommittee.dao.basedao.ChangePasswordDAO;
-import by.makedon.selectioncommittee.dao.basedao.BaseDAO;
+import by.makedon.selectioncommittee.dao.base.ChangePasswordDAO;
+import by.makedon.selectioncommittee.dao.base.BaseDAO;
 import by.makedon.selectioncommittee.exception.DAOException;
 import by.makedon.selectioncommittee.mail.MailProperty;
 import by.makedon.selectioncommittee.mail.MailThread;

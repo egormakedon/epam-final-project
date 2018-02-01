@@ -10,6 +10,7 @@ import java.sql.Statement;
 
 public interface DAO {
     Logger LOGGER = LogManager.getLogger(DAO.class);
+
     default void close(Statement statement) {
         try {
             if (statement != null) {

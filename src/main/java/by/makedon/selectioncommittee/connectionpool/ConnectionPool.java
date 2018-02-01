@@ -97,8 +97,8 @@ public final class ConnectionPool {
     @Override
     public Object clone() throws CloneNotSupportedException {
         if (instanceCreated.get()) {
-            LOGGER.log(Level.ERROR, "Tried to clone clone connection pool");
-            throw new CloneNotSupportedException("Tried to clone clone connection pool");
+            LOGGER.log(Level.ERROR, "Tried to clone connection pool");
+            throw new CloneNotSupportedException("Tried to clone connection pool");
         }
         return super.clone();
     }

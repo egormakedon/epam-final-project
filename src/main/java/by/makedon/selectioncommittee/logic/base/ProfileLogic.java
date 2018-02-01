@@ -1,4 +1,4 @@
-package by.makedon.selectioncommittee.logic.baselogic;
+package by.makedon.selectioncommittee.logic.base;
 
 //import by.makedon.selectioncommittee.constant.LoginState;
 import by.makedon.selectioncommittee.constant.PageJSP;

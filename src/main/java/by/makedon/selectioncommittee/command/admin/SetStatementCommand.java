@@ -4,7 +4,7 @@ import by.makedon.selectioncommittee.command.Command;
 import by.makedon.selectioncommittee.constant.PageJSP;
 import by.makedon.selectioncommittee.controller.Router;
 import by.makedon.selectioncommittee.exception.DAOException;
-import by.makedon.selectioncommittee.logic.adminlogic.SetStatementLogic;
+import by.makedon.selectioncommittee.logic.admin.SetStatementLogic;
 
 import javax.servlet.http.HttpServletRequest;
 

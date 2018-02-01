@@ -1,8 +1,8 @@
 package by.makedon.selectioncommittee.filter;
 
 import by.makedon.selectioncommittee.constant.PageJSP;
-import by.makedon.selectioncommittee.dao.basedao.BaseDAO;
-import by.makedon.selectioncommittee.dao.basedao.LoginDAO;
+import by.makedon.selectioncommittee.dao.base.BaseDAO;
+import by.makedon.selectioncommittee.dao.base.LoginDAO;
 import by.makedon.selectioncommittee.exception.DAOException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;

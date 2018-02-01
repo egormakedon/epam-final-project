@@ -1,5 +1,7 @@
 package by.makedon.selectioncommittee.validator;
 
+import com.sun.istack.internal.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -11,7 +13,7 @@ public class EnrolleeValidator {
 
     private static final int LIST_SIZE = 17;
 
-    public static boolean validate(List<String> parameters) {
+    public static boolean validate(@NotNull List<String> parameters) {
         if (parameters.size() != LIST_SIZE) {
             return false;
         }

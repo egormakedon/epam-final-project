@@ -5,7 +5,7 @@ import by.makedon.selectioncommittee.constant.PageJSP;
 import by.makedon.selectioncommittee.controller.Router;
 import by.makedon.selectioncommittee.entity.Enrollee;
 import by.makedon.selectioncommittee.exception.DAOException;
-import by.makedon.selectioncommittee.logic.userlogic.ShowFormLogic;
+import by.makedon.selectioncommittee.logic.user.ShowFormLogic;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

@@ -1,7 +1,7 @@
-package by.makedon.selectioncommittee.logic.userlogic;
+package by.makedon.selectioncommittee.logic.user;
 
-import by.makedon.selectioncommittee.dao.userdao.UserDAO;
-import by.makedon.selectioncommittee.dao.userdao.UserDAOImpl;
+import by.makedon.selectioncommittee.dao.user.UserDAO;
+import by.makedon.selectioncommittee.dao.user.UserDAOImpl;
 import by.makedon.selectioncommittee.entity.Enrollee;
 import by.makedon.selectioncommittee.exception.DAOException;
 
