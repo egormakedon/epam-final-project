@@ -1,7 +1,7 @@
 package by.makedon.selectioncommittee.logic.base;
 
 import by.makedon.selectioncommittee.dao.base.BaseDAO;
-import by.makedon.selectioncommittee.dao.base.RegistrationDAO;
+import by.makedon.selectioncommittee.dao.base.BaseDAOImpl;
 import by.makedon.selectioncommittee.entity.User;
 import by.makedon.selectioncommittee.exception.DAOException;
 import by.makedon.selectioncommittee.exception.LogicException;
@@ -23,26 +23,15 @@ public class AcceptRegistrationLogic implements Logic {
         String usernameValue = parameters.get(1);
         String password = parameters.get(2);
 
-        if (!checkOnNull(emailValue, usernameValue, password)) {
-            throw new LogicException("parameter is null");
-        }
-
-        BaseDAO dao = RegistrationDAO.getInstance();
+        BaseDAO dao = BaseDAOImpl.getInstance();
         try {
             User user = new User();
             user.setEmailValue(emailValue);
             user.setUsernameValue(usernameValue);
             user.setPasswordValue(password);
             dao.addUser(user);
-            return usernameValue + " register successfully";
         } catch (DAOException e) {
-            LOGGER.log(Level.ERROR, e);
-            return e.getMessage();
+            throw new LogicException(e);
         }
-
-    }
-
-    private boolean checkOnNull(String arg0, String arg1, String arg2) {
-        return arg0 != null && arg1 != null && arg2 != null;
     }
 }

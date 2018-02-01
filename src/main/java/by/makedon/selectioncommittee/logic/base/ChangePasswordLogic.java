@@ -1,34 +1,37 @@
 package by.makedon.selectioncommittee.logic.base;
 
-import by.makedon.selectioncommittee.dao.base.ChangePasswordDAO;
 import by.makedon.selectioncommittee.dao.base.BaseDAO;
-import by.makedon.selectioncommittee.entity.User;
+import by.makedon.selectioncommittee.dao.base.BaseDAOImpl;
 import by.makedon.selectioncommittee.exception.DAOException;
+import by.makedon.selectioncommittee.exception.LogicException;
+import by.makedon.selectioncommittee.logic.Logic;
 import by.makedon.selectioncommittee.validator.UserValidator;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.sun.istack.internal.NotNull;
 
-public class ChangePasswordLogic {
-    private static final Logger LOGGER = LogManager.getLogger(ChangePasswordLogic.class);
-    private static final String ERROR_MESSAGE = "input error";
+import java.util.List;
 
-    public String doAction(String usernameValue, String password1Value, String password2Value) {
-        if (!(UserValidator.validatePassword(password1Value)&& UserValidator.arePasswordsEqual(password1Value, password2Value))) {
-            return ERROR_MESSAGE;
+public class ChangePasswordLogic implements Logic {
+    private static final int LIST_SIZE = 3;
+
+    @Override
+    public void doAction(@NotNull List<String> parameters) throws LogicException {
+        if (parameters.size() != LIST_SIZE) {
+            throw new LogicException("wrong number of parameters");
         }
-        BaseDAO dao = ChangePasswordDAO.getInstance();
-        String result;
+
+        String usernameValue = parameters.get(0);
+        String password1Value = parameters.get(1);
+        String password2Value = parameters.get(2);
+
+        if (!(UserValidator.validatePassword(password1Value) && UserValidator.arePasswordsEqual(password1Value, password2Value))) {
+            throw new LogicException("invalid input parameters");
+        }
+
+        BaseDAO dao = BaseDAOImpl.getInstance();
         try {
-            User user = new User();
-            user.setUsernameValue(usernameValue);
-            user.setPasswordValue(password1Value);
-            dao.changePassword(user);
-            result = "password changed successfully";
+            dao.changePasswordByUsername(usernameValue, password1Value);
         } catch (DAOException e) {
-            LOGGER.log(Level.ERROR, e);
-            result = e.getMessage();
+            throw new LogicException(e);
         }
-        return result;
     }
 }
