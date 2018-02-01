@@ -21,14 +21,14 @@ public class AcceptRegistrationLogic implements Logic {
 
         String emailValue = parameters.get(0);
         String usernameValue = parameters.get(1);
-        String password = parameters.get(2);
+        String passwordValue = parameters.get(2);
 
         BaseDAO dao = BaseDAOImpl.getInstance();
         try {
             User user = new User();
             user.setEmailValue(emailValue);
             user.setUsernameValue(usernameValue);
-            user.setPasswordValue(password);
+            user.setPasswordValue(passwordValue);
             dao.addUser(user);
         } catch (DAOException e) {
             throw new LogicException(e);

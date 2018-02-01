@@ -1,30 +1,44 @@
 package by.makedon.selectioncommittee.logic.base;
 
 import by.makedon.selectioncommittee.dao.base.BaseDAO;
+import by.makedon.selectioncommittee.dao.base.BaseDAOImpl;
 import by.makedon.selectioncommittee.exception.DAOException;
+import by.makedon.selectioncommittee.exception.LogicException;
+import by.makedon.selectioncommittee.logic.Logic;
 import by.makedon.selectioncommittee.mail.MailProperty;
 import by.makedon.selectioncommittee.mail.MailThread;
 import by.makedon.selectioncommittee.validator.UserValidator;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.sun.istack.internal.NotNull;
 
-public class RegistrationLogic {
-    private static final Logger LOGGER = LogManager.getLogger(RegistrationLogic.class);
-    private static final String INPUT_ERROR_MESSAGE = "input error";
-    private static final String ACCEPT_REGISTRATION_MESSAGE = "confirm of registration sent to the email";
-    private static final String MAIL_SUBJECT = "confirm registration";
+import java.util.List;
 
-    public String doAction(String emailValue, String usernameValue, String password1Value, String password2Value) {
+public class RegistrationLogic implements Logic {
+    private static final int LIST_SIZE = 4;
+
+    private static final String CONFIRM_REGISTRATION = "confirm registration";
+
+    @Override
+    public void doAction(@NotNull List<String> parameters) throws LogicException {
+        if (parameters.size() != LIST_SIZE) {
+            throw new LogicException("wrong number of parameters");
+        }
+
+        String emailValue = parameters.get(0);
+        String usernameValue = parameters.get(1);
+        String password1Value = parameters.get(2);
+        String password2Value = parameters.get(3);
+
         if (!(UserValidator.validateEmail(emailValue) && UserValidator.validateUsername(usernameValue) &&
                 UserValidator.validatePassword(password1Value) && UserValidator.arePasswordsEqual(password1Value, password2Value))) {
-            return INPUT_ERROR_MESSAGE;
+            throw new LogicException("invalid input parameters");
         }
-        BaseDAO dao = RegistrationDAO.getInstance();
+
+        BaseDAO dao = BaseDAOImpl.getInstance();
         try {
-            if (dao.match(emailValue, usernameValue)) {
-                return emailValue + " " + usernameValue + " already exist";
+            if (dao.matchEmailUsername(emailValue, usernameValue)) {
+                throw new LogicException("this user already exist");
             }
+
             String mailText = "<form action=\"http://localhost:8080/Controller\" method=\"post\">\n" +
                     "\t\t\t\t\t<input type=\"hidden\" name=\"email\" value=\""+emailValue+"\">\n" +
                     "\t\t\t\t\t<input type=\"hidden\" name=\"username\" value=\""+usernameValue+"\">\n" +
@@ -38,12 +52,11 @@ public class RegistrationLogic {
                     "     border-bottom:1px solid #444; \n" +
                     "     cursor: pointer;\" value=\"accept registration\">\n" +
                     "\t\t\t\t</form>";
-            MailThread mail = new MailThread(emailValue, MAIL_SUBJECT, mailText, MailProperty.getInstance().getProperties());
+
+            MailThread mail = new MailThread(emailValue, CONFIRM_REGISTRATION, mailText, MailProperty.getInstance().getProperties());
             mail.start();
-            return ACCEPT_REGISTRATION_MESSAGE;
         } catch (DAOException e) {
-            LOGGER.log(Level.ERROR, e);
-            return e.getMessage();
+            throw new LogicException(e);
         }
     }
 }
