@@ -2,7 +2,7 @@ package by.makedon.selectioncommittee.filter;
 
 import by.makedon.selectioncommittee.constant.PageJSP;
 import by.makedon.selectioncommittee.dao.base.BaseDAO;
-import by.makedon.selectioncommittee.dao.base.LoginDAO;
+import by.makedon.selectioncommittee.dao.base.BaseDAOImpl;
 import by.makedon.selectioncommittee.exception.DAOException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -21,7 +21,10 @@ import java.io.IOException;
 
 public class DeleteUserFromSystemFilter implements Filter {
     private static final Logger LOGGER = LogManager.getLogger(DeleteUserFromSystemFilter.class);
+
     private static final String USERNAME = "username";
+    private static final String MESSAGE = "message";
+    private static final String SESSION_FAILED = "session failed";
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -37,15 +40,15 @@ public class DeleteUserFromSystemFilter implements Filter {
         String usernameValue = (String)session.getAttribute(USERNAME);
         if (usernameValue == null) {
             session.invalidate();
-            req.setAttribute("message", "session failed");
+            req.setAttribute(MESSAGE, SESSION_FAILED);
             req.getRequestDispatcher(PageJSP.MESSAGE_PAGE).forward(req, res);
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
 
-        BaseDAO dao = LoginDAO.getInstance();
+        BaseDAO dao = BaseDAOImpl.getInstance();
         try {
-            boolean result = dao.isUsernameExist(usernameValue);
+            boolean result = dao.matchUsername(usernameValue);
             if (!result) {
                 session.invalidate();
                 res.sendRedirect(PageJSP.MESSAGE_PAGE + "?message=" + usernameValue + " was deleted from the system");
