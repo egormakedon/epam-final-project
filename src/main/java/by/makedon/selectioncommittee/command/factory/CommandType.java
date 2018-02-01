@@ -9,7 +9,7 @@ import by.makedon.selectioncommittee.command.base.AcceptRegistrationCommand;
 import by.makedon.selectioncommittee.command.base.ChangePasswordCommand;
 import by.makedon.selectioncommittee.command.Command;
 import by.makedon.selectioncommittee.command.base.ForgotPasswordCommand;
-import by.makedon.selectioncommittee.command.base.ForwardChangePasswordCommand;
+import by.makedon.selectioncommittee.command.base.ForwardToChangePasswordCommand;
 import by.makedon.selectioncommittee.command.base.LoginCommand;
 import by.makedon.selectioncommittee.command.base.LogoutCommand;
 import by.makedon.selectioncommittee.command.base.ProfileCommand;
@@ -46,7 +46,7 @@ public enum CommandType {
     PROFILE(new ProfileCommand(new ProfileLogic())),
     LOGOUT(new LogoutCommand()),
     FORGOTPASSWORD(new ForgotPasswordCommand(new ForgotPasswordLogic())),
-    FORWARDCHANGEPASSWORD(new ForwardChangePasswordCommand()),
+    FORWARDCHANGEPASSWORD(new ForwardToChangePasswordCommand()),
     CHANGEPASSWORD(new ChangePasswordCommand(new ChangePasswordLogic())),
     ACCEPTREGISTRATION(new AcceptRegistrationCommand(new AcceptRegistrationLogic())),
     FILLFORMPAGE(new FillFormCommand()),

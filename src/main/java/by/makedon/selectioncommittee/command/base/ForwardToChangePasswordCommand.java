@@ -6,7 +6,8 @@ import by.makedon.selectioncommittee.controller.Router;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class ForwardChangePasswordCommand implements Command {
+public class ForwardToChangePasswordCommand implements Command {
+
     @Override
     public Router execute(HttpServletRequest req) {
         Router router = new Router();

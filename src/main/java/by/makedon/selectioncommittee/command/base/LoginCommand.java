@@ -1,63 +1,59 @@
 package by.makedon.selectioncommittee.command.base;
 
 import by.makedon.selectioncommittee.command.Command;
-//import by.makedon.selectioncommittee.constant.LoginState;
 import by.makedon.selectioncommittee.constant.PageJSP;
 import by.makedon.selectioncommittee.controller.Router;
-import by.makedon.selectioncommittee.exception.DAOException;
+import by.makedon.selectioncommittee.exception.LogicException;
+import by.makedon.selectioncommittee.logic.Logic;
 import by.makedon.selectioncommittee.logic.base.LoginLogic;
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LoginCommand implements Command {
-    private static final Logger LOGGER = LogManager.getLogger(LoginCommand.class);
     private static final String USERNAME = "username";
     private static final String PASSWORD = "password";
-    private LoginLogic logic;
 
-    public LoginCommand(LoginLogic logic) {
+    private static final String TYPE = "type";
+    private static final String LOGIN = "login";
+    private static final String TRUE = "true";
+
+    private Logic logic;
+
+    public LoginCommand(Logic logic) {
         this.logic=logic;
     }
 
     @Override
     public Router execute(HttpServletRequest req) {
-        Router router = new Router();
         String usernameValue = req.getParameter(USERNAME);
         String passwordValue = req.getParameter(PASSWORD);
 
-        if (!logic.validate(usernameValue, passwordValue)) {
-            req.setAttribute("wrongdata", "input error");
-            router.setRoute(Router.RouteType.FORWARD);
-            router.setPagePath(PageJSP.MESSAGE_PAGE);
-            return router;
-        }
+        List<String> parameters = new ArrayList<String>();
+        parameters.add(usernameValue);
+        parameters.add(passwordValue);
 
+        Router router = new Router();
+        router.setRoute(Router.RouteType.REDIRECT);
         try {
-            if (!logic.match(usernameValue, passwordValue)) {
-                req.setAttribute("wrongdata", "wrong username or password");
-                router.setRoute(Router.RouteType.FORWARD);
-                router.setPagePath(PageJSP.MESSAGE_PAGE);
-                return router;
-            } else {
-                String type = logic.takeUserType(usernameValue);
-                HttpSession session = req.getSession();
-                session.setAttribute("username", usernameValue);
-                session.setAttribute("type", type);
-                //session.setAttribute("login", LoginState.TRUE);
-                router.setRoute(Router.RouteType.REDIRECT);
-                router.setPagePath(PageJSP.FORWARD_PAGE + "?pagePath=" + PageJSP.USER);
-                return router;
-            }
-        } catch (DAOException e) {
+            logic.doAction(parameters);
+
+            LoginLogic loginLogic = (LoginLogic) logic;
+            String type = loginLogic.getType();
+
+            HttpSession session = req.getSession();
+            session.setAttribute(USERNAME, usernameValue);
+            session.setAttribute(TYPE, type);
+            session.setAttribute(LOGIN, TRUE);
+
+            router.setPagePath(PageJSP.FORWARD_PAGE + "?pagePath=" + PageJSP.USER);
+        } catch (LogicException e) {
             LOGGER.log(Level.ERROR, e);
-            req.setAttribute("error", e);
-            router.setRoute(Router.RouteType.FORWARD);
-            router.setPagePath(PageJSP.MESSAGE_PAGE);
-            return router;
+            router.setPagePath(PageJSP.MESSAGE_PAGE + "?message=" + e.getMessage());
         }
+        return router;
     }
 }

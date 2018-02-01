@@ -1,7 +1,6 @@
 package by.makedon.selectioncommittee.logic.base;
 
 import by.makedon.selectioncommittee.dao.base.BaseDAO;
-import by.makedon.selectioncommittee.dao.base.RegistrationDAO;
 import by.makedon.selectioncommittee.exception.DAOException;
 import by.makedon.selectioncommittee.mail.MailProperty;
 import by.makedon.selectioncommittee.mail.MailThread;
