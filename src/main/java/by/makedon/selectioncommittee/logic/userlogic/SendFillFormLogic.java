@@ -18,11 +18,11 @@ public class SendFillFormLogic {
                          String historyOfBelarusValue, String socialStudiesValue, String geographyValue,
                          String historyValue, String certificateValue, String usernameValue) throws DAOException {
 
-        if (!EnrolleeValidator.validate(nameValue, surnameValue, secondNameValue, passportIdValue, phoneValue,
-                russianLangValue, belorussianLangValue, physicsValue, mathValue, chemistryValue, biologyValue,
-                foreignLangValue, historyOfBelarusValue, socialStudiesValue, geographyValue, historyValue, certificateValue)) {
-            throw new DAOException("input error");
-        }
+//        if (!EnrolleeValidator.validate(nameValue, surnameValue, secondNameValue, passportIdValue, phoneValue,
+//                russianLangValue, belorussianLangValue, physicsValue, mathValue, chemistryValue, biologyValue,
+//                foreignLangValue, historyOfBelarusValue, socialStudiesValue, geographyValue, historyValue, certificateValue)) {
+//            throw new DAOException("input error");
+//        }
 
         Map<EnrolleeParameter, String> parameters = new HashMap<EnrolleeParameter, String>();
         parameters.put(EnrolleeParameter.UNIVERSITY, universityValue);

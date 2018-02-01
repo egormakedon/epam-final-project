@@ -5,11 +5,17 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public class EnrolleeValidator {
-    private static final String NAME_REGEXP = "^(([а-яА-Я]{1,50})|([a-zA-Z]{1,50}))$";
+    private static final String NAME_REGEXP = "^(([А-Я][а-я]{2,50})|([A-Z][a-z]{2,50}))$";
     private static final String PASSPORT_REGEXP = "^([A-Z0-9]{7,10})$";
     private static final String PHONE_REGEXP = "^(375(29|33|25)[0-9]{7})$";
 
+    private static final int LIST_SIZE = 17;
+
     public static boolean validate(List<String> parameters) {
+        if (parameters.size() != LIST_SIZE) {
+            return false;
+        }
+
         String nameValue = parameters.get(0);
         String surnameValue = parameters.get(1);
         String secondNameValue = parameters.get(2);
@@ -29,7 +35,7 @@ public class EnrolleeValidator {
         String certificateValue = parameters.get(16);
 
         if (!validateName(secondNameValue)) {
-            if (!secondNameValue.isEmpty()) {
+            if (secondNameValue == null || !secondNameValue.isEmpty()) {
                 return false;
             }
         }
@@ -48,13 +54,13 @@ public class EnrolleeValidator {
     }
 
     private static boolean validateName(String nameValue) {
-        return Pattern.matches(NAME_REGEXP, nameValue);
+        return nameValue != null && Pattern.matches(NAME_REGEXP, nameValue);
     }
     private static boolean validatePassport(String passportIdValue) {
-        return Pattern.matches(PASSPORT_REGEXP, passportIdValue);
+        return passportIdValue != null && Pattern.matches(PASSPORT_REGEXP, passportIdValue);
     }
     private static boolean validatePhone(String phoneValue) {
-        return Pattern.matches(PHONE_REGEXP, phoneValue);
+        return phoneValue != null && Pattern.matches(PHONE_REGEXP, phoneValue);
     }
     private static boolean validateNumbers(String russianLangValue, String belorussianLangValue, String physicsValue,
                                          String mathValue, String chemistryValue, String biologyValue, String foreignLangValue,
