@@ -19,7 +19,7 @@ import by.makedon.selectioncommittee.command.user.ChangeUserDataLinkCommand;
 import by.makedon.selectioncommittee.command.user.ChangeUserDataPageCommand;
 import by.makedon.selectioncommittee.command.user.ChangeUserDataCommand;
 import by.makedon.selectioncommittee.command.user.ChangeUsernameCommand;
-import by.makedon.selectioncommittee.command.user.FillFormCommand;
+import by.makedon.selectioncommittee.command.user.ForwardSendFormCommand;
 import by.makedon.selectioncommittee.command.user.RefreshFillFormCommand;
 import by.makedon.selectioncommittee.command.user.SendFillFormCommand;
 import by.makedon.selectioncommittee.command.user.ShowFormCommand;
@@ -49,7 +49,8 @@ public enum CommandType {
     FORWARDCHANGEPASSWORD(new ForwardToChangePasswordCommand()),
     CHANGEPASSWORD(new ChangePasswordCommand(new ChangePasswordLogic())),
     ACCEPTREGISTRATION(new AcceptRegistrationCommand(new AcceptRegistrationLogic())),
-    FILLFORMPAGE(new FillFormCommand()),
+
+    FORWARDSENDFORM(new ForwardSendFormCommand()),
     REFRESHFILLFORM(new RefreshFillFormCommand(new RefreshFillFormLogic())),
     SENDFILLFORM(new SendFillFormCommand(new SendFillFormLogic())),
     SHOWFORMPAGE(new ShowFormCommand(new ShowFormLogic())),

@@ -1,6 +1,6 @@
 package by.makedon.selectioncommittee.filter;
 
-import by.makedon.selectioncommittee.constant.PageJSP;
+import by.makedon.selectioncommittee.constant.Page;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -35,9 +35,9 @@ public class SessionFilter implements Filter {
         HttpSession session = req.getSession(false);
         if (session == null) {
             req.getSession(true);
-            res.sendRedirect(PageJSP.WELCOME);
+            res.sendRedirect(Page.WELCOME);
         } else if (session.isNew()) {
-            res.sendRedirect(PageJSP.WELCOME);
+            res.sendRedirect(Page.WELCOME);
         }
         filterChain.doFilter(req, res);
     }

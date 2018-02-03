@@ -5,6 +5,7 @@ import by.makedon.selectioncommittee.connectionpool.ProxyConnection;
 import by.makedon.selectioncommittee.entity.Enrollee;
 import by.makedon.selectioncommittee.entity.EnrolleeParameter;
 import by.makedon.selectioncommittee.exception.DAOException;
+import org.apache.logging.log4j.Level;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,10 +13,19 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
-public class UserDAOImpl implements UserDAO {
-    private static final UserDAO INSTANCE = new UserDAOImpl();
-    private UserDAOImpl(){}
+public final class UserDAOImpl implements UserDAO {
+    private static final UserDAO INSTANCE;
+    private static AtomicBoolean instanceCreated = new AtomicBoolean(false);
+    static {
+        INSTANCE = new UserDAOImpl();
+        instanceCreated.set(true);
+    }
+    private UserDAOImpl(){
+        LOGGER.log(Level.FATAL, "Tried to create singleton object with reflection api");
+        throw new RuntimeException("Tried to create singleton object with reflection api");
+    }
     public static UserDAO getInstance() {
         return INSTANCE;
     }
@@ -64,6 +74,7 @@ public class UserDAOImpl implements UserDAO {
             close(connection);
         }
     }
+
     @Override
     public void refreshFillForm(String usernameValue) throws DAOException {
         if (isFormFilled(usernameValue)) {
@@ -76,6 +87,7 @@ public class UserDAOImpl implements UserDAO {
             throw new DAOException("form is empty yet");
         }
     }
+
     @Override
     public void addForm(String usernameValue, Enrollee enrollee) throws DAOException {
         if (isFormFilled(usernameValue)) {
@@ -87,6 +99,7 @@ public class UserDAOImpl implements UserDAO {
             throw new DAOException("you can't add form");
         }
     }
+
     @Override
     public Enrollee takeEnrollee(String usernameValue) throws DAOException {
         ProxyConnection connection = null;
@@ -156,6 +169,7 @@ public class UserDAOImpl implements UserDAO {
             close(connection);
         }
     }
+
     @Override
     public String takeEmail(String usernameValue) throws DAOException {
         ProxyConnection connection = null;
@@ -177,6 +191,7 @@ public class UserDAOImpl implements UserDAO {
             close(connection);
         }
     }
+
     @Override
     public void changeEmail(String usernameValue, String newEmailValue) throws DAOException {
         ProxyConnection connection = null;
@@ -194,6 +209,7 @@ public class UserDAOImpl implements UserDAO {
             close(connection);
         }
     }
+
     @Override
     public boolean changeUsername(String usernameValue, String newUsernameValue) throws DAOException {
         ProxyConnection connection = null;
@@ -211,6 +227,12 @@ public class UserDAOImpl implements UserDAO {
             close(statement);
             close(connection);
         }
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        LOGGER.log(Level.ERROR, "Tried to clone singleton object");
+        throw new CloneNotSupportedException("Tried to clone singleton object");
     }
 
     private boolean couldRefreshForm(String usernameValue) throws DAOException {
@@ -231,6 +253,7 @@ public class UserDAOImpl implements UserDAO {
             close(connection);
         }
     }
+
     private void refreshForm(String usernameValue) throws DAOException {
         ProxyConnection connection = null;
         PreparedStatement statement = null;
@@ -246,6 +269,7 @@ public class UserDAOImpl implements UserDAO {
             close(connection);
         }
     }
+
     private boolean couldAddForm() throws DAOException {
         ProxyConnection connection = null;
         Statement statement = null;
@@ -266,10 +290,12 @@ public class UserDAOImpl implements UserDAO {
             close(connection);
         }
     }
+
     private void addFormAction(String usernameValue, Enrollee enrollee) throws DAOException {
         String enrolleeID = addEnrollee(enrollee);
         addEnrolleIdToUser(usernameValue, enrolleeID);
     }
+
     private String takeSpecialityID(Enrollee enrollee) throws DAOException {
         ProxyConnection connection = null;
         PreparedStatement statement = null;
@@ -290,6 +316,7 @@ public class UserDAOImpl implements UserDAO {
             close(connection);
         }
     }
+
     private String addEnrollee(Enrollee enrollee) throws DAOException {
         String specialityID = takeSpecialityID(enrollee);
 
@@ -369,6 +396,7 @@ public class UserDAOImpl implements UserDAO {
           close(connection);
         }
     }
+
     private void addEnrolleIdToUser(String usernameValue, String enrolleeID) throws DAOException {
         ProxyConnection connection = null;
         PreparedStatement statement = null;

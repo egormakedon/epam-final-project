@@ -1,7 +1,7 @@
 package by.makedon.selectioncommittee.command.base;
 
 import by.makedon.selectioncommittee.command.Command;
-import by.makedon.selectioncommittee.constant.PageJSP;
+import by.makedon.selectioncommittee.constant.Page;
 import by.makedon.selectioncommittee.controller.Router;
 import by.makedon.selectioncommittee.exception.LogicException;
 import by.makedon.selectioncommittee.logic.Logic;
@@ -31,10 +31,10 @@ public class ForgotPasswordCommand implements Command {
         router.setRoute(Router.RouteType.REDIRECT);
         try {
             logic.doAction(parameters);
-            router.setPagePath(PageJSP.MESSAGE_PAGE + "?message=Check email, sending in process");
+            router.setPagePath(Page.MESSAGE + "?message=Check email, sending in process");
         } catch (LogicException e) {
             LOGGER.log(Level.ERROR, e);
-            router.setPagePath(PageJSP.MESSAGE_PAGE + "?message=" + e.getMessage());
+            router.setPagePath(Page.MESSAGE + "?message=" + e.getMessage());
         }
         return router;
     }

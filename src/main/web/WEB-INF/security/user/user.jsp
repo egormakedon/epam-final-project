@@ -36,8 +36,8 @@
     <div id="banner-wrapper">
         <div id="banner" class="container">
             <form action="/Controller" method="post">
-                <input type="hidden" name="command" value="fillformpage">
-                <input class="button" value="fill form" type="submit">
+                <input type="hidden" name="command" value="forwardsendform">
+                <input class="button" value="send form" type="submit">
             </form>
             <form action="/Controller" method="post">
                 <input type="hidden" name="command" value="showformpage">

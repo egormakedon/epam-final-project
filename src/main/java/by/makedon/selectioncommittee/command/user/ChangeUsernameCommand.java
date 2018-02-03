@@ -2,7 +2,7 @@ package by.makedon.selectioncommittee.command.user;
 
 import by.makedon.selectioncommittee.command.Command;
 //import by.makedon.selectioncommittee.constant.LoginState;
-import by.makedon.selectioncommittee.constant.PageJSP;
+import by.makedon.selectioncommittee.constant.Page;
 import by.makedon.selectioncommittee.controller.Router;
 import by.makedon.selectioncommittee.exception.LogicException;
 import by.makedon.selectioncommittee.logic.user.ChangeUsernameLogic;
@@ -40,13 +40,13 @@ public class ChangeUsernameCommand implements Command {
 //                    session.removeAttribute(USERNAME);
 //                    session.setAttribute(USERNAME, newUsernameValue);
 //                }
-                router.setPagePath(PageJSP.MESSAGE_PAGE + "?message=username changed successfully");
+                router.setPagePath(Page.MESSAGE + "?message=username changed successfully");
             } else {
-                router.setPagePath(PageJSP.MESSAGE_PAGE + "?message=user was deleted from the system");
+                router.setPagePath(Page.MESSAGE + "?message=user was deleted from the system");
             }
         } catch (LogicException e) {
             LOGGER.log(Level.ERROR, e);
-            router.setPagePath(PageJSP.MESSAGE_PAGE + "?message=" + e);
+            router.setPagePath(Page.MESSAGE + "?message=" + e);
         }
         return router;
     }

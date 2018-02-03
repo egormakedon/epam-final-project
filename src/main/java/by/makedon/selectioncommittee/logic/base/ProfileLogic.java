@@ -1,6 +1,6 @@
 package by.makedon.selectioncommittee.logic.base;
 
-import by.makedon.selectioncommittee.constant.PageJSP;
+import by.makedon.selectioncommittee.constant.Page;
 import by.makedon.selectioncommittee.exception.LogicException;
 import by.makedon.selectioncommittee.logic.Logic;
 import com.sun.istack.internal.NotNull;
@@ -25,13 +25,13 @@ public class ProfileLogic implements Logic {
         String typeValue = parameters.get(1);
 
         if (loginValue.equals(FALSE)) {
-            pagePath = PageJSP.LOGIN;
-        }
-
-        if (typeValue.equals(USER)) {
-            pagePath = PageJSP.USER;
+            pagePath = Page.LOGIN;
         } else {
-            pagePath = PageJSP.ADMIN;
+            if (typeValue.equals(USER)) {
+                pagePath = Page.USER;
+            } else {
+                pagePath = Page.ADMIN;
+            }
         }
     }
 

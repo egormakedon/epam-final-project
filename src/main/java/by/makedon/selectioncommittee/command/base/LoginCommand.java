@@ -1,7 +1,7 @@
 package by.makedon.selectioncommittee.command.base;
 
 import by.makedon.selectioncommittee.command.Command;
-import by.makedon.selectioncommittee.constant.PageJSP;
+import by.makedon.selectioncommittee.constant.Page;
 import by.makedon.selectioncommittee.controller.Router;
 import by.makedon.selectioncommittee.exception.LogicException;
 import by.makedon.selectioncommittee.logic.Logic;
@@ -49,10 +49,10 @@ public class LoginCommand implements Command {
             session.setAttribute(TYPE, type);
             session.setAttribute(LOGIN, TRUE);
 
-            router.setPagePath(PageJSP.FORWARD_PAGE + "?pagePath=" + PageJSP.USER);
+            router.setPagePath(Page.FORWARD + "?pagePath=" + Page.USER);
         } catch (LogicException e) {
             LOGGER.log(Level.ERROR, e);
-            router.setPagePath(PageJSP.MESSAGE_PAGE + "?message=" + e.getMessage());
+            router.setPagePath(Page.MESSAGE + "?message=" + e.getMessage());
         }
         return router;
     }

@@ -1,7 +1,7 @@
 package by.makedon.selectioncommittee.command.admin;
 
 import by.makedon.selectioncommittee.command.Command;
-import by.makedon.selectioncommittee.constant.PageJSP;
+import by.makedon.selectioncommittee.constant.Page;
 import by.makedon.selectioncommittee.controller.Router;
 import by.makedon.selectioncommittee.exception.LogicException;
 import by.makedon.selectioncommittee.logic.admin.ChangeNumberOfSeatsLogic;
@@ -31,10 +31,10 @@ public class ChangeNumberOfSeatsCommand implements Command {
 
         try {
             logic.doAction(specialityValue, numberOfSeatsValue);
-            router.setPagePath(PageJSP.MESSAGE_PAGE + "?message=number of seats changed");
+            router.setPagePath(Page.MESSAGE + "?message=number of seats changed");
         } catch (LogicException e) {
             LOGGER.log(Level.ERROR, e);
-            router.setPagePath(PageJSP.MESSAGE_PAGE + "?message=" + e);
+            router.setPagePath(Page.MESSAGE + "?message=" + e);
         }
 
         return router;

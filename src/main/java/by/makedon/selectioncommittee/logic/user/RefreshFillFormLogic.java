@@ -1,6 +1,6 @@
 package by.makedon.selectioncommittee.logic.user;
 
-import by.makedon.selectioncommittee.constant.PageJSP;
+import by.makedon.selectioncommittee.constant.Page;
 import by.makedon.selectioncommittee.controller.Router;
 import by.makedon.selectioncommittee.dao.user.UserDAO;
 import by.makedon.selectioncommittee.dao.user.UserDAOImpl;
@@ -11,7 +11,7 @@ public class RefreshFillFormLogic {
         UserDAO dao = UserDAOImpl.getInstance();
         dao.refreshFillForm(usernameValue);
         Router router = new Router();
-        router.setPagePath(PageJSP.MESSAGE_PAGE + "?message=" + "form has refreshed successfully");
+        router.setPagePath(Page.MESSAGE + "?message=" + "form has refreshed successfully");
         router.setRoute(Router.RouteType.REDIRECT);
         return router;
     }

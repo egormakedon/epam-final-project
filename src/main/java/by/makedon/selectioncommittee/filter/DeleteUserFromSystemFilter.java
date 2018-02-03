@@ -1,6 +1,6 @@
 package by.makedon.selectioncommittee.filter;
 
-import by.makedon.selectioncommittee.constant.PageJSP;
+import by.makedon.selectioncommittee.constant.Page;
 import by.makedon.selectioncommittee.dao.base.BaseDAO;
 import by.makedon.selectioncommittee.dao.base.BaseDAOImpl;
 import by.makedon.selectioncommittee.exception.DAOException;
@@ -41,7 +41,7 @@ public class DeleteUserFromSystemFilter implements Filter {
         if (usernameValue == null) {
             session.invalidate();
             req.setAttribute(MESSAGE, SESSION_FAILED);
-            req.getRequestDispatcher(PageJSP.MESSAGE_PAGE).forward(req, res);
+            req.getRequestDispatcher(Page.MESSAGE).forward(req, res);
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
@@ -51,13 +51,13 @@ public class DeleteUserFromSystemFilter implements Filter {
             boolean result = dao.matchUsername(usernameValue);
             if (!result) {
                 session.invalidate();
-                res.sendRedirect(PageJSP.MESSAGE_PAGE + "?message=" + usernameValue + " was deleted from the system");
+                res.sendRedirect(Page.MESSAGE + "?message=" + usernameValue + " was deleted from the system");
                 filterChain.doFilter(servletRequest, servletResponse);
             }
         } catch (DAOException e) {
             session.invalidate();
             LOGGER.log(Level.ERROR, e);
-            res.sendRedirect(PageJSP.MESSAGE_PAGE + "?message=" + e.getMessage());
+            res.sendRedirect(Page.MESSAGE + "?message=" + e.getMessage());
             filterChain.doFilter(servletRequest, servletResponse);
         }
     }

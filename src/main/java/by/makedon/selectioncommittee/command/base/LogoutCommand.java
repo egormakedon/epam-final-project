@@ -1,7 +1,7 @@
 package by.makedon.selectioncommittee.command.base;
 
 import by.makedon.selectioncommittee.command.Command;
-import by.makedon.selectioncommittee.constant.PageJSP;
+import by.makedon.selectioncommittee.constant.Page;
 import by.makedon.selectioncommittee.controller.Router;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +21,7 @@ public class LogoutCommand implements Command {
         session.setAttribute(LOGIN, FALSE);
 
         Router router = new Router();
-        router.setPagePath(PageJSP.WELCOME);
+        router.setPagePath(Page.WELCOME);
         router.setRoute(Router.RouteType.REDIRECT);
         return router;
     }

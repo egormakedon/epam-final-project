@@ -10,12 +10,20 @@ import org.apache.logging.log4j.Level;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public final class BaseDAOImpl implements BaseDAO {
-    private static final BaseDAO INSTANCE = new BaseDAOImpl();
+    private static final BaseDAO INSTANCE;
+    private static AtomicBoolean instanceCreated = new AtomicBoolean(false);
+    static {
+        INSTANCE = new BaseDAOImpl();
+        instanceCreated.set(true);
+    }
     private BaseDAOImpl(){
-        LOGGER.log(Level.FATAL, "Tried to create singleton object with reflection api");
-        throw new RuntimeException("Tried to create singleton object with reflection api");
+        if (instanceCreated.get()) {
+            LOGGER.log(Level.FATAL, "Tried to create singleton object with reflection api");
+            throw new RuntimeException("Tried to create singleton object with reflection api");
+        }
     }
     public static BaseDAO getInstance() {
         return INSTANCE;

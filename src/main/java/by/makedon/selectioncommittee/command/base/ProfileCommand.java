@@ -1,7 +1,7 @@
 package by.makedon.selectioncommittee.command.base;
 
 import by.makedon.selectioncommittee.command.Command;
-import by.makedon.selectioncommittee.constant.PageJSP;
+import by.makedon.selectioncommittee.constant.Page;
 import by.makedon.selectioncommittee.controller.Router;
 import by.makedon.selectioncommittee.exception.LogicException;
 import by.makedon.selectioncommittee.logic.Logic;
@@ -44,7 +44,7 @@ public class ProfileCommand implements Command {
         } catch (LogicException e) {
             LOGGER.log(Level.ERROR, e);
             req.setAttribute(MESSAGE, e.getMessage());
-            router.setPagePath(PageJSP.MESSAGE_PAGE);
+            router.setPagePath(Page.MESSAGE);
         }
         return router;
     }
