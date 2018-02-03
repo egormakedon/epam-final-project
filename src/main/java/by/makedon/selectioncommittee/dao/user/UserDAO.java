@@ -11,10 +11,6 @@ public interface UserDAO extends DAO {
 
 
 
-
-
-
-
     /////////////////////////////
     boolean isFormFilled(String usernameValue) throws DAOException;
     void refreshFillForm(String usernameValue) throws DAOException;
