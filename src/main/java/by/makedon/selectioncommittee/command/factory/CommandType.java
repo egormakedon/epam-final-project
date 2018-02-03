@@ -21,7 +21,7 @@ import by.makedon.selectioncommittee.command.user.ChangeUserDataCommand;
 import by.makedon.selectioncommittee.command.user.ChangeUsernameCommand;
 import by.makedon.selectioncommittee.command.user.ForwardSendFormCommand;
 import by.makedon.selectioncommittee.command.user.RefreshFillFormCommand;
-import by.makedon.selectioncommittee.command.user.SendFillFormCommand;
+import by.makedon.selectioncommittee.command.user.SendFormCommand;
 import by.makedon.selectioncommittee.command.user.ShowFormCommand;
 import by.makedon.selectioncommittee.logic.admin.ChangeNumberOfSeatsLogic;
 import by.makedon.selectioncommittee.logic.admin.DeleteUserLogic;
@@ -37,7 +37,7 @@ import by.makedon.selectioncommittee.logic.user.ChangeEmailLogic;
 import by.makedon.selectioncommittee.logic.user.ChangeUserDataLogic;
 import by.makedon.selectioncommittee.logic.user.ChangeUsernameLogic;
 import by.makedon.selectioncommittee.logic.user.RefreshFillFormLogic;
-import by.makedon.selectioncommittee.logic.user.SendFillFormLogic;
+import by.makedon.selectioncommittee.logic.user.SendFormLogic;
 import by.makedon.selectioncommittee.logic.user.ShowFormLogic;
 
 public enum CommandType {
@@ -51,8 +51,8 @@ public enum CommandType {
     ACCEPTREGISTRATION(new AcceptRegistrationCommand(new AcceptRegistrationLogic())),
 
     FORWARDSENDFORM(new ForwardSendFormCommand()),
+    SENDFORM(new SendFormCommand(new SendFormLogic())),
     REFRESHFILLFORM(new RefreshFillFormCommand(new RefreshFillFormLogic())),
-    SENDFILLFORM(new SendFillFormCommand(new SendFillFormLogic())),
     SHOWFORMPAGE(new ShowFormCommand(new ShowFormLogic())),
     CHANGEUSERDATAPAGE(new ChangeUserDataPageCommand()),
     CHANGEUSERDATA(new ChangeUserDataCommand(new ChangeUserDataLogic())),

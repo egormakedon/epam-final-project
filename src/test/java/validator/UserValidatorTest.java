@@ -61,6 +61,11 @@ public class UserValidatorTest {
     }
 
     @Test
+    public void validateEmailNullTest() {
+        Assert.assertFalse(UserValidator.validateEmail(null));
+    }
+
+    @Test
     public void validateUsernameTrueTest1() {
         String username = "egor";
         Assert.assertTrue(UserValidator.validateUsername(username));
@@ -97,37 +102,48 @@ public class UserValidatorTest {
     }
 
     @Test
+    public void validateUsernameNullTest() {
+        Assert.assertFalse(UserValidator.validateUsername(null));
+    }
+
+    @Test
     public void validatePasswordTrueTest1() {
         String password = "Egormakedon1";
-        Assert.assertTrue(UserValidator.validateUsername(password));
+        Assert.assertTrue(UserValidator.validatePassword(password));
     }
 
     @Test
     public void validatePasswordTrueTest2() {
         String password = "egorMakedon12345";
-        Assert.assertTrue(UserValidator.validateUsername(password));
+        Assert.assertTrue(UserValidator.validatePassword(password));
     }
 
     @Test
     public void validatePasswordTrueTest3() {
         String password = "egorMadon12345_";
-        Assert.assertTrue(UserValidator.validateUsername(password));
+        Assert.assertTrue(UserValidator.validatePassword(password));
     }
 
     @Test
     public void validatePasswordFalseTest1() {
         String password = "egorMadon1234512312312_";
-        Assert.assertFalse(UserValidator.validateUsername(password));
+        Assert.assertFalse(UserValidator.validatePassword(password));
     }
 
     @Test
     public void validatePasswordFalseTest2() {
         String password = "1sadaMdd";
-        Assert.assertFalse(UserValidator.validateUsername(password));
+        Assert.assertFalse(UserValidator.validatePassword(password));
     }
+
     @Test
     public void validatePasswordFalseTest3() {
         String password = "Ss1";
-        Assert.assertFalse(UserValidator.validateUsername(password));
+        Assert.assertFalse(UserValidator.validatePassword(password));
+    }
+
+    @Test
+    public void validatePasswordNullTest() {
+        Assert.assertFalse(UserValidator.validatePassword(null));
     }
 }

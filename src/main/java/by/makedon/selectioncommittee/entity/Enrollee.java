@@ -1,5 +1,7 @@
 package by.makedon.selectioncommittee.entity;
 
+import by.makedon.selectioncommittee.entity.enrollee.EnrolleeFormCriteria;
+
 import java.util.Map;
 
 public class Enrollee {
@@ -213,7 +215,7 @@ public class Enrollee {
         }
     }
     private class Factory {
-        void set(Map.Entry<EnrolleeParameter, String> entry) {
+        void set(Map.Entry<EnrolleeFormCriteria, String> entry) {
             String value = entry.getValue();
             switch (entry.getKey()) {
                 case MATH:
@@ -285,12 +287,12 @@ public class Enrollee {
         }
     }
 
-    public Enrollee(Map<EnrolleeParameter, String> parameters) {
+    public Enrollee(Map<EnrolleeFormCriteria, String> parameters) {
         universityInfo = new UniversityInfo();
         enrolleInfo = new EnrolleeInfo();
         enrolleeMark = new EnrolleeMark();
         Factory factory = new Factory();
-        for (Map.Entry<EnrolleeParameter, String> entry : parameters.entrySet()) {
+        for (Map.Entry<EnrolleeFormCriteria, String> entry : parameters.entrySet()) {
             factory.set(entry);
         }
     }

@@ -2,7 +2,7 @@ package by.makedon.selectioncommittee.logic.base;
 
 import by.makedon.selectioncommittee.dao.base.BaseDAO;
 import by.makedon.selectioncommittee.dao.base.BaseDAOImpl;
-import by.makedon.selectioncommittee.entity.User;
+import by.makedon.selectioncommittee.entity.user.User;
 import by.makedon.selectioncommittee.exception.DAOException;
 import by.makedon.selectioncommittee.exception.LogicException;
 import by.makedon.selectioncommittee.logic.Logic;

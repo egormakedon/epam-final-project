@@ -2,7 +2,7 @@ package by.makedon.selectioncommittee.dao.base;
 
 import by.makedon.selectioncommittee.connectionpool.ConnectionPool;
 import by.makedon.selectioncommittee.connectionpool.ProxyConnection;
-import by.makedon.selectioncommittee.entity.User;
+import by.makedon.selectioncommittee.entity.user.User;
 import by.makedon.selectioncommittee.exception.DAOException;
 import com.sun.istack.internal.NotNull;
 import org.apache.logging.log4j.Level;

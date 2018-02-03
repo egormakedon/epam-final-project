@@ -23,4 +23,9 @@ public class NumberOfSeatsValidatorTest {
         String number = "";
         Assert.assertFalse(NumberOfSeatsValidator.validate(number));
     }
+
+    @Test
+    public void numberOfSeatsNullTest() {
+        Assert.assertFalse(NumberOfSeatsValidator.validate(null));
+    }
 }

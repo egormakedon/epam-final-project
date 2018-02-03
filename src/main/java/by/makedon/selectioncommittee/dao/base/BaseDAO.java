@@ -1,7 +1,7 @@
 package by.makedon.selectioncommittee.dao.base;
 
 import by.makedon.selectioncommittee.dao.DAO;
-import by.makedon.selectioncommittee.entity.User;
+import by.makedon.selectioncommittee.entity.user.User;
 import by.makedon.selectioncommittee.exception.DAOException;
 
 public interface BaseDAO extends DAO {
