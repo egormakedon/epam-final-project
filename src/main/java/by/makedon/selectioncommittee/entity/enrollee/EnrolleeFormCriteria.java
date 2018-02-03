@@ -43,7 +43,8 @@ public enum EnrolleeFormCriteria {
     SOCIALSTUDIES,
     GEOGRAPHY,
     HISTORY,
-    CERTIFICATE
+    CERTIFICATE,
+    DATE
 
 //    private String parameter;
 //

@@ -37,7 +37,7 @@ public class EnrolleeValidator {
         String certificateValue = parameters.get(16);
 
         if (!validateName(secondNameValue)) {
-            if (secondNameValue == null || !secondNameValue.isEmpty()) {
+            if (!secondNameValue.isEmpty()) {
                 return false;
             }
         }
@@ -55,21 +55,23 @@ public class EnrolleeValidator {
                 resultPassportValidation && resultPhoneValidation && resultNumbersValidation;
     }
 
-    private static boolean validateName(String nameValue) {
+    private static boolean validateName(@NotNull String nameValue) {
         return nameValue != null && Pattern.matches(NAME_REGEXP, nameValue);
     }
-    private static boolean validatePassport(String passportIdValue) {
+    private static boolean validatePassport(@NotNull String passportIdValue) {
         return passportIdValue != null && Pattern.matches(PASSPORT_REGEXP, passportIdValue);
     }
-    private static boolean validatePhone(String phoneValue) {
+    private static boolean validatePhone(@NotNull String phoneValue) {
         return phoneValue != null && Pattern.matches(PHONE_REGEXP, phoneValue);
     }
-    private static boolean validateNumbers(String russianLangValue, String belorussianLangValue, String physicsValue,
-                                         String mathValue, String chemistryValue, String biologyValue, String foreignLangValue,
-                                         String historyOfBelarusValue, String socialStudiesValue, String geographyValue,
-                                         String historyValue, String certificateValue) {
+    private static boolean validateNumbers(@NotNull String russianLangValue, @NotNull String belorussianLangValue, @NotNull String physicsValue,
+                                           @NotNull String mathValue, @NotNull String chemistryValue, @NotNull String biologyValue,
+                                           @NotNull String foreignLangValue, @NotNull String historyOfBelarusValue, @NotNull String socialStudiesValue,
+                                           @NotNull String geographyValue, @NotNull String historyValue, @NotNull String certificateValue) {
+
         List<String> parameters = new ArrayList<String>();
         parameters.add(certificateValue);
+
         if (russianLangValue != null) {
             parameters.add(russianLangValue);
         }
@@ -103,16 +105,20 @@ public class EnrolleeValidator {
         if (historyValue != null) {
             parameters.add(historyValue);
         }
+
         if (parameters.size() != 4) {
             return false;
         }
+
         for (String parameter : parameters) {
             if (!parseStringToInt(parameter)) {
                 return false;
             }
         }
+
         return true;
     }
+
     private static boolean parseStringToInt(String parameter) {
         try {
             int num = Integer.parseInt(parameter);

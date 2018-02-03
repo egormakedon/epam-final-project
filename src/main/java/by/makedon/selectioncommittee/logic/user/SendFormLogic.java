@@ -2,20 +2,25 @@ package by.makedon.selectioncommittee.logic.user;
 
 import by.makedon.selectioncommittee.dao.user.UserDAO;
 import by.makedon.selectioncommittee.dao.user.UserDAOImpl;
-import by.makedon.selectioncommittee.entity.Enrollee;
+import by.makedon.selectioncommittee.entity.enrollee.EnrolleeForm;
 import by.makedon.selectioncommittee.entity.enrollee.EnrolleeFormCriteria;
+import by.makedon.selectioncommittee.exception.DAOException;
 import by.makedon.selectioncommittee.exception.LogicException;
 import by.makedon.selectioncommittee.logic.Logic;
 import by.makedon.selectioncommittee.validator.EnrolleeValidator;
 import com.sun.istack.internal.NotNull;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class SendFormLogic implements Logic {
     private static final int LIST_SIZE = 22;
+
+    private static final String DATE_PATTERN = "yyyy-MM-dd";
 
     @Override
     public void doAction(@NotNull List<String> parameters) throws LogicException {
@@ -69,58 +74,75 @@ public class SendFormLogic implements Logic {
             throw new LogicException("invalid input parameters");
         }
 
-        ////////////////////////////////////////////
-        Map<EnrolleeFormCriteria, String> parameters = new HashMap<EnrolleeFormCriteria, String>();
-        parameters.put(EnrolleeFormCriteria.UNIVERSITY, universityValue);
-        parameters.put(EnrolleeFormCriteria.FACULTY, facultyValue);
-        parameters.put(EnrolleeFormCriteria.SPECIALITY, specialityValue);
-        parameters.put(EnrolleeFormCriteria.NAME, nameValue);
-        parameters.put(EnrolleeFormCriteria.SURNAME, surnameValue);
+        Map<EnrolleeFormCriteria, String> parametersMap = new HashMap<EnrolleeFormCriteria, String>();
+
+        parametersMap.put(EnrolleeFormCriteria.UNIVERSITY, universityValue);
+        parametersMap.put(EnrolleeFormCriteria.FACULTY, facultyValue);
+        parametersMap.put(EnrolleeFormCriteria.SPECIALITY, specialityValue);
+        parametersMap.put(EnrolleeFormCriteria.NAME, nameValue);
+        parametersMap.put(EnrolleeFormCriteria.SURNAME, surnameValue);
+        parametersMap.put(EnrolleeFormCriteria.CERTIFICATE, certificateValue);
+        parametersMap.put(EnrolleeFormCriteria.PASSPORTID, passportIdValue);
+        parametersMap.put(EnrolleeFormCriteria.COUNTRYDOMEN, countryDomenValue);
+        parametersMap.put(EnrolleeFormCriteria.PHONE, phoneValue);
+
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
+        parametersMap.put(EnrolleeFormCriteria.DATE, dateFormat.format(date));
+
         if (secondNameValue.isEmpty()) {
-            parameters.put(EnrolleeFormCriteria.SECONDNAME, "");
+            parametersMap.put(EnrolleeFormCriteria.SECONDNAME, "");
         } else {
-            parameters.put(EnrolleeFormCriteria.SECONDNAME, secondNameValue);
+            parametersMap.put(EnrolleeFormCriteria.SECONDNAME, secondNameValue);
         }
-        parameters.put(EnrolleeFormCriteria.PASSPORTID, passportIdValue);
-        parameters.put(EnrolleeFormCriteria.COUNTRYDOMEN, countryDomenValue);
-        parameters.put(EnrolleeFormCriteria.PHONE, phoneValue);
+
         if (russianLangValue != null) {
-            parameters.put(EnrolleeFormCriteria.RUSSIANLANG, russianLangValue);
+            parametersMap.put(EnrolleeFormCriteria.RUSSIANLANG, russianLangValue);
         }
         if (belorussianLangValue != null) {
-            parameters.put(EnrolleeFormCriteria.BELORUSSIANLANG, belorussianLangValue);
+            parametersMap.put(EnrolleeFormCriteria.BELORUSSIANLANG, belorussianLangValue);
         }
         if (physicsValue != null) {
-            parameters.put(EnrolleeFormCriteria.PHYSICS, physicsValue);
+            parametersMap.put(EnrolleeFormCriteria.PHYSICS, physicsValue);
         }
         if (mathValue != null) {
-            parameters.put(EnrolleeFormCriteria.MATH, mathValue);
+            parametersMap.put(EnrolleeFormCriteria.MATH, mathValue);
         }
         if (chemistryValue != null) {
-            parameters.put(EnrolleeFormCriteria.CHEMISTRY, chemistryValue);
+            parametersMap.put(EnrolleeFormCriteria.CHEMISTRY, chemistryValue);
         }
         if (biologyValue != null) {
-            parameters.put(EnrolleeFormCriteria.BIOLOGY, biologyValue);
+            parametersMap.put(EnrolleeFormCriteria.BIOLOGY, biologyValue);
         }
         if (foreignLangValue != null) {
-            parameters.put(EnrolleeFormCriteria.FOREIGNLANG, foreignLangValue);
+            parametersMap.put(EnrolleeFormCriteria.FOREIGNLANG, foreignLangValue);
         }
         if (historyOfBelarusValue != null) {
-            parameters.put(EnrolleeFormCriteria.HISTORYOFBELARUS, historyOfBelarusValue);
+            parametersMap.put(EnrolleeFormCriteria.HISTORYOFBELARUS, historyOfBelarusValue);
         }
         if (socialStudiesValue != null) {
-            parameters.put(EnrolleeFormCriteria.SOCIALSTUDIES, socialStudiesValue);
+            parametersMap.put(EnrolleeFormCriteria.SOCIALSTUDIES, socialStudiesValue);
         }
         if (geographyValue != null) {
-            parameters.put(EnrolleeFormCriteria.GEOGRAPHY, geographyValue);
+            parametersMap.put(EnrolleeFormCriteria.GEOGRAPHY, geographyValue);
         }
         if (historyValue != null) {
-            parameters.put(EnrolleeFormCriteria.HISTORY, historyValue);
+            parametersMap.put(EnrolleeFormCriteria.HISTORY, historyValue);
         }
-        parameters.put(EnrolleeFormCriteria.CERTIFICATE, certificateValue);
 
-        Enrollee enrollee = new Enrollee(parameters);
+        EnrolleeForm enrolleeForm = new EnrolleeForm(parametersMap);
         UserDAO dao = UserDAOImpl.getInstance();
-        dao.addForm(usernameValue, enrollee);
+
+        try {
+            if (!dao.couldChangeForm()) {
+                throw new LogicException("you couldn't add form");
+            }
+            if (dao.isUserEnrolleeFormAdded(usernameValue)) {
+                throw new LogicException("form has already added");
+            }
+            dao.addForm(usernameValue, enrolleeForm);
+        } catch (DAOException e) {
+            throw new LogicException(e);
+        }
     }
 }

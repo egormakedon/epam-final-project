@@ -2,7 +2,7 @@ package by.makedon.selectioncommittee.dao.user;
 
 import by.makedon.selectioncommittee.connectionpool.ConnectionPool;
 import by.makedon.selectioncommittee.connectionpool.ProxyConnection;
-import by.makedon.selectioncommittee.entity.Enrollee;
+import by.makedon.selectioncommittee.entity.enrollee.EnrolleeForm;
 import by.makedon.selectioncommittee.entity.enrollee.EnrolleeFormCriteria;
 import by.makedon.selectioncommittee.exception.DAOException;
 import org.apache.logging.log4j.Level;
@@ -30,12 +30,15 @@ public final class UserDAOImpl implements UserDAO {
         return INSTANCE;
     }
 
-    private static final String RESULT = "result";
     private static final String STATEMENT = "statement";
     private static final String STATEMENT_IN_PROCESS = "В процессе";
+    private static final String RESULT = "result";
+
     private static final String EMAIL = "email";
 
-    private static final String SQL_SELECT_IS_NULL_E_ID_BY_USERNAME = "SELECT isNull(e_id) result FROM user WHERE username=?;";
+    private static final String SQL_SELECT_FIRST_STATEMENT = "SELECT statement FROM enrollee LIMIT 1";
+    private static final String SQL_SELECT_IS_NULL_E_ID_BY_USERNAME = "SELECT isNull(e_id) result FROM user WHERE username=?";
+
     private static final String SQL_SELECT_STATEMENT_BY_USERNAME = "SELECT e.statement statement FROM user u INNER JOIN enrollee e ON u.e_id = e.e_id WHERE username=?;";
     private static final String SQL_UPDATE_FORM_BY_USERNAME = "DELETE FROM enrollee WHERE enrollee.e_id IN (SELECT u.e_id FROM user u WHERE username=?);";
     private static final String SQL_SELECT_FIRST_ENROLLEE_STATEMENT = "SELECT statement FROM enrollee LIMIT 1;";
@@ -56,227 +59,13 @@ public final class UserDAOImpl implements UserDAO {
     private static final String SQL_UPDATE_CHANGE_USERNAME = "UPDATE user SET username=? WHERE username=?";
 
     @Override
-    public boolean isFormFilled(String usernameValue) throws DAOException {
-        ProxyConnection connection = null;
-        PreparedStatement statement = null;
-        try {
-            connection = ConnectionPool.getInstance().getConnection();
-            statement = connection.prepareStatement(SQL_SELECT_IS_NULL_E_ID_BY_USERNAME);
-            statement.setString(1,usernameValue);
-            ResultSet resultSet = statement.executeQuery();
-            resultSet.next();
-            int value = Integer.parseInt(resultSet.getString(RESULT));
-            return value == 0;
-        } catch (SQLException e) {
-            throw new DAOException(e);
-        } finally {
-            close(statement);
-            close(connection);
-        }
-    }
-
-    @Override
-    public void refreshFillForm(String usernameValue) throws DAOException {
-        if (isFormFilled(usernameValue)) {
-            if (couldRefreshForm(usernameValue)) {
-                refreshForm(usernameValue);
-            } else {
-                throw new DAOException("you can't refresh form");
-            }
-        } else {
-            throw new DAOException("form is empty yet");
-        }
-    }
-
-    @Override
-    public void addForm(String usernameValue, Enrollee enrollee) throws DAOException {
-        if (isFormFilled(usernameValue)) {
-            throw new DAOException("form has already filled");
-        }
-        if (couldAddForm()) {
-            addFormAction(usernameValue, enrollee);
-        } else {
-            throw new DAOException("you can't add form");
-        }
-    }
-
-    @Override
-    public Enrollee takeEnrollee(String usernameValue) throws DAOException {
-        ProxyConnection connection = null;
-        PreparedStatement statement = null;String s = "1";
-        try {
-            connection = ConnectionPool.getInstance().getConnection();
-            statement = connection.prepareStatement(SQL_SELECT_ENROLLE_DATA);
-            statement.setString(1, usernameValue);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                String universityValue = resultSet.getString(EnrolleeFormCriteria.UNIVERSITY.toString());
-                String facultyValue = resultSet.getString(EnrolleeFormCriteria.FACULTY.toString());
-                String specialityValue = resultSet.getString(EnrolleeFormCriteria.SPECIALITY.toString());
-                String nameValue = resultSet.getString(EnrolleeFormCriteria.NAME.toString());
-                String surnameValue = resultSet.getString(EnrolleeFormCriteria.SURNAME.toString());
-                String secondNameValue = resultSet.getString(EnrolleeFormCriteria.SECONDNAME.toString());
-                String passportIdValue = resultSet.getString(EnrolleeFormCriteria.PASSPORTID.toString());
-                String countryDomenValue = resultSet.getString(EnrolleeFormCriteria.COUNTRYDOMEN.toString());
-                String phoneValue = resultSet.getString(EnrolleeFormCriteria.PHONE.toString());
-                String russianLangValue = resultSet.getString(EnrolleeFormCriteria.RUSSIANLANG.toString());
-                String belorussianLangValue = resultSet.getString(EnrolleeFormCriteria.BELORUSSIANLANG.toString());
-                String physicsValue = resultSet.getString(EnrolleeFormCriteria.PHYSICS.toString());
-                String mathValue = resultSet.getString(EnrolleeFormCriteria.MATH.toString());
-                String chemistryValue = resultSet.getString(EnrolleeFormCriteria.CHEMISTRY.toString());
-                String biologyValue = resultSet.getString(EnrolleeFormCriteria.BIOLOGY.toString());
-                String foreignLangValue = resultSet.getString(EnrolleeFormCriteria.FOREIGNLANG.toString());
-                String historyOfBelarusValue = resultSet.getString(EnrolleeFormCriteria.HISTORYOFBELARUS.toString());
-                String socialStudiesValue = resultSet.getString(EnrolleeFormCriteria.SOCIALSTUDIES.toString());
-                String geographyValue = resultSet.getString(EnrolleeFormCriteria.GEOGRAPHY.toString());
-                String historyValue = resultSet.getString(EnrolleeFormCriteria.HISTORY.toString());
-                String certificateValue = resultSet.getString(EnrolleeFormCriteria.CERTIFICATE.toString());
-                String statementValue = resultSet.getString(EnrolleeFormCriteria.STATEMENT.toString());
-
-                Map<EnrolleeFormCriteria, String> parameters = new HashMap<EnrolleeFormCriteria, String>();
-                parameters.put(EnrolleeFormCriteria.UNIVERSITY, universityValue);
-                parameters.put(EnrolleeFormCriteria.FACULTY, facultyValue);
-                parameters.put(EnrolleeFormCriteria.SPECIALITY, specialityValue);
-                parameters.put(EnrolleeFormCriteria.NAME, nameValue);
-                parameters.put(EnrolleeFormCriteria.SURNAME, surnameValue);
-                parameters.put(EnrolleeFormCriteria.SECONDNAME, secondNameValue);
-                parameters.put(EnrolleeFormCriteria.PASSPORTID, passportIdValue);
-                parameters.put(EnrolleeFormCriteria.COUNTRYDOMEN, countryDomenValue);
-                parameters.put(EnrolleeFormCriteria.PHONE, phoneValue);
-                parameters.put(EnrolleeFormCriteria.RUSSIANLANG, russianLangValue);
-                parameters.put(EnrolleeFormCriteria.BELORUSSIANLANG, belorussianLangValue);
-                parameters.put(EnrolleeFormCriteria.PHYSICS, physicsValue);
-                parameters.put(EnrolleeFormCriteria.MATH, mathValue);
-                parameters.put(EnrolleeFormCriteria.CHEMISTRY, chemistryValue);
-                parameters.put(EnrolleeFormCriteria.BIOLOGY, biologyValue);
-                parameters.put(EnrolleeFormCriteria.FOREIGNLANG, foreignLangValue);
-                parameters.put(EnrolleeFormCriteria.HISTORYOFBELARUS, historyOfBelarusValue);
-                parameters.put(EnrolleeFormCriteria.SOCIALSTUDIES, socialStudiesValue);
-                parameters.put(EnrolleeFormCriteria.GEOGRAPHY, geographyValue);
-                parameters.put(EnrolleeFormCriteria.HISTORY, historyValue);
-                parameters.put(EnrolleeFormCriteria.CERTIFICATE, certificateValue);
-                parameters.put(EnrolleeFormCriteria.STATEMENT, statementValue);
-
-                Enrollee enrollee = new Enrollee(parameters);
-                return enrollee;
-            } else {
-                throw new DAOException("enrollee form hasn't found");
-            }
-        } catch (SQLException e) {
-            throw new DAOException(e);
-        } finally {
-            close(statement);
-            close(connection);
-        }
-    }
-
-    @Override
-    public String takeEmail(String usernameValue) throws DAOException {
-        ProxyConnection connection = null;
-        PreparedStatement statement = null;
-        try {
-            connection = ConnectionPool.getInstance().getConnection();
-            statement = connection.prepareStatement(SQL_SELECT_EMAIL_BY_USERNAME);
-            statement.setString(1, usernameValue);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                return resultSet.getString(EMAIL);
-            } else {
-                throw new DAOException("Unknown result, username doesn't exist");
-            }
-        } catch (SQLException e) {
-            throw new DAOException(e);
-        } finally {
-            close(statement);
-            close(connection);
-        }
-    }
-
-    @Override
-    public void changeEmail(String usernameValue, String newEmailValue) throws DAOException {
-        ProxyConnection connection = null;
-        PreparedStatement statement = null;
-        try {
-            connection = ConnectionPool.getInstance().getConnection();
-            statement = connection.prepareStatement(SQL_UPDATE_CHANGE_EMAIL_BY_USERNAME);
-            statement.setString(1,newEmailValue);
-            statement.setString(2,usernameValue);
-            statement.execute();
-        } catch (SQLException e) {
-            throw new DAOException(e);
-        } finally {
-            close(statement);
-            close(connection);
-        }
-    }
-
-    @Override
-    public boolean changeUsername(String usernameValue, String newUsernameValue) throws DAOException {
-        ProxyConnection connection = null;
-        PreparedStatement statement = null;
-        try {
-            connection = ConnectionPool.getInstance().getConnection();
-            statement = connection.prepareStatement(SQL_UPDATE_CHANGE_USERNAME);
-            statement.setString(1, newUsernameValue);
-            statement.setString(2, usernameValue);
-            int count = statement.executeUpdate();
-            return count == 1;
-        } catch (SQLException e) {
-            throw new DAOException(e);
-        } finally {
-            close(statement);
-            close(connection);
-        }
-    }
-
-    @Override
-    public Object clone() throws CloneNotSupportedException {
-        LOGGER.log(Level.ERROR, "Tried to clone singleton object");
-        throw new CloneNotSupportedException("Tried to clone singleton object");
-    }
-
-    private boolean couldRefreshForm(String usernameValue) throws DAOException {
-        ProxyConnection connection = null;
-        PreparedStatement statement = null;
-        try {
-            connection = ConnectionPool.getInstance().getConnection();
-            statement = connection.prepareStatement(SQL_SELECT_STATEMENT_BY_USERNAME);
-            statement.setString(1, usernameValue);
-            ResultSet resultSet = statement.executeQuery();
-            resultSet.next();
-            String statementValue = resultSet.getString(EnrolleeFormCriteria.STATEMENT.getParameter());
-            return statementValue.equals(STATEMENT_IN_PROCESS);
-        } catch (SQLException e) {
-            throw new DAOException(e);
-        } finally {
-            close(statement);
-            close(connection);
-        }
-    }
-
-    private void refreshForm(String usernameValue) throws DAOException {
-        ProxyConnection connection = null;
-        PreparedStatement statement = null;
-        try {
-            connection = ConnectionPool.getInstance().getConnection();
-            statement = connection.prepareStatement(SQL_UPDATE_FORM_BY_USERNAME);
-            statement.setString(1, usernameValue);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            throw new DAOException(e);
-        } finally {
-            close(statement);
-            close(connection);
-        }
-    }
-
-    private boolean couldAddForm() throws DAOException {
+    public boolean couldChangeForm() throws DAOException {
         ProxyConnection connection = null;
         Statement statement = null;
         try {
             connection = ConnectionPool.getInstance().getConnection();
             statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(SQL_SELECT_FIRST_ENROLLEE_STATEMENT);
+            ResultSet resultSet = statement.executeQuery(SQL_SELECT_FIRST_STATEMENT);
             if (resultSet.next()) {
                 String statementValue = resultSet.getString(STATEMENT);
                 return statementValue.equals(STATEMENT_IN_PROCESS);
@@ -291,24 +80,21 @@ public final class UserDAOImpl implements UserDAO {
         }
     }
 
-    private void addFormAction(String usernameValue, Enrollee enrollee) throws DAOException {
-        String enrolleeID = addEnrollee(enrollee);
-        addEnrolleIdToUser(usernameValue, enrolleeID);
-    }
-
-    private String takeSpecialityID(Enrollee enrollee) throws DAOException {
+    @Override
+    public boolean isUserEnrolleeFormAdded(String usernameValue) throws DAOException {
         ProxyConnection connection = null;
         PreparedStatement statement = null;
-        Enrollee.UniversityInfo universityInfo = enrollee.getUniversityInfo();
         try {
             connection = ConnectionPool.getInstance().getConnection();
-            statement = connection.prepareStatement(SQL_SELECT_S_ID_BY_UNIVERSITY_FACULTY_SPECIALITY);
-            statement.setString(1,universityInfo.getUniversity());
-            statement.setString(2,universityInfo.getFaculty());
-            statement.setString(3,universityInfo.getSpeciality());
+            statement = connection.prepareStatement(SQL_SELECT_IS_NULL_E_ID_BY_USERNAME);
+            statement.setString(1,usernameValue);
             ResultSet resultSet = statement.executeQuery();
-            resultSet.next();
-            return resultSet.getString(RESULT);
+            if (resultSet.next()) {
+                byte value = Byte.parseByte(resultSet.getString(RESULT));
+                return value == 0;
+            } else {
+                throw new DAOException("this user doesn't exist");
+            }
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {
@@ -317,11 +103,23 @@ public final class UserDAOImpl implements UserDAO {
         }
     }
 
-    private String addEnrollee(Enrollee enrollee) throws DAOException {
-        String specialityID = takeSpecialityID(enrollee);
+    @Override
+    public void addForm(String usernameValue, EnrolleeForm enrolleeForm) throws DAOException {
+        String enrolleeID = addEnrollee(enrolleeForm);
+        addEnrolleIdToUser(usernameValue, enrolleeID);
+    }
 
-        Enrollee.EnrolleeInfo enrolleeInfo = enrollee.getEnrolleInfo();
-        Enrollee.EnrolleeMark enrolleeMark = enrollee.getEnrolleeMark();
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        LOGGER.log(Level.ERROR, "Tried to clone singleton object");
+        throw new CloneNotSupportedException("Tried to clone singleton object");
+    }
+
+    private String addEnrollee(EnrolleeForm enrolleeForm) throws DAOException {
+        String specialityID = takeSpecialityID(enrolleeForm);
+
+        EnrolleeForm.EnrolleeInfo enrolleeInfo = enrolleeForm.getEnrolleInfo();
+        EnrolleeForm.EnrolleeMark enrolleeMark = enrolleeForm.getEnrolleeMark();
 
         String passportID = enrolleeInfo.getPassportId();
         String countryDomen = enrolleeInfo.getCountryDomen();
@@ -392,10 +190,259 @@ public final class UserDAOImpl implements UserDAO {
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {
-          close(statement);
-          close(connection);
+            close(statement);
+            close(connection);
         }
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @Override
+    public boolean isFormFilled(String usernameValue) throws DAOException {
+        ProxyConnection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            statement = connection.prepareStatement(SQL_SELECT_IS_NULL_E_ID_BY_USERNAME);
+            statement.setString(1,usernameValue);
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            int value = Integer.parseInt(resultSet.getString(RESULT));
+            return value == 0;
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            close(statement);
+            close(connection);
+        }
+    }
+
+    @Override
+    public void refreshFillForm(String usernameValue) throws DAOException {
+        if (isFormFilled(usernameValue)) {
+            if (couldRefreshForm(usernameValue)) {
+                refreshForm(usernameValue);
+            } else {
+                throw new DAOException("you can't refresh form");
+            }
+        } else {
+            throw new DAOException("form is empty yet");
+        }
+    }
+
+    @Override
+    public EnrolleeForm takeEnrollee(String usernameValue) throws DAOException {
+        ProxyConnection connection = null;
+        PreparedStatement statement = null;String s = "1";
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            statement = connection.prepareStatement(SQL_SELECT_ENROLLE_DATA);
+            statement.setString(1, usernameValue);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                String universityValue = resultSet.getString(EnrolleeFormCriteria.UNIVERSITY.toString());
+                String facultyValue = resultSet.getString(EnrolleeFormCriteria.FACULTY.toString());
+                String specialityValue = resultSet.getString(EnrolleeFormCriteria.SPECIALITY.toString());
+                String nameValue = resultSet.getString(EnrolleeFormCriteria.NAME.toString());
+                String surnameValue = resultSet.getString(EnrolleeFormCriteria.SURNAME.toString());
+                String secondNameValue = resultSet.getString(EnrolleeFormCriteria.SECONDNAME.toString());
+                String passportIdValue = resultSet.getString(EnrolleeFormCriteria.PASSPORTID.toString());
+                String countryDomenValue = resultSet.getString(EnrolleeFormCriteria.COUNTRYDOMEN.toString());
+                String phoneValue = resultSet.getString(EnrolleeFormCriteria.PHONE.toString());
+                String russianLangValue = resultSet.getString(EnrolleeFormCriteria.RUSSIANLANG.toString());
+                String belorussianLangValue = resultSet.getString(EnrolleeFormCriteria.BELORUSSIANLANG.toString());
+                String physicsValue = resultSet.getString(EnrolleeFormCriteria.PHYSICS.toString());
+                String mathValue = resultSet.getString(EnrolleeFormCriteria.MATH.toString());
+                String chemistryValue = resultSet.getString(EnrolleeFormCriteria.CHEMISTRY.toString());
+                String biologyValue = resultSet.getString(EnrolleeFormCriteria.BIOLOGY.toString());
+                String foreignLangValue = resultSet.getString(EnrolleeFormCriteria.FOREIGNLANG.toString());
+                String historyOfBelarusValue = resultSet.getString(EnrolleeFormCriteria.HISTORYOFBELARUS.toString());
+                String socialStudiesValue = resultSet.getString(EnrolleeFormCriteria.SOCIALSTUDIES.toString());
+                String geographyValue = resultSet.getString(EnrolleeFormCriteria.GEOGRAPHY.toString());
+                String historyValue = resultSet.getString(EnrolleeFormCriteria.HISTORY.toString());
+                String certificateValue = resultSet.getString(EnrolleeFormCriteria.CERTIFICATE.toString());
+                String statementValue = resultSet.getString(EnrolleeFormCriteria.STATEMENT.toString());
+
+                Map<EnrolleeFormCriteria, String> parameters = new HashMap<EnrolleeFormCriteria, String>();
+                parameters.put(EnrolleeFormCriteria.UNIVERSITY, universityValue);
+                parameters.put(EnrolleeFormCriteria.FACULTY, facultyValue);
+                parameters.put(EnrolleeFormCriteria.SPECIALITY, specialityValue);
+                parameters.put(EnrolleeFormCriteria.NAME, nameValue);
+                parameters.put(EnrolleeFormCriteria.SURNAME, surnameValue);
+                parameters.put(EnrolleeFormCriteria.SECONDNAME, secondNameValue);
+                parameters.put(EnrolleeFormCriteria.PASSPORTID, passportIdValue);
+                parameters.put(EnrolleeFormCriteria.COUNTRYDOMEN, countryDomenValue);
+                parameters.put(EnrolleeFormCriteria.PHONE, phoneValue);
+                parameters.put(EnrolleeFormCriteria.RUSSIANLANG, russianLangValue);
+                parameters.put(EnrolleeFormCriteria.BELORUSSIANLANG, belorussianLangValue);
+                parameters.put(EnrolleeFormCriteria.PHYSICS, physicsValue);
+                parameters.put(EnrolleeFormCriteria.MATH, mathValue);
+                parameters.put(EnrolleeFormCriteria.CHEMISTRY, chemistryValue);
+                parameters.put(EnrolleeFormCriteria.BIOLOGY, biologyValue);
+                parameters.put(EnrolleeFormCriteria.FOREIGNLANG, foreignLangValue);
+                parameters.put(EnrolleeFormCriteria.HISTORYOFBELARUS, historyOfBelarusValue);
+                parameters.put(EnrolleeFormCriteria.SOCIALSTUDIES, socialStudiesValue);
+                parameters.put(EnrolleeFormCriteria.GEOGRAPHY, geographyValue);
+                parameters.put(EnrolleeFormCriteria.HISTORY, historyValue);
+                parameters.put(EnrolleeFormCriteria.CERTIFICATE, certificateValue);
+                parameters.put(EnrolleeFormCriteria.STATEMENT, statementValue);
+
+                EnrolleeForm enrolleeForm = new EnrolleeForm(parameters);
+                return enrolleeForm;
+            } else {
+                throw new DAOException("enrollee form hasn't found");
+            }
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            close(statement);
+            close(connection);
+        }
+    }
+
+    @Override
+    public String takeEmail(String usernameValue) throws DAOException {
+        ProxyConnection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            statement = connection.prepareStatement(SQL_SELECT_EMAIL_BY_USERNAME);
+            statement.setString(1, usernameValue);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getString(EMAIL);
+            } else {
+                throw new DAOException("Unknown result, username doesn't exist");
+            }
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            close(statement);
+            close(connection);
+        }
+    }
+
+    @Override
+    public void changeEmail(String usernameValue, String newEmailValue) throws DAOException {
+        ProxyConnection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            statement = connection.prepareStatement(SQL_UPDATE_CHANGE_EMAIL_BY_USERNAME);
+            statement.setString(1,newEmailValue);
+            statement.setString(2,usernameValue);
+            statement.execute();
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            close(statement);
+            close(connection);
+        }
+    }
+
+    @Override
+    public boolean changeUsername(String usernameValue, String newUsernameValue) throws DAOException {
+        ProxyConnection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            statement = connection.prepareStatement(SQL_UPDATE_CHANGE_USERNAME);
+            statement.setString(1, newUsernameValue);
+            statement.setString(2, usernameValue);
+            int count = statement.executeUpdate();
+            return count == 1;
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            close(statement);
+            close(connection);
+        }
+    }
+
+
+    private boolean couldRefreshForm(String usernameValue) throws DAOException {
+        ProxyConnection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            statement = connection.prepareStatement(SQL_SELECT_STATEMENT_BY_USERNAME);
+            statement.setString(1, usernameValue);
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            String statementValue = resultSet.getString(EnrolleeFormCriteria.DATE.toString());
+            return statementValue.equals(STATEMENT_IN_PROCESS);
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            close(statement);
+            close(connection);
+        }
+    }
+
+    private void refreshForm(String usernameValue) throws DAOException {
+        ProxyConnection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            statement = connection.prepareStatement(SQL_UPDATE_FORM_BY_USERNAME);
+            statement.setString(1, usernameValue);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            close(statement);
+            close(connection);
+        }
+    }
+
+    private boolean couldAddForm() throws DAOException {
+        ProxyConnection connection = null;
+        Statement statement = null;
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(SQL_SELECT_FIRST_ENROLLEE_STATEMENT);
+            if (resultSet.next()) {
+                String statementValue = resultSet.getString(STATEMENT);
+                return statementValue.equals(STATEMENT_IN_PROCESS);
+            } else {
+                return true;
+            }
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            close(statement);
+            close(connection);
+        }
+    }
+
+    private void addFormAction(String usernameValue, EnrolleeForm enrolleeForm) throws DAOException {
+        String enrolleeID = addEnrollee(enrolleeForm);
+        addEnrolleIdToUser(usernameValue, enrolleeID);
+    }
+
+    private String takeSpecialityID(EnrolleeForm enrolleeForm) throws DAOException {
+        ProxyConnection connection = null;
+        PreparedStatement statement = null;
+        EnrolleeForm.UniversityInfo universityInfo = enrolleeForm.getUniversityInfo();
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            statement = connection.prepareStatement(SQL_SELECT_S_ID_BY_UNIVERSITY_FACULTY_SPECIALITY);
+            statement.setString(1,universityInfo.getUniversity());
+            statement.setString(2,universityInfo.getFaculty());
+            statement.setString(3,universityInfo.getSpeciality());
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            return resultSet.getString(RESULT);
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            close(statement);
+            close(connection);
+        }
+    }
+
+
 
     private void addEnrolleIdToUser(String usernameValue, String enrolleeID) throws DAOException {
         ProxyConnection connection = null;

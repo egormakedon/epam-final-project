@@ -1,15 +1,18 @@
-package by.makedon.selectioncommittee.entity;
+package by.makedon.selectioncommittee.entity.enrollee;
 
-import by.makedon.selectioncommittee.entity.enrollee.EnrolleeFormCriteria;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Map;
+import java.util.Objects;
 
-public class Enrollee {
+public class EnrolleeForm {
+    private static final Logger LOGGER = LogManager.getLogger(EnrolleeForm.class);
+
     private UniversityInfo universityInfo;
     private EnrolleeInfo enrolleInfo;
     private EnrolleeMark enrolleeMark;
-
-    private String statement;
 
     public class UniversityInfo {
         private String university;
@@ -21,23 +24,18 @@ public class Enrollee {
         public String getUniversity() {
             return university;
         }
-
         public String getFaculty() {
             return faculty;
         }
-
         public String getSpeciality() {
             return speciality;
         }
-
         private void setUniversity(String university) {
             this.university = university;
         }
-
         private void setFaculty(String faculty) {
             this.faculty = faculty;
         }
-
         private void setSpeciality(String speciality) {
             this.speciality = speciality;
         }
@@ -49,177 +47,147 @@ public class Enrollee {
         private String passportId;
         private String countryDomen;
         private String phone;
+        private String date;
 
         private EnrolleeInfo() {}
 
         public String getName() {
             return name;
         }
-
         public String getSurname() {
             return surname;
         }
-
         public String getSecondName() {
             return secondName;
         }
-
         public String getPassportId() {
             return passportId;
         }
-
         public String getCountryDomen() {
             return countryDomen;
         }
-
         public String getPhone() {
             return phone;
         }
-
-        public String getStatement() {
-            return statement;
-        }
-
         private void setName(String name) {
             this.name = name;
         }
-
         private void setSurname(String surname) {
             this.surname = surname;
         }
-
         private void setSecondName(String secondName) {
             this.secondName = secondName;
         }
-
         private void setPassportId(String passportId) {
             this.passportId = passportId;
         }
-
         private void setCountryDomen(String countryDomen) {
             this.countryDomen = countryDomen;
         }
-
         private void setPhone(String phone) {
             this.phone = phone;
         }
+        public String getDate() {
+            return date;
+        }
+        public void setDate(String date) {
+            this.date = date;
+        }
     }
     public class EnrolleeMark {
-        private int russianLang = 0;
-        private int belorussianLang = 0;
-        private int physics = 0;
-        private int math = 0;
-        private int chemistry = 0;
-        private int biology = 0;
-        private int foreignLang = 0;
-        private int historyOfBelarus = 0;
-        private int socialStudies = 0;
-        private int geography = 0;
-        private int history = 0;
-        private int certificate = 0;
+        private byte russianLang;
+        private byte belorussianLang;
+        private byte physics;
+        private byte math;
+        private byte chemistry;
+        private byte biology;
+        private byte foreignLang;
+        private byte historyOfBelarus;
+        private byte socialStudies;
+        private byte geography;
+        private byte history;
+        private byte certificate;
 
-        public int getRussianLang() {
+        public byte getRussianLang() {
             return russianLang;
         }
-
-        public int getBelorussianLang() {
+        public byte getBelorussianLang() {
             return belorussianLang;
         }
-
-        public int getPhysics() {
+        public byte getPhysics() {
             return physics;
         }
-
-        public int getMath() {
+        public byte getMath() {
             return math;
         }
-
-        public int getChemistry() {
+        public byte getChemistry() {
             return chemistry;
         }
-
-        public int getBiology() {
+        public byte getBiology() {
             return biology;
         }
-
-        public int getForeignLang() {
+        public byte getForeignLang() {
             return foreignLang;
         }
-
-        public int getHistoryOfBelarus() {
+        public byte getHistoryOfBelarus() {
             return historyOfBelarus;
         }
-
-        public int getSocialStudies() {
+        public byte getSocialStudies() {
             return socialStudies;
         }
-
-        public int getGeography() {
+        public byte getGeography() {
             return geography;
         }
-
-        public int getHistory() {
+        public byte getHistory() {
             return history;
         }
-
-        public int getCertificate() {
+        public byte getCertificate() {
             return certificate;
         }
-
-        private void setRussianLang(int russianLang) {
+        private void setRussianLang(byte russianLang) {
             this.russianLang = russianLang;
         }
-
-        private void setBelorussianLang(int belorussianLang) {
+        private void setBelorussianLang(byte belorussianLang) {
             this.belorussianLang = belorussianLang;
         }
-
-        private void setPhysics(int physics) {
+        private void setPhysics(byte physics) {
             this.physics = physics;
         }
-
-        private void setMath(int math) {
+        private void setMath(byte math) {
             this.math = math;
         }
-
-        private void setChemistry(int chemistry) {
+        private void setChemistry(byte chemistry) {
             this.chemistry = chemistry;
         }
-
-        private void setBiology(int biology) {
+        private void setBiology(byte biology) {
             this.biology = biology;
         }
-
-        private void setForeignLang(int foreignLang) {
+        private void setForeignLang(byte foreignLang) {
             this.foreignLang = foreignLang;
         }
-
-        private void setHistoryOfBelarus(int historyOfBelarus) {
+        private void setHistoryOfBelarus(byte historyOfBelarus) {
             this.historyOfBelarus = historyOfBelarus;
         }
-
-        private void setSocialStudies(int socialStudies) {
+        private void setSocialStudies(byte socialStudies) {
             this.socialStudies = socialStudies;
         }
-
-        private void setGeography(int geography) {
+        private void setGeography(byte geography) {
             this.geography = geography;
         }
-
-        private void setHistory(int history) {
+        private void setHistory(byte history) {
             this.history = history;
         }
-
-        private void setCertificate(int certificate) {
+        private void setCertificate(byte certificate) {
             this.certificate = certificate;
         }
     }
+
     private class Factory {
         void set(Map.Entry<EnrolleeFormCriteria, String> entry) {
             String value = entry.getValue();
             switch (entry.getKey()) {
                 case MATH:
-                    enrolleeMark.setMath(Integer.parseInt(value));
+                    enrolleeMark.setMath(Byte.parseByte(value));
                     break;
                 case NAME:
                     enrolleInfo.setName(value);
@@ -228,25 +196,25 @@ public class Enrollee {
                     enrolleInfo.setPhone(value);
                     break;
                 case BIOLOGY:
-                    enrolleeMark.setBiology(Integer.parseInt(value));
+                    enrolleeMark.setBiology(Byte.parseByte(value));
                     break;
                 case FACULTY:
                     universityInfo.setFaculty(value);
                     break;
                 case HISTORY:
-                    enrolleeMark.setHistory(Integer.parseInt(value));
+                    enrolleeMark.setHistory(Byte.parseByte(value));
                     break;
                 case PHYSICS:
-                    enrolleeMark.setPhysics(Integer.parseInt(value));
+                    enrolleeMark.setPhysics(Byte.parseByte(value));
                     break;
                 case SURNAME:
                     enrolleInfo.setSurname(value);
                     break;
                 case CHEMISTRY:
-                    enrolleeMark.setChemistry(Integer.parseInt(value));
+                    enrolleeMark.setChemistry(Byte.parseByte(value));
                     break;
                 case GEOGRAPHY:
-                    enrolleeMark.setGeography(Integer.parseInt(value));
+                    enrolleeMark.setGeography(Byte.parseByte(value));
                     break;
                 case PASSPORTID:
                     enrolleInfo.setPassportId(value);
@@ -261,48 +229,47 @@ public class Enrollee {
                     universityInfo.setUniversity(value);
                     break;
                 case CERTIFICATE:
-                    enrolleeMark.setCertificate(Integer.parseInt(value));
+                    enrolleeMark.setCertificate(Byte.parseByte(value));
                     break;
                 case FOREIGNLANG:
-                    enrolleeMark.setForeignLang(Integer.parseInt(value));
+                    enrolleeMark.setForeignLang(Byte.parseByte(value));
                     break;
                 case RUSSIANLANG:
-                    enrolleeMark.setRussianLang(Integer.parseInt(value));
+                    enrolleeMark.setRussianLang(Byte.parseByte(value));
                     break;
                 case COUNTRYDOMEN:
                     enrolleInfo.setCountryDomen(value);
                     break;
                 case SOCIALSTUDIES:
-                    enrolleeMark.setSocialStudies(Integer.parseInt(value));
+                    enrolleeMark.setSocialStudies(Byte.parseByte(value));
                     break;
                 case BELORUSSIANLANG:
-                    enrolleeMark.setBelorussianLang(Integer.parseInt(value));
+                    enrolleeMark.setBelorussianLang(Byte.parseByte(value));
                     break;
                 case HISTORYOFBELARUS:
-                    enrolleeMark.setHistoryOfBelarus(Integer.parseInt(value));
+                    enrolleeMark.setHistoryOfBelarus(Byte.parseByte(value));
+                    break;
+                case DATE:
+                    enrolleInfo.setDate(value);
                     break;
                 default:
-                    //throw new FatalException("unknown parameter");
+                    LOGGER.log(Level.FATAL, "unknown parameter");
+                    throw new RuntimeException("unknown parameter");
             }
         }
     }
 
-    public Enrollee(Map<EnrolleeFormCriteria, String> parameters) {
+    public EnrolleeForm(Map<EnrolleeFormCriteria, String> parametersMap) {
         universityInfo = new UniversityInfo();
         enrolleInfo = new EnrolleeInfo();
         enrolleeMark = new EnrolleeMark();
+
         Factory factory = new Factory();
-        for (Map.Entry<EnrolleeFormCriteria, String> entry : parameters.entrySet()) {
+        for (Map.Entry<EnrolleeFormCriteria, String> entry : parametersMap.entrySet()) {
             factory.set(entry);
         }
     }
 
-    public String getStatement() {
-        return statement;
-    }
-    public void setStatement(String statement) {
-        this.statement = statement;
-    }
     public UniversityInfo getUniversityInfo() {
         return universityInfo;
     }
@@ -311,5 +278,20 @@ public class Enrollee {
     }
     public EnrolleeMark getEnrolleeMark() {
         return enrolleeMark;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof EnrolleeForm)) return false;
+        EnrolleeForm that = (EnrolleeForm) o;
+        return Objects.equals(getUniversityInfo(), that.getUniversityInfo()) &&
+                Objects.equals(getEnrolleInfo(), that.getEnrolleInfo()) &&
+                Objects.equals(getEnrolleeMark(), that.getEnrolleeMark());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getUniversityInfo(), getEnrolleInfo(), getEnrolleeMark());
     }
 }

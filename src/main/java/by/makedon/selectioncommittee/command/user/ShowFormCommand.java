@@ -3,7 +3,7 @@ package by.makedon.selectioncommittee.command.user;
 import by.makedon.selectioncommittee.command.Command;
 import by.makedon.selectioncommittee.constant.Page;
 import by.makedon.selectioncommittee.controller.Router;
-import by.makedon.selectioncommittee.entity.Enrollee;
+import by.makedon.selectioncommittee.entity.enrollee.EnrolleeForm;
 import by.makedon.selectioncommittee.exception.DAOException;
 import by.makedon.selectioncommittee.logic.user.ShowFormLogic;
 import org.apache.logging.log4j.Level;
@@ -29,7 +29,7 @@ public class ShowFormCommand implements Command {
 
         Router router = new Router();
         try {
-            Enrollee enrollee = logic.doAction(usernameValue);
+            EnrolleeForm enrolleeForm = logic.doAction(usernameValue);
             ///
             return null;
         } catch (DAOException e) {

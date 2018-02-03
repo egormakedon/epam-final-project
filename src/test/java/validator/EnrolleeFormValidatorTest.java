@@ -7,7 +7,7 @@ import org.testng.annotations.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EnrolleeValidatorTest {
+public class EnrolleeFormValidatorTest {
     @Test
     public void validateTrueTest1() {
         List<String> parameters = new ArrayList<String>();

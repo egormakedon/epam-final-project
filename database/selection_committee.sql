@@ -72,9 +72,9 @@ COMMENT = 'Таблица о специальностях.';
 
 
 -- -----------------------------------------------------
--- Table `selection_committee`.`enrollee`
+-- Table `selection_committee`.`enrolleeForm`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `selection_committee`.`enrollee` (
+CREATE TABLE IF NOT EXISTS `selection_committee`.`enrolleeForm` (
   `passport_id` VARCHAR(10) NOT NULL COMMENT 'ID пасспорта.',
   `country_domen` CHAR(2) NOT NULL COMMENT 'Домен страны.',
   `e_id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Идентификатор.',
@@ -125,7 +125,7 @@ CREATE TABLE IF NOT EXISTS `selection_committee`.`user` (
   UNIQUE INDEX `email_UNIQUE` (`email` ASC),
   CONSTRAINT `fk_user_1`
     FOREIGN KEY (`e_id`)
-    REFERENCES `selection_committee`.`enrollee` (`e_id`)
+    REFERENCES `selection_committee`.`enrolleeForm` (`e_id`)
     ON DELETE SET NULL
     ON UPDATE CASCADE)
 ENGINE = InnoDB
