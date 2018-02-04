@@ -20,6 +20,7 @@ public class LoginCommand implements Command {
     private static final String TYPE = "type";
     private static final String LOGIN = "login";
     private static final String TRUE = "true";
+    private static final String MESSAGE = "message";
 
     private Logic logic;
 
@@ -29,6 +30,16 @@ public class LoginCommand implements Command {
 
     @Override
     public Router execute(HttpServletRequest req) {
+        HttpSession session = req.getSession();
+        String loginValue = (String)session.getAttribute(LOGIN);
+        if (loginValue.equals(TRUE)) {
+            Router router = new Router();
+            router.setRoute(Router.RouteType.FORWARD);
+            req.setAttribute(MESSAGE,"you have already login");
+            router.setPagePath(Page.MESSAGE);
+            return router;
+        }
+
         String usernameValue = req.getParameter(USERNAME);
         String passwordValue = req.getParameter(PASSWORD);
 
@@ -44,7 +55,6 @@ public class LoginCommand implements Command {
             LoginLogic loginLogic = (LoginLogic) logic;
             String type = loginLogic.getType();
 
-            HttpSession session = req.getSession();
             session.setAttribute(USERNAME, usernameValue);
             session.setAttribute(TYPE, type);
             session.setAttribute(LOGIN, TRUE);
