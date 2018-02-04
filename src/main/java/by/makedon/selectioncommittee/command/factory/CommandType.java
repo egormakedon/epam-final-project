@@ -15,12 +15,12 @@ import by.makedon.selectioncommittee.command.base.LogoutCommand;
 import by.makedon.selectioncommittee.command.base.ProfileCommand;
 import by.makedon.selectioncommittee.command.base.RegistrationCommand;
 import by.makedon.selectioncommittee.command.user.ChangeEmailCommand;
-import by.makedon.selectioncommittee.command.user.ChangeUserDataLinkCommand;
-import by.makedon.selectioncommittee.command.user.ChangeUserDataPageCommand;
+import by.makedon.selectioncommittee.command.user.ForwardChangeUserDataLinkCommand;
+import by.makedon.selectioncommittee.command.user.ForwardChangeUserDataCommand;
 import by.makedon.selectioncommittee.command.user.ChangeUserDataCommand;
 import by.makedon.selectioncommittee.command.user.ChangeUsernameCommand;
 import by.makedon.selectioncommittee.command.user.ForwardSendFormCommand;
-import by.makedon.selectioncommittee.command.user.RefreshFillFormCommand;
+import by.makedon.selectioncommittee.command.user.ResetFormCommand;
 import by.makedon.selectioncommittee.command.user.SendFormCommand;
 import by.makedon.selectioncommittee.command.user.ShowFormCommand;
 import by.makedon.selectioncommittee.logic.admin.ChangeNumberOfSeatsLogic;
@@ -36,7 +36,7 @@ import by.makedon.selectioncommittee.logic.base.RegistrationLogic;
 import by.makedon.selectioncommittee.logic.user.ChangeEmailLogic;
 import by.makedon.selectioncommittee.logic.user.ChangeUserDataLogic;
 import by.makedon.selectioncommittee.logic.user.ChangeUsernameLogic;
-import by.makedon.selectioncommittee.logic.user.RefreshFillFormLogic;
+import by.makedon.selectioncommittee.logic.user.ResetFormLogic;
 import by.makedon.selectioncommittee.logic.user.SendFormLogic;
 import by.makedon.selectioncommittee.logic.user.ShowFormLogic;
 
@@ -52,11 +52,11 @@ public enum CommandType {
 
     FORWARDSENDFORM(new ForwardSendFormCommand()),
     SENDFORM(new SendFormCommand(new SendFormLogic())),
-    REFRESHFILLFORM(new RefreshFillFormCommand(new RefreshFillFormLogic())),
-    SHOWFORMPAGE(new ShowFormCommand(new ShowFormLogic())),
-    CHANGEUSERDATAPAGE(new ChangeUserDataPageCommand()),
+    RESETFORM(new ResetFormCommand(new ResetFormLogic())),
+    FORWARDCHANGEUSERDATA(new ForwardChangeUserDataCommand()),
     CHANGEUSERDATA(new ChangeUserDataCommand(new ChangeUserDataLogic())),
-    CHANGEUSERDATALINK(new ChangeUserDataLinkCommand()),
+    FORWARDCHANGEUSERDATALINK(new ForwardChangeUserDataLinkCommand()),
+    SHOWFORMPAGE(new ShowFormCommand(new ShowFormLogic())),
     CHANGEEMAIL(new ChangeEmailCommand(new ChangeEmailLogic())),
     CHANGEUSERNAME(new ChangeUsernameCommand(new ChangeUsernameLogic())),
     DELETE_USER_PAGE(new DeleteUserPageCommand()),

@@ -4,20 +4,34 @@ import by.makedon.selectioncommittee.dao.user.UserDAO;
 import by.makedon.selectioncommittee.dao.user.UserDAOImpl;
 import by.makedon.selectioncommittee.exception.DAOException;
 import by.makedon.selectioncommittee.exception.LogicException;
+import by.makedon.selectioncommittee.logic.Logic;
 import by.makedon.selectioncommittee.mail.MailProperty;
 import by.makedon.selectioncommittee.mail.MailThread;
+import com.sun.istack.internal.NotNull;
 
-public class ChangeUserDataLogic {
-    private static final String CHANGE_USER_DATA = "change user data";
+import java.util.List;
+
+public class ChangeUserDataLogic implements Logic {
+    private static final int LIST_SIZE = 2;
 
     private static final String EMAIL = "email";
     private static final String USERNAME = "username";
     private static final String PASSWORD = "password";
+    private static final String CHANGE_USER_DATA = "change user data";
 
-    public void doAction(String usernameValue, String typeChangerValue) throws LogicException {
+    @Override
+    public void doAction(@NotNull List<String> parameters) throws LogicException {
+        if (parameters.size() != LIST_SIZE) {
+            throw new LogicException("wrong number of parameters");
+        }
+
+        String usernameValue = parameters.get(0);
+        String typeChangerValue = parameters.get(1);
+
+        UserDAO dao = UserDAOImpl.getInstance();
         String emailValue;
         try {
-            emailValue = takeUserEmailValue(usernameValue);
+            emailValue = dao.takeEmailByUsername(usernameValue);
         } catch (DAOException e) {
             throw new LogicException(e);
         }
@@ -27,17 +41,13 @@ public class ChangeUserDataLogic {
         thread.start();
     }
 
-    private String takeUserEmailValue(String usernameValue) throws DAOException {
-        UserDAO dao = UserDAOImpl.getInstance();
-        return dao.takeEmail(usernameValue);
-    }
     private String mailTextCreator(String usernameValue, String typeChangerValue) throws LogicException {
         String mailText;
         switch (typeChangerValue) {
             case EMAIL:
                 mailText = "<form action=\"http://localhost:8080/Controller\" method=\"post\">\n" +
                         "\t\t\t\t\t<input type=\"hidden\" name=\"username\" value=\""+usernameValue+"\">\n" +
-                        "\t\t\t\t\t<input type=\"hidden\" name=\"command\" value=\"changeuserdatalink\">\n" +
+                        "\t\t\t\t\t<input type=\"hidden\" name=\"command\" value=\"forwardchangeuserdatalink\">\n" +
                         "\t\t\t\t\t<input type=\"hidden\" name=\"typechanger\" value=\"email\">\n" +
                         "\t\t\t\t\t<input type=\"submit\" style=\"background:none!important;\n" +
                         "     color:purple;\n" +
@@ -51,7 +61,7 @@ public class ChangeUserDataLogic {
             case USERNAME:
                 mailText = "<form action=\"http://localhost:8080/Controller\" method=\"post\">\n" +
                         "\t\t\t\t\t<input type=\"hidden\" name=\"username\" value=\""+usernameValue+"\">\n" +
-                        "\t\t\t\t\t<input type=\"hidden\" name=\"command\" value=\"changeuserdatalink\">\n" +
+                        "\t\t\t\t\t<input type=\"hidden\" name=\"command\" value=\"forwardchangeuserdatalink\">\n" +
                         "\t\t\t\t\t<input type=\"hidden\" name=\"typechanger\" value=\"username\">\n" +
                         "\t\t\t\t\t<input type=\"submit\" style=\"background:none!important;\n" +
                         "     color:purple;\n" +
@@ -65,7 +75,7 @@ public class ChangeUserDataLogic {
             case PASSWORD:
                 mailText = "<form action=\"http://localhost:8080/Controller\" method=\"post\">\n" +
                         "\t\t\t\t\t<input type=\"hidden\" name=\"username\" value=\""+usernameValue+"\">\n" +
-                        "\t\t\t\t\t<input type=\"hidden\" name=\"command\" value=\"changeuserdatalink\">\n" +
+                        "\t\t\t\t\t<input type=\"hidden\" name=\"command\" value=\"forwardchangeuserdatalink\">\n" +
                         "\t\t\t\t\t<input type=\"hidden\" name=\"typechanger\" value=\"password\">\n" +
                         "\t\t\t\t\t<input type=\"submit\" style=\"background:none!important;\n" +
                         "     color:purple;\n" +
@@ -77,7 +87,7 @@ public class ChangeUserDataLogic {
                         "\t\t\t\t</form>";
                 break;
             default:
-                throw new LogicException("ChangeUserDataLogic exception in mail text creator");
+                throw new LogicException("invalid parameter");
         }
         return mailText;
     }

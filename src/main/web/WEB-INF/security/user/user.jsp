@@ -40,15 +40,15 @@
                 <input class="button" value="send form" type="submit">
             </form>
             <form action="/Controller" method="post">
+                <input type="hidden" name="command" value="resetform">
+                <input class="button" value="reset form" type="submit">
+            </form>
+            <form action="/Controller" method="post">
                 <input type="hidden" name="command" value="showformpage">
                 <input class="button" value="show form" type="submit">
             </form>
             <form action="/Controller" method="post">
-                <input type="hidden" name="command" value="refreshfillform">
-                <input class="button" value="refresh fill form" type="submit">
-            </form>
-            <form action="/Controller" method="post">
-                <input type="hidden" name="command" value="changeuserdatapage">
+                <input type="hidden" name="command" value="forwardchangeuserdata">
                 <input class="button" value="change user data" type="submit">
             </form>
         </div>

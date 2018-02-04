@@ -12,29 +12,26 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChangeUserDataCommand implements Command {
+public class ResetFormCommand implements Command {
     private static final String USERNAME = "username";
-    private static final String TYPE_CHANGER = "typechanger";
 
     private Logic logic;
 
-    public ChangeUserDataCommand(Logic logic) { this.logic = logic; }
+    public ResetFormCommand(Logic logic) { this.logic = logic; }
 
     @Override
     public Router execute(HttpServletRequest req) {
         HttpSession session = req.getSession();
         String usernameValue = (String)session.getAttribute(USERNAME);
-        String typeChangerValue = req.getParameter(TYPE_CHANGER);
 
         List<String> parameters = new ArrayList<String>();
         parameters.add(usernameValue);
-        parameters.add(typeChangerValue);
 
         Router router = new Router();
         router.setRoute(Router.RouteType.REDIRECT);
         try {
             logic.doAction(parameters);
-            router.setPagePath(Page.MESSAGE + "?message=check your email");
+            router.setPagePath(Page.MESSAGE + "?message=" + "form reset successfully");
         } catch (LogicException e) {
             LOGGER.log(Level.ERROR, e);
             router.setPagePath(Page.MESSAGE + "?message=" + e.getMessage());
