@@ -24,8 +24,10 @@ public final class UserDAOImpl implements UserDAO {
         instanceCreated.set(true);
     }
     private UserDAOImpl(){
-        LOGGER.log(Level.FATAL, "Tried to create singleton object with reflection api");
-        throw new RuntimeException("Tried to create singleton object with reflection api");
+        if (instanceCreated.get()) {
+            LOGGER.log(Level.FATAL, "Tried to create singleton object with reflection api");
+            throw new RuntimeException("Tried to create singleton object with reflection api");
+        }
     }
     public static UserDAO getInstance() {
         return INSTANCE;
@@ -54,6 +56,8 @@ public final class UserDAOImpl implements UserDAO {
     private static final String SQL_UPDATE_RESET_ENROLLEE_FORM_BY_USERNAME = "DELETE FROM enrollee WHERE enrollee.e_id IN " +
             "(SELECT u.e_id FROM user u WHERE username=?)";
     private static final String SQL_SELECT_EMAIL_BY_USERNAME = "SELECT email FROM user WHERE username=?";
+    private static final String SQL_UPDATE_CHANGE_EMAIL_BY_USERNAME = "UPDATE user SET email=? WHERE username=?";
+    private static final String SQL_UPDATE_CHANGE_USERNAME = "UPDATE user SET username=? WHERE username=?";
 
     ////////////////////////
 
@@ -65,8 +69,6 @@ public final class UserDAOImpl implements UserDAO {
             " e.history HISTORY, e.certificate CERTIFICATE FROM university u INNER JOIN faculty f ON u.u_id = f.u_id" +
             " INNER JOIN speciality s ON f.f_id = s.f_id INNER JOIN enrollee e ON s.s_id = e.s_id INNER JOIN user ON e.e_id = user.e_id" +
             " WHERE user.username=?;";
-    private static final String SQL_UPDATE_CHANGE_EMAIL_BY_USERNAME = "UPDATE user SET email=? WHERE username=?";
-    private static final String SQL_UPDATE_CHANGE_USERNAME = "UPDATE user SET username=? WHERE username=?";
 
     //////////////////////
 
@@ -160,6 +162,50 @@ public final class UserDAOImpl implements UserDAO {
             if (resultSet.next()) {
                 return resultSet.getString(EMAIL);
             } else {
+                throw new DAOException("user doesn't exist");
+            }
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            close(statement);
+            close(connection);
+        }
+    }
+
+    @Override
+    public void changeEmail(String usernameValue, String newEmailValue) throws DAOException {
+        ProxyConnection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            statement = connection.prepareStatement(SQL_UPDATE_CHANGE_EMAIL_BY_USERNAME);
+            statement.setString(1, newEmailValue);
+            statement.setString(2, usernameValue);
+
+            int rows = statement.executeUpdate();
+            if (rows == 0) {
+                throw new DAOException("user doesn't exist");
+            }
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            close(statement);
+            close(connection);
+        }
+    }
+
+    @Override
+    public void changeUsername(String usernameValue, String newUsernameValue) throws DAOException {
+        ProxyConnection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            statement = connection.prepareStatement(SQL_UPDATE_CHANGE_USERNAME);
+            statement.setString(1, newUsernameValue);
+            statement.setString(2, usernameValue);
+
+            int rows = statement.executeUpdate();
+            if (rows == 0) {
                 throw new DAOException("user doesn't exist");
             }
         } catch (SQLException e) {
@@ -394,43 +440,6 @@ public final class UserDAOImpl implements UserDAO {
             } else {
                 throw new DAOException("enrollee form hasn't found");
             }
-        } catch (SQLException e) {
-            throw new DAOException(e);
-        } finally {
-            close(statement);
-            close(connection);
-        }
-    }
-
-    @Override
-    public void changeEmail(String usernameValue, String newEmailValue) throws DAOException {
-        ProxyConnection connection = null;
-        PreparedStatement statement = null;
-        try {
-            connection = ConnectionPool.getInstance().getConnection();
-            statement = connection.prepareStatement(SQL_UPDATE_CHANGE_EMAIL_BY_USERNAME);
-            statement.setString(1,newEmailValue);
-            statement.setString(2,usernameValue);
-            statement.execute();
-        } catch (SQLException e) {
-            throw new DAOException(e);
-        } finally {
-            close(statement);
-            close(connection);
-        }
-    }
-
-    @Override
-    public boolean changeUsername(String usernameValue, String newUsernameValue) throws DAOException {
-        ProxyConnection connection = null;
-        PreparedStatement statement = null;
-        try {
-            connection = ConnectionPool.getInstance().getConnection();
-            statement = connection.prepareStatement(SQL_UPDATE_CHANGE_USERNAME);
-            statement.setString(1, newUsernameValue);
-            statement.setString(2, usernameValue);
-            int count = statement.executeUpdate();
-            return count == 1;
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {

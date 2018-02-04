@@ -1,26 +1,26 @@
 package by.makedon.selectioncommittee.command.user;
 
 import by.makedon.selectioncommittee.command.Command;
-//import by.makedon.selectioncommittee.constant.LoginState;
 import by.makedon.selectioncommittee.constant.Page;
 import by.makedon.selectioncommittee.controller.Router;
 import by.makedon.selectioncommittee.exception.LogicException;
-import by.makedon.selectioncommittee.logic.user.ChangeUsernameLogic;
+import by.makedon.selectioncommittee.logic.Logic;
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChangeUsernameCommand implements Command {
-    private static final Logger LOGGER = LogManager.getLogger(ChangeUsernameCommand.class);
-    private static final String NEW_USERNAME = "newusername";
     private static final String USERNAME = "username";
+    private static final String NEW_USERNAME = "newusername";
     private static final String LOGIN = "login";
-    private ChangeUsernameLogic logic;
+    private static final String FALSE = "false";
 
-    public ChangeUsernameCommand(ChangeUsernameLogic logic) {
+    private Logic logic;
+
+    public ChangeUsernameCommand(Logic logic) {
         this.logic = logic;
     }
 
@@ -29,24 +29,24 @@ public class ChangeUsernameCommand implements Command {
         String usernameValue = req.getParameter(USERNAME);
         String newUsernameValue = req.getParameter(NEW_USERNAME);
 
+        List<String> parameters = new ArrayList<String>();
+        parameters.add(usernameValue);
+        parameters.add(newUsernameValue);
+
         Router router = new Router();
         router.setRoute(Router.RouteType.REDIRECT);
-
         try {
-            if (logic.doAction(usernameValue, newUsernameValue)) {
-                HttpSession session = req.getSession();
-                String loginState = (String) session.getAttribute(LOGIN);
-//                if (loginState != null && loginState.equals(LoginState.TRUE)) {
-//                    session.removeAttribute(USERNAME);
-//                    session.setAttribute(USERNAME, newUsernameValue);
-//                }
-                router.setPagePath(Page.MESSAGE + "?message=username changed successfully");
-            } else {
-                router.setPagePath(Page.MESSAGE + "?message=user was deleted from the system");
+            logic.doAction(parameters);
+
+            HttpSession session = req.getSession();
+            if (session != null) {
+                session.setAttribute(LOGIN, FALSE);
             }
+
+            router.setPagePath(Page.MESSAGE + "?message=username changed successfully");
         } catch (LogicException e) {
             LOGGER.log(Level.ERROR, e);
-            router.setPagePath(Page.MESSAGE + "?message=" + e);
+            router.setPagePath(Page.MESSAGE + "?message=" + e.getMessage());
         }
         return router;
     }
