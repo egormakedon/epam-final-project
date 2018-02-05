@@ -120,7 +120,7 @@ public class UserValidatorTest {
 
     @Test
     public void validatePasswordTrueTest3() {
-        String password = "egorMadon12345_";
+        String password = "egorMadon12345";
         Assert.assertTrue(UserValidator.validatePassword(password));
     }
 
@@ -132,7 +132,7 @@ public class UserValidatorTest {
 
     @Test
     public void validatePasswordFalseTest2() {
-        String password = "1sadaMdd";
+        String password = "1sadaMdd_";
         Assert.assertFalse(UserValidator.validatePassword(password));
     }
 

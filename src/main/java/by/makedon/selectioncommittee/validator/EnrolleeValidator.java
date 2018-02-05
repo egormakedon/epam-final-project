@@ -37,7 +37,7 @@ public class EnrolleeValidator {
         String certificateValue = parameters.get(16);
 
         if (!validateName(secondNameValue)) {
-            if (!secondNameValue.isEmpty()) {
+            if (secondNameValue == null || !secondNameValue.isEmpty()) {
                 return false;
             }
         }
