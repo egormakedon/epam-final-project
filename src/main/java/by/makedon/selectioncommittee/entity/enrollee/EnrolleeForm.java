@@ -39,6 +39,22 @@ public class EnrolleeForm {
         private void setSpeciality(String speciality) {
             this.speciality = speciality;
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof UniversityInfo)) return false;
+            UniversityInfo that = (UniversityInfo) o;
+            return Objects.equals(getUniversity(), that.getUniversity()) &&
+                    Objects.equals(getFaculty(), that.getFaculty()) &&
+                    Objects.equals(getSpeciality(), that.getSpeciality());
+        }
+
+        @Override
+        public int hashCode() {
+
+            return Objects.hash(getUniversity(), getFaculty(), getSpeciality());
+        }
     }
     public class EnrolleeInfo {
         private String name;
@@ -92,6 +108,26 @@ public class EnrolleeForm {
         }
         public void setDate(String date) {
             this.date = date;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof EnrolleeInfo)) return false;
+            EnrolleeInfo that = (EnrolleeInfo) o;
+            return Objects.equals(getName(), that.getName()) &&
+                    Objects.equals(getSurname(), that.getSurname()) &&
+                    Objects.equals(getSecondName(), that.getSecondName()) &&
+                    Objects.equals(getPassportId(), that.getPassportId()) &&
+                    Objects.equals(getCountryDomen(), that.getCountryDomen()) &&
+                    Objects.equals(getPhone(), that.getPhone()) &&
+                    Objects.equals(getDate(), that.getDate());
+        }
+
+        @Override
+        public int hashCode() {
+
+            return Objects.hash(getName(), getSurname(), getSecondName(), getPassportId(), getCountryDomen(), getPhone(), getDate());
         }
     }
     public class EnrolleeMark {
@@ -179,6 +215,31 @@ public class EnrolleeForm {
         }
         private void setCertificate(byte certificate) {
             this.certificate = certificate;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof EnrolleeMark)) return false;
+            EnrolleeMark that = (EnrolleeMark) o;
+            return getRussianLang() == that.getRussianLang() &&
+                    getBelorussianLang() == that.getBelorussianLang() &&
+                    getPhysics() == that.getPhysics() &&
+                    getMath() == that.getMath() &&
+                    getChemistry() == that.getChemistry() &&
+                    getBiology() == that.getBiology() &&
+                    getForeignLang() == that.getForeignLang() &&
+                    getHistoryOfBelarus() == that.getHistoryOfBelarus() &&
+                    getSocialStudies() == that.getSocialStudies() &&
+                    getGeography() == that.getGeography() &&
+                    getHistory() == that.getHistory() &&
+                    getCertificate() == that.getCertificate();
+        }
+
+        @Override
+        public int hashCode() {
+
+            return Objects.hash(getRussianLang(), getBelorussianLang(), getPhysics(), getMath(), getChemistry(), getBiology(), getForeignLang(), getHistoryOfBelarus(), getSocialStudies(), getGeography(), getHistory(), getCertificate());
         }
     }
 

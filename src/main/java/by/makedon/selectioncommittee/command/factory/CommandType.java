@@ -58,7 +58,8 @@ public enum CommandType {
     FORWARDCHANGEUSERDATALINK(new ForwardChangeUserDataLinkCommand()),
     CHANGEEMAIL(new ChangeEmailCommand(new ChangeEmailLogic())),
     CHANGEUSERNAME(new ChangeUsernameCommand(new ChangeUsernameLogic())),
-    SHOWFORMPAGE(new ShowFormCommand(new ShowFormLogic())),
+    SHOWFORM(new ShowFormCommand(new ShowFormLogic())),
+
     DELETE_USER_PAGE(new DeleteUserPageCommand()),
     DELETE_USER(new DeleteUserCommand(new DeleteUserLogic())),
     REFRESH_STATEMENT(new RefreshStatementCommand(new RefreshStatementLogic())),

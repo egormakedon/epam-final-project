@@ -44,7 +44,7 @@
                 <input class="button" value="reset form" type="submit">
             </form>
             <form action="/Controller" method="post">
-                <input type="hidden" name="command" value="showformpage">
+                <input type="hidden" name="command" value="showform">
                 <input class="button" value="show form" type="submit">
             </form>
             <form action="/Controller" method="post">

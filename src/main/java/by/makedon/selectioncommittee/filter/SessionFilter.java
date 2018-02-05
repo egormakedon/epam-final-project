@@ -36,8 +36,10 @@ public class SessionFilter implements Filter {
         if (session == null) {
             req.getSession(true);
             res.sendRedirect(Page.WELCOME);
+            return;
         } else if (session.isNew()) {
             res.sendRedirect(Page.WELCOME);
+            return;
         }
         filterChain.doFilter(req, res);
     }

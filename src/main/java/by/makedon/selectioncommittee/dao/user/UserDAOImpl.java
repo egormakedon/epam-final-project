@@ -58,19 +58,16 @@ public final class UserDAOImpl implements UserDAO {
     private static final String SQL_SELECT_EMAIL_BY_USERNAME = "SELECT email FROM user WHERE username=?";
     private static final String SQL_UPDATE_CHANGE_EMAIL_BY_USERNAME = "UPDATE user SET email=? WHERE username=?";
     private static final String SQL_UPDATE_CHANGE_USERNAME = "UPDATE user SET username=? WHERE username=?";
-
-    ////////////////////////
-
-    private static final String SQL_SELECT_ENROLLE_DATA = "SELECT u.u_name UNIVERSITY, f.f_name FACULTY, s.s_name SPECIALITY," +
+    private static final String SQL_SELECT_ENROLLEE_FORM_BY_USERNAME = "SELECT u.u_name UNIVERSITY, f.f_name FACULTY, s.s_name SPECIALITY," +
             " e.passport_id PASSPORTID, e.country_domen COUNTRYDOMEN," +
-            " e.surname SURNAME, e.name NAME, e.second_name SECONDNAME, e.phone PHONE, e.statement STATEMENT, e.russian_lang RUSSIANLANG, " +
+            " e.surname SURNAME, e.name NAME, e.second_name SECONDNAME, e.phone PHONE, e.russian_lang RUSSIANLANG, " +
             " e.belorussian_lang BELORUSSIANLANG, e.physics PHYSICS, e.math MATH, e.chemistry CHEMISTRY, e.biology BIOLOGY," +
             " e.foreign_lang FOREIGNLANG, e.history_of_belarus HISTORYOFBELARUS, e.social_studies SOCIALSTUDIES, e.geography GEOGRAPHY," +
-            " e.history HISTORY, e.certificate CERTIFICATE FROM university u INNER JOIN faculty f ON u.u_id = f.u_id" +
+            " e.history HISTORY, e.certificate CERTIFICATE, e.date DATE FROM university u INNER JOIN faculty f ON u.u_id = f.u_id" +
             " INNER JOIN speciality s ON f.f_id = s.f_id INNER JOIN enrollee e ON s.s_id = e.s_id INNER JOIN user ON e.e_id = user.e_id" +
-            " WHERE user.username=?;";
-
-    //////////////////////
+            " WHERE user.username=?";
+    private static final String SQL_SELECT_STATEMENT_BY_USERNAME = "SELECT statement FROM enrollee e INNER JOIN user u ON e.e_id = u.e_id " +
+            "WHERE u.username=?";
 
     @Override
     public boolean couldChangeForm() throws DAOException {
@@ -217,6 +214,97 @@ public final class UserDAOImpl implements UserDAO {
     }
 
     @Override
+    public EnrolleeForm takeEnrolleeForm(String usernameValue) throws DAOException {
+        ProxyConnection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            statement = connection.prepareStatement(SQL_SELECT_ENROLLEE_FORM_BY_USERNAME);
+            statement.setString(1, usernameValue);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                String universityValue = resultSet.getString(EnrolleeFormCriteria.UNIVERSITY.toString());
+                String facultyValue = resultSet.getString(EnrolleeFormCriteria.FACULTY.toString());
+                String specialityValue = resultSet.getString(EnrolleeFormCriteria.SPECIALITY.toString());
+                String nameValue = resultSet.getString(EnrolleeFormCriteria.NAME.toString());
+                String surnameValue = resultSet.getString(EnrolleeFormCriteria.SURNAME.toString());
+                String secondNameValue = resultSet.getString(EnrolleeFormCriteria.SECONDNAME.toString());
+                String passportIdValue = resultSet.getString(EnrolleeFormCriteria.PASSPORTID.toString());
+                String countryDomenValue = resultSet.getString(EnrolleeFormCriteria.COUNTRYDOMEN.toString());
+                String phoneValue = resultSet.getString(EnrolleeFormCriteria.PHONE.toString());
+                String russianLangValue = resultSet.getString(EnrolleeFormCriteria.RUSSIANLANG.toString());
+                String belorussianLangValue = resultSet.getString(EnrolleeFormCriteria.BELORUSSIANLANG.toString());
+                String physicsValue = resultSet.getString(EnrolleeFormCriteria.PHYSICS.toString());
+                String mathValue = resultSet.getString(EnrolleeFormCriteria.MATH.toString());
+                String chemistryValue = resultSet.getString(EnrolleeFormCriteria.CHEMISTRY.toString());
+                String biologyValue = resultSet.getString(EnrolleeFormCriteria.BIOLOGY.toString());
+                String foreignLangValue = resultSet.getString(EnrolleeFormCriteria.FOREIGNLANG.toString());
+                String historyOfBelarusValue = resultSet.getString(EnrolleeFormCriteria.HISTORYOFBELARUS.toString());
+                String socialStudiesValue = resultSet.getString(EnrolleeFormCriteria.SOCIALSTUDIES.toString());
+                String geographyValue = resultSet.getString(EnrolleeFormCriteria.GEOGRAPHY.toString());
+                String historyValue = resultSet.getString(EnrolleeFormCriteria.HISTORY.toString());
+                String certificateValue = resultSet.getString(EnrolleeFormCriteria.CERTIFICATE.toString());
+                String dateValue = resultSet.getString(EnrolleeFormCriteria.DATE.toString());
+
+                Map<EnrolleeFormCriteria, String> parameters = new HashMap<EnrolleeFormCriteria, String>();
+                parameters.put(EnrolleeFormCriteria.UNIVERSITY, universityValue);
+                parameters.put(EnrolleeFormCriteria.FACULTY, facultyValue);
+                parameters.put(EnrolleeFormCriteria.SPECIALITY, specialityValue);
+                parameters.put(EnrolleeFormCriteria.NAME, nameValue);
+                parameters.put(EnrolleeFormCriteria.SURNAME, surnameValue);
+                parameters.put(EnrolleeFormCriteria.SECONDNAME, secondNameValue);
+                parameters.put(EnrolleeFormCriteria.PASSPORTID, passportIdValue);
+                parameters.put(EnrolleeFormCriteria.COUNTRYDOMEN, countryDomenValue);
+                parameters.put(EnrolleeFormCriteria.PHONE, phoneValue);
+                parameters.put(EnrolleeFormCriteria.RUSSIANLANG, russianLangValue);
+                parameters.put(EnrolleeFormCriteria.BELORUSSIANLANG, belorussianLangValue);
+                parameters.put(EnrolleeFormCriteria.PHYSICS, physicsValue);
+                parameters.put(EnrolleeFormCriteria.MATH, mathValue);
+                parameters.put(EnrolleeFormCriteria.CHEMISTRY, chemistryValue);
+                parameters.put(EnrolleeFormCriteria.BIOLOGY, biologyValue);
+                parameters.put(EnrolleeFormCriteria.FOREIGNLANG, foreignLangValue);
+                parameters.put(EnrolleeFormCriteria.HISTORYOFBELARUS, historyOfBelarusValue);
+                parameters.put(EnrolleeFormCriteria.SOCIALSTUDIES, socialStudiesValue);
+                parameters.put(EnrolleeFormCriteria.GEOGRAPHY, geographyValue);
+                parameters.put(EnrolleeFormCriteria.HISTORY, historyValue);
+                parameters.put(EnrolleeFormCriteria.CERTIFICATE, certificateValue);
+                parameters.put(EnrolleeFormCriteria.DATE, dateValue);
+
+                return new EnrolleeForm(parameters);
+            } else {
+                throw new DAOException("enrollee form hasn't found");
+            }
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            close(statement);
+            close(connection);
+        }
+    }
+
+    @Override
+    public String takeStatementByUsername(String usernameValue) throws DAOException {
+        ProxyConnection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            statement = connection.prepareStatement(SQL_SELECT_STATEMENT_BY_USERNAME);
+            statement.setString(1, usernameValue);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getString(STATEMENT);
+            } else {
+                throw new DAOException("enrollee form hasn't found");
+            }
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            close(statement);
+            close(connection);
+        }
+    }
+
+    @Override
     public Object clone() throws CloneNotSupportedException {
         LOGGER.log(Level.ERROR, "Tried to clone singleton object");
         throw new CloneNotSupportedException("Tried to clone singleton object");
@@ -347,98 +435,6 @@ public final class UserDAOImpl implements UserDAO {
             int row = statement.executeUpdate();
             if (row == 0) {
                 throw new DAOException("user doesn't exist");
-            }
-        } catch (SQLException e) {
-            throw new DAOException(e);
-        } finally {
-            close(statement);
-            close(connection);
-        }
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    @Override
-    public boolean isFormFilled(String usernameValue) throws DAOException {
-        ProxyConnection connection = null;
-        PreparedStatement statement = null;
-        try {
-            connection = ConnectionPool.getInstance().getConnection();
-            statement = connection.prepareStatement(SQL_SELECT_IS_NULL_E_ID_BY_USERNAME);
-            statement.setString(1,usernameValue);
-            ResultSet resultSet = statement.executeQuery();
-            resultSet.next();
-            int value = Integer.parseInt(resultSet.getString(RESULT));
-            return value == 0;
-        } catch (SQLException e) {
-            throw new DAOException(e);
-        } finally {
-            close(statement);
-            close(connection);
-        }
-    }
-
-    @Override
-    public EnrolleeForm takeEnrollee(String usernameValue) throws DAOException {
-        ProxyConnection connection = null;
-        PreparedStatement statement = null;String s = "1";
-        try {
-            connection = ConnectionPool.getInstance().getConnection();
-            statement = connection.prepareStatement(SQL_SELECT_ENROLLE_DATA);
-            statement.setString(1, usernameValue);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                String universityValue = resultSet.getString(EnrolleeFormCriteria.UNIVERSITY.toString());
-                String facultyValue = resultSet.getString(EnrolleeFormCriteria.FACULTY.toString());
-                String specialityValue = resultSet.getString(EnrolleeFormCriteria.SPECIALITY.toString());
-                String nameValue = resultSet.getString(EnrolleeFormCriteria.NAME.toString());
-                String surnameValue = resultSet.getString(EnrolleeFormCriteria.SURNAME.toString());
-                String secondNameValue = resultSet.getString(EnrolleeFormCriteria.SECONDNAME.toString());
-                String passportIdValue = resultSet.getString(EnrolleeFormCriteria.PASSPORTID.toString());
-                String countryDomenValue = resultSet.getString(EnrolleeFormCriteria.COUNTRYDOMEN.toString());
-                String phoneValue = resultSet.getString(EnrolleeFormCriteria.PHONE.toString());
-                String russianLangValue = resultSet.getString(EnrolleeFormCriteria.RUSSIANLANG.toString());
-                String belorussianLangValue = resultSet.getString(EnrolleeFormCriteria.BELORUSSIANLANG.toString());
-                String physicsValue = resultSet.getString(EnrolleeFormCriteria.PHYSICS.toString());
-                String mathValue = resultSet.getString(EnrolleeFormCriteria.MATH.toString());
-                String chemistryValue = resultSet.getString(EnrolleeFormCriteria.CHEMISTRY.toString());
-                String biologyValue = resultSet.getString(EnrolleeFormCriteria.BIOLOGY.toString());
-                String foreignLangValue = resultSet.getString(EnrolleeFormCriteria.FOREIGNLANG.toString());
-                String historyOfBelarusValue = resultSet.getString(EnrolleeFormCriteria.HISTORYOFBELARUS.toString());
-                String socialStudiesValue = resultSet.getString(EnrolleeFormCriteria.SOCIALSTUDIES.toString());
-                String geographyValue = resultSet.getString(EnrolleeFormCriteria.GEOGRAPHY.toString());
-                String historyValue = resultSet.getString(EnrolleeFormCriteria.HISTORY.toString());
-                String certificateValue = resultSet.getString(EnrolleeFormCriteria.CERTIFICATE.toString());
-                //String statementValue = resultSet.getString(EnrolleeFormCriteria.STATEMENT.toString());
-
-                Map<EnrolleeFormCriteria, String> parameters = new HashMap<EnrolleeFormCriteria, String>();
-                parameters.put(EnrolleeFormCriteria.UNIVERSITY, universityValue);
-                parameters.put(EnrolleeFormCriteria.FACULTY, facultyValue);
-                parameters.put(EnrolleeFormCriteria.SPECIALITY, specialityValue);
-                parameters.put(EnrolleeFormCriteria.NAME, nameValue);
-                parameters.put(EnrolleeFormCriteria.SURNAME, surnameValue);
-                parameters.put(EnrolleeFormCriteria.SECONDNAME, secondNameValue);
-                parameters.put(EnrolleeFormCriteria.PASSPORTID, passportIdValue);
-                parameters.put(EnrolleeFormCriteria.COUNTRYDOMEN, countryDomenValue);
-                parameters.put(EnrolleeFormCriteria.PHONE, phoneValue);
-                parameters.put(EnrolleeFormCriteria.RUSSIANLANG, russianLangValue);
-                parameters.put(EnrolleeFormCriteria.BELORUSSIANLANG, belorussianLangValue);
-                parameters.put(EnrolleeFormCriteria.PHYSICS, physicsValue);
-                parameters.put(EnrolleeFormCriteria.MATH, mathValue);
-                parameters.put(EnrolleeFormCriteria.CHEMISTRY, chemistryValue);
-                parameters.put(EnrolleeFormCriteria.BIOLOGY, biologyValue);
-                parameters.put(EnrolleeFormCriteria.FOREIGNLANG, foreignLangValue);
-                parameters.put(EnrolleeFormCriteria.HISTORYOFBELARUS, historyOfBelarusValue);
-                parameters.put(EnrolleeFormCriteria.SOCIALSTUDIES, socialStudiesValue);
-                parameters.put(EnrolleeFormCriteria.GEOGRAPHY, geographyValue);
-                parameters.put(EnrolleeFormCriteria.HISTORY, historyValue);
-                parameters.put(EnrolleeFormCriteria.CERTIFICATE, certificateValue);
-                //parameters.put(EnrolleeFormCriteria.STATEMENT, statementValue);
-
-                EnrolleeForm enrolleeForm = new EnrolleeForm(parameters);
-                return enrolleeForm;
-            } else {
-                throw new DAOException("enrollee form hasn't found");
             }
         } catch (SQLException e) {
             throw new DAOException(e);

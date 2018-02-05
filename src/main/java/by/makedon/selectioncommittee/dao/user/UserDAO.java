@@ -12,9 +12,6 @@ public interface UserDAO extends DAO {
     String takeEmailByUsername(String usernameValue) throws DAOException;
     void changeEmail(String usernameValue, String newEmailValue) throws DAOException;
     void changeUsername(String usernameValue, String newUsernameValue) throws DAOException;
-
-    /////////////////////////////
-    boolean isFormFilled(String usernameValue) throws DAOException;
-
-    EnrolleeForm takeEnrollee(String usernameValue) throws DAOException;
+    EnrolleeForm takeEnrolleeForm(String usernameValue) throws DAOException;
+    String takeStatementByUsername(String usernameValue) throws DAOException;
 }
