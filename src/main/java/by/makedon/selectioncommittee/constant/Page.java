@@ -16,6 +16,7 @@ public class Page {
     public static final String CHANGE_USER_DATA = "/WEB-INF/security/user/changeUserDataPage.jsp";
     public static final String CHANGE_EMAIL = "/WEB-INF/security/user/changeEmail.jsp";
     public static final String CHANGE_USERNAME = "/WEB-INF/security/user/changeUsername.jsp";
+    public static final String CHECK_STATUS = "/WEB-INF/security/user/checkStatus.jsp";
 
     public static final String ADMIN = "/WEB-INF/security/admin/admin.jsp";
     public static final String DELETE_USER = "/WEB-INF/security/admin/deleteUserPage.jsp";

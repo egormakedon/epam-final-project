@@ -15,6 +15,7 @@ import by.makedon.selectioncommittee.command.base.LogoutCommand;
 import by.makedon.selectioncommittee.command.base.ProfileCommand;
 import by.makedon.selectioncommittee.command.base.RegistrationCommand;
 import by.makedon.selectioncommittee.command.user.ChangeEmailCommand;
+import by.makedon.selectioncommittee.command.user.CheckStatusCommand;
 import by.makedon.selectioncommittee.command.user.ForwardChangeUserDataLinkCommand;
 import by.makedon.selectioncommittee.command.user.ForwardChangeUserDataCommand;
 import by.makedon.selectioncommittee.command.user.ChangeUserDataCommand;
@@ -36,6 +37,7 @@ import by.makedon.selectioncommittee.logic.base.RegistrationLogic;
 import by.makedon.selectioncommittee.logic.user.ChangeEmailLogic;
 import by.makedon.selectioncommittee.logic.user.ChangeUserDataLogic;
 import by.makedon.selectioncommittee.logic.user.ChangeUsernameLogic;
+import by.makedon.selectioncommittee.logic.user.CheckStatusLogic;
 import by.makedon.selectioncommittee.logic.user.ResetFormLogic;
 import by.makedon.selectioncommittee.logic.user.SendFormLogic;
 import by.makedon.selectioncommittee.logic.user.ShowFormLogic;
@@ -59,6 +61,7 @@ public enum CommandType {
     CHANGEEMAIL(new ChangeEmailCommand(new ChangeEmailLogic())),
     CHANGEUSERNAME(new ChangeUsernameCommand(new ChangeUsernameLogic())),
     SHOWFORM(new ShowFormCommand(new ShowFormLogic())),
+    CHECKSTATUS(new CheckStatusCommand(new CheckStatusLogic())),
 
     DELETE_USER_PAGE(new DeleteUserPageCommand()),
     DELETE_USER(new DeleteUserCommand(new DeleteUserLogic())),

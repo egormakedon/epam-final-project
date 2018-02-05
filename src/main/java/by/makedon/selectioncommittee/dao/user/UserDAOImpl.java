@@ -39,6 +39,7 @@ public final class UserDAOImpl implements UserDAO {
     private static final String SPECIALITY_ID = "specialityId";
     private static final String ENROLLEE_ID = "enrolleeId";
     private static final String EMAIL = "email";
+    private static final String USERNAME = "username";
 
     private static final String SQL_SELECT_FIRST_STATEMENT = "SELECT statement FROM enrollee LIMIT 1";
     private static final String SQL_SELECT_IS_NULL_E_ID_BY_USERNAME = "SELECT isNull(e_id) result FROM user WHERE username=?";
@@ -68,6 +69,11 @@ public final class UserDAOImpl implements UserDAO {
             " WHERE user.username=?";
     private static final String SQL_SELECT_STATEMENT_BY_USERNAME = "SELECT statement FROM enrollee e INNER JOIN user u ON e.e_id = u.e_id " +
             "WHERE u.username=?";
+    private static final String SQL_SELECT_USERNAME_ORDER_BY_SUBJECTS_SCORE_DESC = "SELECT u.username username FROM user u " +
+            "INNER JOIN enrollee e ON u.e_id=e.e_id WHERE e.s_id=? ORDER BY russian_lang+belorussian_lang+physics+math+chemistry+biology+" +
+            "foreign_lang+history_of_belarus+social_studies+geography+history+certificate DESC";
+    private static final String SQL_SELECT_SPECIALITY_ID_BY_USERNAME = "SELECT e.s_id specialityId FROM user u " +
+            "INNER JOIN enrollee e ON u.e_id=e.e_id WHERE u.username=?";
 
     @Override
     public boolean couldChangeForm() throws DAOException {
@@ -296,6 +302,51 @@ public final class UserDAOImpl implements UserDAO {
             } else {
                 throw new DAOException("enrollee form hasn't found");
             }
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            close(statement);
+            close(connection);
+        }
+    }
+
+    @Override
+    public long takeSpecialityIdByUsername(String usernameValue) throws DAOException {
+        ProxyConnection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            statement = connection.prepareStatement(SQL_SELECT_SPECIALITY_ID_BY_USERNAME);
+            statement.setString(1, usernameValue);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getLong(SPECIALITY_ID);
+            } else {
+                throw new DAOException("form doesn't exist");
+            }
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            close(statement);
+            close(connection);
+        }
+    }
+
+    @Override
+    public int takeEnrolleePlaceByUsernameSpecialityID(String usernameValue, long specialityIdValue) throws DAOException {
+        ProxyConnection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            statement = connection.prepareStatement(SQL_SELECT_USERNAME_ORDER_BY_SUBJECTS_SCORE_DESC);
+            statement.setLong(1, specialityIdValue);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                if (usernameValue.equals(resultSet.getString(USERNAME))) {
+                    return resultSet.getRow();
+                }
+            }
+            throw new DAOException("enrollee form doesn't exist");
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {

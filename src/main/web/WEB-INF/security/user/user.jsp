@@ -48,6 +48,10 @@
                 <input class="button" value="show form" type="submit">
             </form>
             <form action="/Controller" method="post">
+                <input type="hidden" name="command" value="checkstatus">
+                <input class="button" value="check status" type="submit">
+            </form>
+            <form action="/Controller" method="post">
                 <input type="hidden" name="command" value="forwardchangeuserdata">
                 <input class="button" value="change user data" type="submit">
             </form>

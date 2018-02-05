@@ -14,4 +14,6 @@ public interface UserDAO extends DAO {
     void changeUsername(String usernameValue, String newUsernameValue) throws DAOException;
     EnrolleeForm takeEnrolleeForm(String usernameValue) throws DAOException;
     String takeStatementByUsername(String usernameValue) throws DAOException;
+    long takeSpecialityIdByUsername(String usernameValue) throws DAOException;
+    int takeEnrolleePlaceByUsernameSpecialityID(String usernameValue, long specialityIdValue) throws DAOException;
 }

@@ -32,7 +32,7 @@ public class AdminDAOImpl implements AdminDAO {
     private static final String SQL_DELETE_ENROLLEE_BY_USERNAME = "DELETE FROM enrollee e WHERE e.e_id IN (SELECT u.e_id FROM user u WHERE u.username=?);";
     private static final String SQL_DELETE_USER_BY_USERNAME = "DELETE FROM user WHERE username=?";
     private static final String SQL_UPDATE_RESET_STATEMENT = "UPDATE enrollee SET statement='В процессе';";
-    private static final String SQL_SELECT_ALL_ENROLLEE_E_ID_S_ID_SCORE = "SELECT e_id enrolleeId, s_id specialityId, erussian_lang+belorussian_lang+physics+math+chemistry+biology+foreign_lang+history_of_belarus+social_studies+geography+history+certificate score FROM enrollee;";
+    private static final String SQL_SELECT_ALL_ENROLLEE_E_ID_S_ID_SCORE = "SELECT e_id enrolleeId, s_id specialityId, russian_lang+belorussian_lang+physics+math+chemistry+biology+foreign_lang+history_of_belarus+social_studies+geography+history+certificate score FROM enrollee;";
     private static final String SQL_SELECT_ALL_SPECIALITY_ID_NUMBER_OF_SEATS = "SELECT s_id specialityId, number_of_seats numberOfSeats FROM speciality;";
     private static final String SQL_UPDATE_STATEMENT_BY_ENROLLEE_ID = "UPDATE enrollee SET statement=? WHERE e_id=?";
     private static final String SQL_UPDATE_NUMBER_OF_SEATS_BY_SPECIALITY = "UPDATE speciality SET number_of_seats=? WHERE s_name=?";
