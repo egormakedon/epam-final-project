@@ -28,8 +28,7 @@
 									  accesskey="1" value="PROFILE">
 							</a>
 						</li>
-						<li><a href="../jsp/login.jsp" accesskey="2" title="">Login</a></li>
-						<li><a href="../jsp/registration.jsp" accesskey="3" title="">Registration</a></li>
+						<li><a href="../jsp/registration.jsp" accesskey="2" title="">Registration</a></li>
 					</ul>
 				</form>
 			</div>
