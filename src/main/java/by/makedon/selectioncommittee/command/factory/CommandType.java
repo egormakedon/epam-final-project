@@ -2,6 +2,7 @@ package by.makedon.selectioncommittee.command.factory;
 
 import by.makedon.selectioncommittee.command.admin.ChangeNumberOfSeatsCommand;
 import by.makedon.selectioncommittee.command.admin.DeleteUserCommand;
+import by.makedon.selectioncommittee.command.admin.ForwardChangeNumberOfSeatsCommand;
 import by.makedon.selectioncommittee.command.admin.ForwardDeleteUserCommand;
 import by.makedon.selectioncommittee.command.admin.ResetStatementCommand;
 import by.makedon.selectioncommittee.command.admin.SetStatementCommand;
@@ -67,7 +68,8 @@ public enum CommandType {
     RESETSTATEMENT(new ResetStatementCommand(new ResetStatementLogic())),
     FORWARDDELETEUSER(new ForwardDeleteUserCommand()),
     DELETEUSER(new DeleteUserCommand(new DeleteUserLogic())),
-    CHANGE_NUMBER_OF_SEATS(new ChangeNumberOfSeatsCommand(new ChangeNumberOfSeatsLogic()));
+    FORWARDCHANGENUMBEROFSEATS(new ForwardChangeNumberOfSeatsCommand()),
+    CHANGENUMBEROFSEATS(new ChangeNumberOfSeatsCommand(new ChangeNumberOfSeatsLogic()));
 
     private Command command;
     CommandType(Command command) {

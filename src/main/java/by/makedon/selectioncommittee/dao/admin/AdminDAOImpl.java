@@ -53,7 +53,7 @@ public final class AdminDAOImpl implements AdminDAO {
     private static final String SQL_DELETE_USER_BY_USERNAME = "DELETE FROM user WHERE username=?";
     private static final String SQL_UPDATE_RESET_STATEMENT = "UPDATE enrollee SET statement='В процессе'";
     private static final String SQL_UPDATE_NUMBER_OF_SEATS_BY_SPECIALITY = "UPDATE speciality SET number_of_seats=? WHERE s_name=?";
-    private static final String SQL_SELECT_STATEMENT = "SELECT statement FROM enrollee LIMIT 1";
+    private static final String SQL_SELECT_STATEMENT_FIRST = "SELECT statement FROM enrollee LIMIT 1";
 
     @Override
     public Set<EnrolleeState> takeEnrolleeStateSet() throws DAOException {
@@ -194,6 +194,28 @@ public final class AdminDAOImpl implements AdminDAO {
     }
 
     @Override
+    public boolean isStatementInProcess() throws DAOException {
+        ProxyConnection connection = null;
+        Statement statement = null;
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(SQL_SELECT_STATEMENT_FIRST);
+
+            if (resultSet.next()) {
+                String statementValue = resultSet.getString(STATEMENT);
+                return statementValue.equals(STATEMENT_IN_PROCESS);
+            }
+            return false;
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            close(statement);
+            close(connection);
+        }
+    }
+
+    @Override
     public void changeNumberOfSeats(String specialityValue, String numberOfSeatsValue) throws DAOException {
         ProxyConnection connection = null;
         PreparedStatement statement = null;
@@ -202,27 +224,11 @@ public final class AdminDAOImpl implements AdminDAO {
             statement = connection.prepareStatement(SQL_UPDATE_NUMBER_OF_SEATS_BY_SPECIALITY);
             statement.setInt(1, Integer.valueOf(numberOfSeatsValue));
             statement.setString(2, specialityValue);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            throw new DAOException(e);
-        } finally {
-            close(statement);
-            close(connection);
-        }
-    }
-    @Override
-    public boolean isEnrolleeStatementInProcess() throws DAOException {
-        ProxyConnection connection = null;
-        PreparedStatement statement = null;
-        try {
-            connection = ConnectionPool.getInstance().getConnection();
-            statement = connection.prepareStatement(SQL_SELECT_STATEMENT);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                String statementValue = resultSet.getString(STATEMENT);
-                return statementValue.equals(STATEMENT_IN_PROCESS);
+
+            int rows = statement.executeUpdate();
+            if (rows == 0) {
+                throw new DAOException("speciality doesn't exist");
             }
-            return false;
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {

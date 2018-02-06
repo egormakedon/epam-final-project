@@ -14,6 +14,6 @@ public interface AdminDAO extends DAO {
     void resetStatement() throws DAOException;
     void deleteEnrolleeFormByUsername(String usernameValue) throws DAOException;
     void deleteUserByUsername(String usernameValue) throws DAOException;
+    boolean isStatementInProcess() throws DAOException;
     void changeNumberOfSeats(String specialityValue, String numberOfSeatsValue) throws DAOException;
-    boolean isEnrolleeStatementInProcess() throws DAOException;
 }
