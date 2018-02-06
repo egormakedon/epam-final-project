@@ -3,7 +3,7 @@ package by.makedon.selectioncommittee.command.factory;
 import by.makedon.selectioncommittee.command.admin.ChangeNumberOfSeatsCommand;
 import by.makedon.selectioncommittee.command.admin.DeleteUserCommand;
 import by.makedon.selectioncommittee.command.admin.DeleteUserPageCommand;
-import by.makedon.selectioncommittee.command.admin.RefreshStatementCommand;
+import by.makedon.selectioncommittee.command.admin.ResetStatementCommand;
 import by.makedon.selectioncommittee.command.admin.SetStatementCommand;
 import by.makedon.selectioncommittee.command.base.AcceptRegistrationCommand;
 import by.makedon.selectioncommittee.command.base.ChangePasswordCommand;
@@ -26,7 +26,7 @@ import by.makedon.selectioncommittee.command.user.SendFormCommand;
 import by.makedon.selectioncommittee.command.user.ShowFormCommand;
 import by.makedon.selectioncommittee.logic.admin.ChangeNumberOfSeatsLogic;
 import by.makedon.selectioncommittee.logic.admin.DeleteUserLogic;
-import by.makedon.selectioncommittee.logic.admin.RefreshStatementLogic;
+import by.makedon.selectioncommittee.logic.admin.ResetStatementLogic;
 import by.makedon.selectioncommittee.logic.admin.SetStatementLogic;
 import by.makedon.selectioncommittee.logic.base.AcceptRegistrationLogic;
 import by.makedon.selectioncommittee.logic.base.ChangePasswordLogic;
@@ -63,10 +63,10 @@ public enum CommandType {
     SHOWFORM(new ShowFormCommand(new ShowFormLogic())),
     CHECKSTATUS(new CheckStatusCommand(new CheckStatusLogic())),
 
+    SETSTATEMENT(new SetStatementCommand(new SetStatementLogic())),
+    RESETSTATEMENT(new ResetStatementCommand(new ResetStatementLogic())),
     DELETE_USER_PAGE(new DeleteUserPageCommand()),
     DELETE_USER(new DeleteUserCommand(new DeleteUserLogic())),
-    REFRESH_STATEMENT(new RefreshStatementCommand(new RefreshStatementLogic())),
-    SET_STATEMENT(new SetStatementCommand(new SetStatementLogic())),
     CHANGE_NUMBER_OF_SEATS(new ChangeNumberOfSeatsCommand(new ChangeNumberOfSeatsLogic()));
 
     private Command command;

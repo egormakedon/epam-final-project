@@ -36,20 +36,24 @@
     <div id="banner-wrapper">
         <div id="banner" class="container">
             <form action="/Controller" method="post">
-                <input type="hidden" name="command" value="delete_user_page">
+                <input type="hidden" name="command" value="showenrollees">
+                <input class="button" value="show enrollees" type="submit">
+            </form>
+            <form action="/Controller" method="post">
+                <input type="hidden" name="command" value="setstatement">
+                <input class="button" value="set statement" type="submit">
+            </form>
+            <form action="/Controller" method="post">
+                <input type="hidden" name="command" value="resetstatement">
+                <input class="button" value="reset statement" type="submit">
+            </form>
+            <form action="/Controller" method="post">
+                <input type="hidden" name="command" value="forwardchangenumberofseats">
+                <input class="button" value="change number of seats" type="submit">
+            </form>
+            <form action="/Controller" method="post">
+                <input type="hidden" name="command" value="forwarddeleteuser">
                 <input class="button" value="delete user" type="submit">
-            </form>
-            <form action="/Controller" method="post">
-                <input type="hidden" name="command" value="">
-                <input class="button" value="show form" type="submit">
-            </form>
-            <form action="/Controller" method="post">
-                <input type="hidden" name="command" value="">
-                <input class="button" value="refresh fill form" type="submit">
-            </form>
-            <form action="/Controller" method="post">
-                <input type="hidden" name="command" value="">
-                <input class="button" value="refresh fill form" type="submit">
             </form>
         </div>
     </div>

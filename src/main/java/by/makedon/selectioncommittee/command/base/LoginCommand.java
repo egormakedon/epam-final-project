@@ -21,6 +21,8 @@ public class LoginCommand implements Command {
     private static final String LOGIN = "login";
     private static final String TRUE = "true";
 
+    private static final String ADMIN = "admin";
+
     private Logic logic;
 
     public LoginCommand(Logic logic) {
@@ -49,7 +51,12 @@ public class LoginCommand implements Command {
             session.setAttribute(TYPE, type);
             session.setAttribute(LOGIN, TRUE);
 
-            router.setPagePath(Page.FORWARD + "?pagePath=" + Page.USER);
+            if (type.equals(ADMIN)) {
+                router.setPagePath(Page.FORWARD + "?pagePath=" + Page.ADMIN);
+            } else {
+                router.setPagePath(Page.FORWARD + "?pagePath=" + Page.USER);
+            }
+
         } catch (LogicException e) {
             LOGGER.log(Level.ERROR, e);
             router.setPagePath(Page.MESSAGE + "?message=" + e.getMessage());
