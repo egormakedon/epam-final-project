@@ -6,7 +6,7 @@ import by.makedon.selectioncommittee.controller.Router;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class DeleteUserPageCommand implements Command {
+public class ForwardDeleteUserCommand implements Command {
 
     @Override
     public Router execute(HttpServletRequest req) {

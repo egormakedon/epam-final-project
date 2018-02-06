@@ -24,7 +24,7 @@ public class LoginLogic implements Logic {
         String usernameValue = parameters.get(0);
         String passwordValue = parameters.get(1);
 
-        if (!UserValidator.validateUsername(usernameValue) && UserValidator.validatePassword(passwordValue)) {
+        if (!(UserValidator.validateUsername(usernameValue) && UserValidator.validatePassword(passwordValue))) {
             throw new LogicException("invalid input parameters");
         }
 

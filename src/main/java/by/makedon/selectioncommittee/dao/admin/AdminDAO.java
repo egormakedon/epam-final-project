@@ -12,7 +12,8 @@ public interface AdminDAO extends DAO {
     Map<Long,Integer> takeSpecialityIdNumberOfSeatsMap() throws DAOException;
     void refreshStatement(Set<EnrolleeState> enrolleeStateSet) throws DAOException;
     void resetStatement() throws DAOException;
-    void deleteUser(String usernameValue) throws DAOException;
+    void deleteEnrolleeFormByUsername(String usernameValue) throws DAOException;
+    void deleteUserByUsername(String usernameValue) throws DAOException;
     void changeNumberOfSeats(String specialityValue, String numberOfSeatsValue) throws DAOException;
     boolean isEnrolleeStatementInProcess() throws DAOException;
 }

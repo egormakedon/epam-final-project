@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class AdminDAOImpl implements AdminDAO {
+public final class AdminDAOImpl implements AdminDAO {
     private static final AdminDAO INSTANCE;
     private static AtomicBoolean instanceCreated = new AtomicBoolean(false);
     static {
@@ -48,7 +48,8 @@ public class AdminDAOImpl implements AdminDAO {
     private static final String SQL_SELECT_ALL_SPECIALITY_ID_NUMBER_OF_SEATS = "SELECT s_id specialityId, number_of_seats numberOfSeats " +
             "FROM speciality";
     private static final String SQL_UPDATE_STATEMENT_BY_ENROLLEE_ID = "UPDATE enrollee SET statement=? WHERE e_id=?";
-    private static final String SQL_DELETE_ENROLLEE_BY_USERNAME = "DELETE FROM enrollee e WHERE e.e_id IN (SELECT u.e_id FROM user u WHERE u.username=?);";
+    private static final String SQL_DELETE_ENROLLEE_BY_USERNAME = "DELETE FROM enrollee WHERE enrollee.e_id = " +
+            "(SELECT user.e_id FROM user WHERE username=?)";
     private static final String SQL_DELETE_USER_BY_USERNAME = "DELETE FROM user WHERE username=?";
     private static final String SQL_UPDATE_RESET_STATEMENT = "UPDATE enrollee SET statement='В процессе'";
     private static final String SQL_UPDATE_NUMBER_OF_SEATS_BY_SPECIALITY = "UPDATE speciality SET number_of_seats=? WHERE s_name=?";
@@ -156,7 +157,7 @@ public class AdminDAOImpl implements AdminDAO {
     }
 
     @Override
-    public void deleteUser(String usernameValue) throws DAOException {
+    public void deleteEnrolleeFormByUsername(String usernameValue) throws DAOException {
         ProxyConnection connection = null;
         PreparedStatement statement = null;
         try {
@@ -164,10 +165,26 @@ public class AdminDAOImpl implements AdminDAO {
             statement = connection.prepareStatement(SQL_DELETE_ENROLLEE_BY_USERNAME);
             statement.setString(1, usernameValue);
             statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
             close(statement);
+            close(connection);
+        }
+    }
+
+    @Override
+    public void deleteUserByUsername(String usernameValue) throws DAOException {
+        ProxyConnection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
             statement = connection.prepareStatement(SQL_DELETE_USER_BY_USERNAME);
             statement.setString(1, usernameValue);
-            statement.executeUpdate();
+            int rows = statement.executeUpdate();
+            if (rows == 0) {
+                throw new DAOException("user doesn't exist");
+            }
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {
