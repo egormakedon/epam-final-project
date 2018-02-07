@@ -1,4 +1,8 @@
 <%@ page isErrorPage="true" language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
+<%@ taglib prefix="x" uri="http://java.sun.com/jstl/xml" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
+<%@ taglib prefix="sql" uri="http://java.sun.com/jstl/sql" %>
 <html lang="en">
     <head>
         <title>Error 403</title>
@@ -25,8 +29,42 @@
                 <h1><a href="../../jsp/welcome.jsp">Selection Committee</a></h1>
             </div>
         </div>
+        <div id="menu">
+            <ul>
+                <li>
+                    <a>
+                        <form action="/Controller" method="get">
+                            <input type="hidden" name="command" value="changelang">
+                            <input type="hidden" name="lang" value="en">
+                            <input type="submit" style="background:none!important;
+    														 color:inherit;
+     														 border:none;
+    														 padding:0!important;
+  														   	 font: inherit;
+    														 cursor: pointer;"
+                                   accesskey="1" value="ENG">
+                        </form>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <form action="/Controller" method="get">
+                            <input type="hidden" name="command" value="changelang">
+                            <input type="hidden" name="lang" value="ru">
+                            <input type="submit" style="background:none!important;
+    														 color:inherit;
+     														 border:none;
+    														 padding:0!important;
+  														   	 font: inherit;
+    														 cursor: pointer;"
+                                   accesskey="2" value="RU">
+                        </form>
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
-        <h1>Request from ${pageContext.errorData.requestURI} is failed</h1>
+        <h1>Request from: ${pageContext.errorData.requestURI}</h1>
         <br/>
         <h1>Servlet name: ${pageContext.errorData.servletName}</h1>
         <br/>

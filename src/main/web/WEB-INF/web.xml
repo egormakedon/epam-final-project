@@ -22,14 +22,14 @@
     </filter>
     <filter-mapping>
         <filter-name>DeleteUserFromSystemFilter</filter-name>
-        <url-pattern>/WEB-INF/security/*</url-pattern>
+        <url-pattern>/*</url-pattern>
     </filter-mapping>
     <filter>
-        <filter-name>SessionFilter</filter-name>
-        <filter-class>by.makedon.selectioncommittee.filter.SessionFilter</filter-class>
+        <filter-name>SessionCreatorFilter</filter-name>
+        <filter-class>by.makedon.selectioncommittee.filter.SessionCreatorFilter</filter-class>
     </filter>
     <filter-mapping>
-        <filter-name>SessionFilter</filter-name>
+        <filter-name>SessionCreatorFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
     <servlet>

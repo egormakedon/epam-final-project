@@ -10,6 +10,7 @@ import java.io.IOException;
 
 public class EncodingFilter implements Filter {
     private static final String ENCODING = "encoding";
+
     private String code;
 
     @Override
@@ -24,6 +25,7 @@ public class EncodingFilter implements Filter {
             servletRequest.setCharacterEncoding(code);
             servletResponse.setCharacterEncoding(code);
         }
+
         filterChain.doFilter(servletRequest, servletResponse);
     }
 

@@ -7,6 +7,7 @@ import by.makedon.selectioncommittee.command.admin.ForwardDeleteUserCommand;
 import by.makedon.selectioncommittee.command.admin.ResetStatementCommand;
 import by.makedon.selectioncommittee.command.admin.SetStatementCommand;
 import by.makedon.selectioncommittee.command.base.AcceptRegistrationCommand;
+import by.makedon.selectioncommittee.command.base.ChangeLangCommand;
 import by.makedon.selectioncommittee.command.base.ChangePasswordCommand;
 import by.makedon.selectioncommittee.command.Command;
 import by.makedon.selectioncommittee.command.base.ForgotPasswordCommand;
@@ -52,6 +53,7 @@ public enum CommandType {
     FORWARDCHANGEPASSWORD(new ForwardToChangePasswordCommand()),
     CHANGEPASSWORD(new ChangePasswordCommand(new ChangePasswordLogic())),
     ACCEPTREGISTRATION(new AcceptRegistrationCommand(new AcceptRegistrationLogic())),
+    CHANGELANG(new ChangeLangCommand()),
 
     FORWARDSENDFORM(new ForwardSendFormCommand()),
     SENDFORM(new SendFormCommand(new SendFormLogic())),

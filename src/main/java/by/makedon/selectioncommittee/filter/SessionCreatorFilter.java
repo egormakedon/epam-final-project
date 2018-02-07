@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-public class SessionFilter implements Filter {
+public class SessionCreatorFilter implements Filter {
     private static final String INDEX_JSP = "/index.jsp";
 
     @Override
@@ -41,6 +41,7 @@ public class SessionFilter implements Filter {
             res.sendRedirect(Page.WELCOME);
             return;
         }
+
         filterChain.doFilter(req, res);
     }
 

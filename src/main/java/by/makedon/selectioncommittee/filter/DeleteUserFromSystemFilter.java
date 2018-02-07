@@ -23,8 +23,8 @@ public class DeleteUserFromSystemFilter implements Filter {
     private static final Logger LOGGER = LogManager.getLogger(DeleteUserFromSystemFilter.class);
 
     private static final String USERNAME = "username";
-    private static final String MESSAGE = "message";
-    private static final String SESSION_FAILED = "session failed";
+    private static final String LOGIN = "login";
+    private static final String TRUE = "true";
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -37,29 +37,26 @@ public class DeleteUserFromSystemFilter implements Filter {
         HttpServletResponse res = (HttpServletResponse) servletResponse;
         HttpSession session = req.getSession();
 
-        String usernameValue = (String)session.getAttribute(USERNAME);
-        if (usernameValue == null) {
-            session.invalidate();
-            req.setAttribute(MESSAGE, SESSION_FAILED);
-            req.getRequestDispatcher(Page.MESSAGE).forward(req, res);
-            filterChain.doFilter(servletRequest, servletResponse);
-            return;
+        String loginValue = (String)session.getAttribute(LOGIN);
+        if (loginValue != null && loginValue.equals(TRUE)) {
+            String usernameValue = (String)session.getAttribute(USERNAME);
+
+            BaseDAO dao = BaseDAOImpl.getInstance();
+            try {
+                if (!dao.matchUsername(usernameValue)) {
+                    session.invalidate();
+                    res.sendRedirect(Page.WELCOME);
+                    return;
+                }
+            } catch (DAOException e) {
+                LOGGER.log(Level.ERROR, e);
+                session.invalidate();
+                res.sendRedirect(Page.WELCOME);
+                return;
+            }
         }
 
-        BaseDAO dao = BaseDAOImpl.getInstance();
-        try {
-            boolean result = dao.matchUsername(usernameValue);
-            if (!result) {
-                session.invalidate();
-                res.sendRedirect(Page.MESSAGE + "?message=" + usernameValue + " was deleted from the system");
-                filterChain.doFilter(servletRequest, servletResponse);
-            }
-        } catch (DAOException e) {
-            session.invalidate();
-            LOGGER.log(Level.ERROR, e);
-            res.sendRedirect(Page.MESSAGE + "?message=" + e.getMessage());
-            filterChain.doFilter(servletRequest, servletResponse);
-        }
+        filterChain.doFilter(servletRequest, servletResponse);
     }
 
     @Override
