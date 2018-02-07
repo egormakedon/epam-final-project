@@ -16,6 +16,38 @@ import java.util.List;
 public class SendFormCommand implements Command {
     private static final String USERNAME = "username";
 
+    private static final String SUBJECT_ID_1 = "subjectId1";
+    private static final String SUBJECT_ID_2 = "subjectId2";
+    private static final String SUBJECT_ID_3 = "subjectId3";
+
+    private static final String SUBJECT_VALUE_1 = "subjectValue1";
+    private static final String SUBJECT_VALUE_2 = "subjectValue2";
+    private static final String SUBJECT_VALUE_3 = "subjectValue3";
+
+    private static final String ZERO = "0";
+    private static final String ONE = "1";
+    private static final String TWO = "2";
+    private static final String THREE = "3";
+    private static final String FOUR = "4";
+    private static final String FIVE = "5";
+    private static final String SIX = "6";
+    private static final String SEVEN = "7";
+    private static final String EIGHT = "8";
+    private static final String NINE = "9";
+    private static final String TEN = "10";
+
+    private String russianLangValue ;
+    private String belorussianLangValue;
+    private String physicsValue;
+    private String mathValue;
+    private String chemistryValue;
+    private String biologyValue;
+    private String foreignLangValue;
+    private String historyOfBelarusValue;
+    private String socialStudiesValue;
+    private String geographyValue;
+    private String historyValue;
+
     private Logic logic;
 
     public SendFormCommand(Logic logic) {
@@ -36,18 +68,19 @@ public class SendFormCommand implements Command {
         String passportIdValue = req.getParameter(EnrolleeFormCriteria.PASSPORTID.toString());
         String countryDomenValue = req.getParameter(EnrolleeFormCriteria.COUNTRYDOMEN.toString());
         String phoneValue = req.getParameter(EnrolleeFormCriteria.PHONE.toString());
-        String russianLangValue = req.getParameter(EnrolleeFormCriteria.RUSSIANLANG.toString());
-        String belorussianLangValue = req.getParameter(EnrolleeFormCriteria.BELORUSSIANLANG.toString());
-        String physicsValue = req.getParameter(EnrolleeFormCriteria.PHYSICS.toString());
-        String mathValue = req.getParameter(EnrolleeFormCriteria.MATH.toString());
-        String chemistryValue = req.getParameter(EnrolleeFormCriteria.CHEMISTRY.toString());
-        String biologyValue = req.getParameter(EnrolleeFormCriteria.BIOLOGY.toString());
-        String foreignLangValue = req.getParameter(EnrolleeFormCriteria.FOREIGNLANG.toString());
-        String historyOfBelarusValue = req.getParameter(EnrolleeFormCriteria.HISTORYOFBELARUS.toString());
-        String socialStudiesValue = req.getParameter(EnrolleeFormCriteria.SOCIALSTUDIES.toString());
-        String geographyValue = req.getParameter(EnrolleeFormCriteria.GEOGRAPHY.toString());
-        String historyValue = req.getParameter(EnrolleeFormCriteria.HISTORY.toString());
         String certificateValue = req.getParameter(EnrolleeFormCriteria.CERTIFICATE.toString());
+
+        String subjectId1 = req.getParameter(SUBJECT_ID_1);
+        String subjectId2 = req.getParameter(SUBJECT_ID_2);
+        String subjectId3 = req.getParameter(SUBJECT_ID_3);
+
+        String subjectValue1 = req.getParameter(SUBJECT_VALUE_1);
+        String subjectValue2 = req.getParameter(SUBJECT_VALUE_2);
+        String subjectValue3 = req.getParameter(SUBJECT_VALUE_3);
+
+        factory(subjectId1, subjectValue1);
+        factory(subjectId2, subjectValue2);
+        factory(subjectId3, subjectValue3);
 
         List<String> parameters = new ArrayList<String>();
         parameters.add(usernameValue);
@@ -83,5 +116,43 @@ public class SendFormCommand implements Command {
             router.setPagePath(Page.MESSAGE + "?message=" + e.getMessage());
         }
         return router;
+    }
+
+    private void factory(String key, String value) {
+        switch (key) {
+            case ZERO:
+                russianLangValue = value;
+                break;
+            case ONE:
+                belorussianLangValue = value;
+                break;
+            case TWO:
+                physicsValue = value;
+                break;
+            case THREE:
+                mathValue = value;
+                break;
+            case FOUR:
+                chemistryValue = value;
+                break;
+            case FIVE:
+                biologyValue = value;
+                break;
+            case SIX:
+                foreignLangValue = value;
+                break;
+            case SEVEN:
+                historyOfBelarusValue = value;
+                break;
+            case EIGHT:
+                socialStudiesValue = value;
+                break;
+            case NINE:
+                geographyValue = value;
+                break;
+            case TEN:
+                historyValue = value;
+                break;
+        }
     }
 }

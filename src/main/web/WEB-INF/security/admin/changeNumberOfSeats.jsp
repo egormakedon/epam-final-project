@@ -51,6 +51,7 @@
             <input type="hidden" name="command" value="changenumberofseats">
             <h1>
                 <select name="speciality">
+                    <option disabled>speciality</option>
                     <option>Проектирование и производство программно-управляемых электронных средств</option>
                     <option>Моделирование и компьютерное проектирование радиоэлектронных средств</option>
                     <option>Программируемые мобильные системы</option>

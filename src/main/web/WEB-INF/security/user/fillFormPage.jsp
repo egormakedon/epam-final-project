@@ -7,6 +7,16 @@
     <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900" rel="stylesheet" />
     <link href="../../../css/default.css" rel="stylesheet" type="text/css" media="all" />
     <link href="../../../css/fonts.css" rel="stylesheet" type="text/css" media="all" />
+    <link rel="stylesheet" href="../../../css/login.css">
+
+    <style type="text/css">
+        h1 {
+            z-index: 100; /* текст не размыт */
+            color: #86bd3b;
+            text-align: center;
+            text-shadow: 0 0 5px rgba(0,0,0,255);
+        }
+    </style>
 </head>
 <body>
 <div id="header-wrapper">
@@ -29,6 +39,222 @@
                     </a>
                 </li>
             </ul>
+        </form>
+    </div>
+</div>
+<div id="banner-wrapper">
+    <div id="content">
+        <div class="tittle">
+            <p>ENROLLEE FORM</p>
+        </div>
+        <form class="login" action="/Controller" method="post">
+            <input type="hidden" name="command" value="sendform">
+            <h1>
+                <select name="UNIVERSITY">
+                    <option disabled>university</option>
+                    <option>БГУИР</option>
+                </select>
+
+                <br>
+
+                <select name="FACULTY">
+                    <option disabled>faculty</option>
+                    <option>Факультет компьютерного проектирования</option>
+                    <option>Факультет информационных технологий и управления</option>
+                    <option>Факультет радиотехники и электроники</option>
+                    <option>Факультет компьютерных систем и сетей</option>
+                    <option>Факультет инфокоммуникаций</option>
+                    <option>Инженерно-экономический факультет</option>
+                    <option>Военный факультет</option>
+                </select>
+
+                <br>
+
+                <select name="SPECIALITY">
+                    <option disabled>speciality</option>
+                    <option>Проектирование и производство программно-управляемых электронных средств</option>
+                    <option>Моделирование и компьютерное проектирование радиоэлектронных средств</option>
+                    <option>Программируемые мобильные системы</option>
+                    <option>Программно-управляемые электронно-оптические системы</option>
+                    <option>Медицинская электроника</option>
+                    <option>Инженерно-психологическое обеспечение информационных технологий</option>
+                    <option>Электронные системы безопасности</option>
+                    <option>Информационные системы и технологии (в обеспечении промышленной безопасности)</option>
+                    <option>Информационные системы и технологии (в бизнес-менеджменте)</option>
+                    <option>Автоматизированные системы обработки информации</option>
+                    <option>Искусственный интеллект</option>
+                    <option>Информационные технологии и управление в технических системах</option>
+                    <option>Промышленная электроника</option>
+                    <option>Информационные системы и технологии (в игровой индустрии)</option>
+                    <option>Микро- и наноэлектронные технологии и системы</option>
+                    <option>Квантовые информационные системы</option>
+                    <option>Нанотехнологии и наноматериалы в электронике</option>
+                    <option>Радиотехника (программируемые радиоэлектронные средства)</option>
+                    <option>Радиоэлектронные системы</option>
+                    <option>Радиоинформатика</option>
+                    <option>Радиоэлектронная защита информации</option>
+                    <option>Электронные и информационно-управляющие системы физических установок</option>
+                    <option>Профессиональное образование (информатика)</option>
+                    <option>Вычислительные мышины, системы и сети</option>
+                    <option>Программное обеспечение информационных технологий</option>
+                    <option>Информатика и технологии программирования</option>
+                    <option>Электронные вычислительные средства</option>
+                    <option>Инфокоммуникационные технологии (системы телекоммуникаций)</option>
+                    <option>Инфокоммуникационные технологии (сети инфокоммуникаций)</option>
+                    <option>Инфокоммуникационные технологии (системы распределения мультимедийной информации)</option>
+                    <option>Инфокоммуникационные системы (стандартизация, сертификация и контроль параметров)</option>
+                    <option>Защита информации в телекоммуникациях</option>
+                    <option>Информационные системы и технологии (в экономике)</option>
+                    <option>Информационные системы и технологии (в логистике)</option>
+                    <option>Электронный маркетинг</option>
+                    <option>Экономика электронного бизнеса</option>
+                    <option>Инфокуммуникационные технологии</option>
+                    <option>Радиотехника</option>
+                    <option>Вычислительные машины, системы и сети (специального назначения)</option>
+                </select>
+            </h1>
+
+            <br>
+
+            <h1>
+                <select name="COUNTRYDOMEN">
+                    <option disabled>country domen</option>
+                    <option>BY</option>
+                    <option>RU</option>
+                    <option>US</option>
+                </select>
+            </h1>
+
+            <br>
+
+            <p>
+                <label for="name">name</label>
+                <input type="text" name="NAME" id="name" pattern="^(([А-Я][а-я]{2,50})|([A-Z][a-z]{2,50}))$" required>
+                <span class="form_error"></span>
+            </p>
+
+            <br>
+
+            <p>
+                <label for="surname">surname</label>
+                <input type="text" name="SURNAME" id="surname" pattern="^(([А-Я][а-я]{2,50})|([A-Z][a-z]{2,50}))$" required>
+                <span class="form_error"></span>
+            </p>
+
+            <br>
+
+            <p>
+                <label for="secondname">secondname</label>
+                <input type="text" name="SECONDNAME" id="secondname" pattern="^(([А-Я][а-я]{2,50})|([A-Z][a-z]{2,50}))$">
+                <span class="form_error"></span>
+            </p>
+
+            <br>
+
+            <p>
+                <label for="passportid">passport</label>
+                <input type="text" name="PASSPORTID" id="passportid" pattern="^([A-Z0-9]{7,10})$" required>
+                <span class="form_error"></span>
+            </p>
+
+            <br>
+
+            <p>
+                <label for="phone">phone</label>
+                <input type="text" name="PHONE" id="phone" pattern="^(375(29|33|25)[0-9]{7})$" required>
+                <span class="form_error"></span>
+            </p>
+
+            <br>
+
+            <p>
+                <label for="certificate">certificate</label>
+                <input type="text" name="CERTIFICATE" id="certificate" pattern="^([0-9]+)$" required>
+                <span class="form_error"></span>
+            </p>
+
+            <br>
+
+            <h1>
+                <select name="subjectId1">
+                    <option disabled>subject 1</option>
+                    <option VALUE="0">RUSSIANLANG</option>
+                    <option VALUE="1">BELORUSSIANLANG</option>
+                    <option VALUE="2">PHYSICS</option>
+                    <option VALUE="3">MATH</option>
+                    <option VALUE="4">CHEMISTRY</option>
+                    <option VALUE="5">BIOLOGY</option>
+                    <option VALUE="6">FOREIGNLANG</option>
+                    <option VALUE="7">HISTORYOFBELARUS</option>
+                    <option VALUE="8">SOCIALSTUDIES</option>
+                    <option VALUE="9">GEOGRAPHY</option>
+                    <option VALUE="10">HISTORY</option>
+                </select>
+            </h1>
+
+            <br>
+
+            <p>
+                <label for="subjectValue1">mark</label>
+                <input type="text" name="subjectValue1" id="subjectValue1" pattern="^([0-9]+)$" required>
+                <span class="form_error"></span>
+            </p>
+
+            <h1>
+                <select name="subjectId2">
+                    <option disabled>subject 2</option>
+                    <option VALUE="0">RUSSIANLANG</option>
+                    <option VALUE="1">BELORUSSIANLANG</option>
+                    <option VALUE="2">PHYSICS</option>
+                    <option VALUE="3">MATH</option>
+                    <option VALUE="4">CHEMISTRY</option>
+                    <option VALUE="5">BIOLOGY</option>
+                    <option VALUE="6">FOREIGNLANG</option>
+                    <option VALUE="7">HISTORYOFBELARUS</option>
+                    <option VALUE="8">SOCIALSTUDIES</option>
+                    <option VALUE="9">GEOGRAPHY</option>
+                    <option VALUE="10">HISTORY</option>
+                </select>
+            </h1>
+
+            <br>
+
+            <p>
+                <label for="subjectValue2">mark</label>
+                <input type="text" name="subjectValue2" id="subjectValue2" pattern="^([0-9]+)$" required>
+                <span class="form_error"></span>
+            </p>
+
+            <h1>
+                <select name="subjectId3">
+                    <option disabled>subject 3</option>
+                    <option VALUE="0">RUSSIANLANG</option>
+                    <option VALUE="1">BELORUSSIANLANG</option>
+                    <option VALUE="2">PHYSICS</option>
+                    <option VALUE="3">MATH</option>
+                    <option VALUE="4">CHEMISTRY</option>
+                    <option VALUE="5">BIOLOGY</option>
+                    <option VALUE="6">FOREIGNLANG</option>
+                    <option VALUE="7">HISTORYOFBELARUS</option>
+                    <option VALUE="8">SOCIALSTUDIES</option>
+                    <option VALUE="9">GEOGRAPHY</option>
+                    <option VALUE="10">HISTORY</option>
+                </select>
+            </h1>
+
+            <br>
+
+            <p>
+                <label for="subjectValue3">mark</label>
+                <input type="text" name="subjectValue3" id="subjectValue3" pattern="^([0-9]+)$" required>
+                <span class="form_error"></span>
+            </p>
+
+            <h1>
+                <p>
+                    <button type="submit" class="login-button">send form</button>
+                </p>
+            </h1>
         </form>
     </div>
 </div>

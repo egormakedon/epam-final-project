@@ -36,10 +36,6 @@
     <div id="banner-wrapper">
         <div id="banner" class="container">
             <form action="/Controller" method="post">
-                <input type="hidden" name="command" value="showenrollees">
-                <input class="button" value="show enrollees" type="submit">
-            </form>
-            <form action="/Controller" method="post">
                 <input type="hidden" name="command" value="setstatement">
                 <input class="button" value="set statement" type="submit">
             </form>
