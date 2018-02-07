@@ -10,7 +10,7 @@
 
     <style type="text/css">
         h1 {
-            z-index: 100; /* текст не размыт */
+            z-index: 100;
             color: #86bd3b;
             text-align: center;
             text-shadow: 0 0 5px rgba(0,0,0,255);
