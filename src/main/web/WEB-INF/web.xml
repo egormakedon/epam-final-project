@@ -48,6 +48,14 @@
         <filter-name>UserCommandProtectFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+    <filter>
+        <filter-name>SaveQueryToSessionFilter</filter-name>
+        <filter-class>by.makedon.selectioncommittee.filter.SaveQueryToSessionFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>SaveQueryToSessionFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
     <servlet>
         <display-name>Controller</display-name>
         <servlet-name>Controller</servlet-name>
