@@ -32,6 +32,22 @@
         <filter-name>SessionCreatorFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+    <filter>
+        <filter-name>AdminCommandProtectFilter</filter-name>
+        <filter-class>by.makedon.selectioncommittee.filter.AdminCommandProtectFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AdminCommandProtectFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter>
+        <filter-name>UserCommandProtectFilter</filter-name>
+        <filter-class>by.makedon.selectioncommittee.filter.UserCommandProtectFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>UserCommandProtectFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
     <servlet>
         <display-name>Controller</display-name>
         <servlet-name>Controller</servlet-name>
