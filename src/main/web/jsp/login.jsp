@@ -40,7 +40,6 @@
             <div id="logo">
               <h1><a href="../jsp/welcome.jsp">${main_title}</a></h1>
             </div>
-          </div>
             <div id="menu">
                 <ul>
                     <li>
@@ -75,6 +74,7 @@
                     </li>
                 </ul>
             </div>
+          </div>
         </div>
         <div id="banner-wrapper">
           <div id="content">

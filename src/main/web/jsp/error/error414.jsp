@@ -44,40 +44,40 @@
             <div id="logo">
                 <h1><a href="../../jsp/welcome.jsp">${main_title}</a></h1>
             </div>
-        </div>
-        <div id="menu">
-            <ul>
-                <li>
-                    <a>
-                        <form action="/Controller" method="get">
-                            <input type="hidden" name="command" value="changelang">
-                            <input type="hidden" name="lang" value="en">
-                            <input type="submit" style="background:none!important;
+            <div id="menu">
+                <ul>
+                    <li>
+                        <a>
+                            <form action="/Controller" method="get">
+                                <input type="hidden" name="command" value="changelang">
+                                <input type="hidden" name="lang" value="en">
+                                <input type="submit" style="background:none!important;
     														 color:inherit;
      														 border:none;
     														 padding:0!important;
   														   	 font: inherit;
     														 cursor: pointer;"
-                                   accesskey="1" value="${en_button}">
-                        </form>
-                    </a>
-                </li>
-                <li>
-                    <a>
-                        <form action="/Controller" method="get">
-                            <input type="hidden" name="command" value="changelang">
-                            <input type="hidden" name="lang" value="ru">
-                            <input type="submit" style="background:none!important;
+                                       accesskey="1" value="${en_button}">
+                            </form>
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            <form action="/Controller" method="get">
+                                <input type="hidden" name="command" value="changelang">
+                                <input type="hidden" name="lang" value="ru">
+                                <input type="submit" style="background:none!important;
     														 color:inherit;
      														 border:none;
     														 padding:0!important;
   														   	 font: inherit;
     														 cursor: pointer;"
-                                   accesskey="2" value="${ru_button}">
-                        </form>
-                    </a>
-                </li>
-            </ul>
+                                       accesskey="2" value="${ru_button}">
+                            </form>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
         <h1>${request_from} ${pageContext.errorData.requestURI}</h1>

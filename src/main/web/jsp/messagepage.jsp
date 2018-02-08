@@ -40,7 +40,6 @@
             <div id="logo">
                 <h1><a href="../jsp/welcome.jsp">${main_title}</a></h1>
             </div>
-        </div>
         <div id="menu">
             <ul>
                 <li>
@@ -75,8 +74,14 @@
                 </li>
             </ul>
         </div>
+        </div>
     </div>
-    <h1>${title}: ${requestScope.message}</h1>
+    <c:if test="${message != null}">
+        <h1>${title}: ${message}</h1>
+    </c:if>
+    <c:if test="${param.message != null}">
+        <h1>${title}: ${param.message}</h1>
+    </c:if>
     <div id="copyright" class="container">
         <p>${created_by} <a href="http://epam.by" style="color: white">epam.by</a> ${all_rights}</p>
     </div>

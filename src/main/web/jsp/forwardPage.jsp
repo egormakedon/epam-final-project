@@ -4,6 +4,6 @@
     <title></title>
 </head>
 <body>
-<jsp:forward page="${requestScope.pagePath}"/>
+<jsp:forward page="${param.pagePath}"/>
 </body>
 </html>
