@@ -43,7 +43,7 @@ public class AdminCommandProtectFilter implements Filter {
             }
         }
 
-        doFilter(servletRequest, servletResponse, filterChain);
+        filterChain.doFilter(servletRequest, servletResponse);
     }
 
     @Override

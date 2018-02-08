@@ -1,11 +1,27 @@
 <%@ page isErrorPage="true" language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
 <%@ taglib prefix="x" uri="http://java.sun.com/jstl/xml" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 <%@ taglib prefix="sql" uri="http://java.sun.com/jstl/sql" %>
+
 <html lang="en">
     <head>
-        <title>Error 404</title>
+        <fmt:setLocale value="${sessionScope.lang}"/>
+        <fmt:setBundle basename="property.text" var="locale" scope="session"/>
+
+        <fmt:message bundle="${locale}" key="text.error404.title" var="title"/>
+        <fmt:message bundle="${locale}" key="text.main.title" var="main_title"/>
+        <fmt:message bundle="${locale}" key="text.main.local.en" var="en_button"/>
+        <fmt:message bundle="${locale}" key="text.main.local.ru" var="ru_button"/>
+        <fmt:message bundle="${locale}" key="text.error.request.from" var="request_from"/>
+        <fmt:message bundle="${locale}" key="text.error.servlet.name" var="servlet_name"/>
+        <fmt:message bundle="${locale}" key="text.error.status.code" var="status_code"/>
+        <fmt:message bundle="${locale}" key="text.error404.exception" var="exception"/>
+        <fmt:message bundle="${locale}" key="text.main.created.by" var="created_by"/>
+        <fmt:message bundle="${locale}" key="text.main.all.rights" var="all_rights"/>
+
+        <title>${title}</title>
 
         <link rel="shortcut icon" href="../../images/pageLogo.png" type="image/png">
         <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900" rel="stylesheet" />
@@ -26,7 +42,7 @@
     <div id="header-wrapper">
         <div id="header" class="container">
             <div id="logo">
-                <h1><a href="../../jsp/welcome.jsp">Selection Committee</a></h1>
+                <h1><a href="../../jsp/welcome.jsp">${main_title}</a></h1>
             </div>
         </div>
         <div id="menu">
@@ -42,7 +58,7 @@
     														 padding:0!important;
   														   	 font: inherit;
     														 cursor: pointer;"
-                                   accesskey="1" value="ENG">
+                                   accesskey="1" value="${en_button}">
                         </form>
                     </a>
                 </li>
@@ -57,22 +73,22 @@
     														 padding:0!important;
   														   	 font: inherit;
     														 cursor: pointer;"
-                                   accesskey="2" value="RU">
+                                   accesskey="2" value="${ru_button}">
                         </form>
                     </a>
                 </li>
             </ul>
         </div>
     </div>
-        <h1>Request from: ${pageContext.errorData.requestURI}</h1>
+        <h1>${request_from} ${pageContext.errorData.requestURI}</h1>
         <br/>
-        <h1>Servlet name: ${pageContext.errorData.servletName}</h1>
+        <h1>${servlet_name} ${pageContext.errorData.servletName}</h1>
         <br/>
-        <h1>Status code: ${pageContext.errorData.statusCode}</h1>
+        <h1>${status_code} ${pageContext.errorData.statusCode}</h1>
         <br/>
-        <h1>Exception: page hasn't found</h1>
+        <h1>${exception}</h1>
     <div id="copyright" class="container">
-        <p>&copy; 2018. CREATED BY EGOR MAKEDON FOR EPAM SYSTEMS. <a href="http://epam.by" style="color: white">epam.by</a> All rights reserved.</p>
+        <p>${created_by} <a href="http://epam.by" style="color: white">epam.by</a> ${all_rights}</p>
     </div>
     </body>
 </html>
