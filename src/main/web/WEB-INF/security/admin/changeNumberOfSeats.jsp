@@ -1,7 +1,28 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
+
 <html lang="en">
 <head>
-    <title>Change number of seats</title>
+    <fmt:setLocale value="${sessionScope.lang}"/>
+    <fmt:setBundle basename="property.text" var="locale" scope="session"/>
+
+    <fmt:message bundle="${locale}" key="text.changenumberofseats.title" var="title"/>
+    <fmt:message bundle="${locale}" key="text.main.title" var="main_title"/>
+    <fmt:message bundle="${locale}" key="text.main.local.en" var="en_button"/>
+    <fmt:message bundle="${locale}" key="text.main.local.ru" var="ru_button"/>
+    <fmt:message bundle="${locale}" key="text.main.created.by" var="created_by"/>
+    <fmt:message bundle="${locale}" key="text.main.all.rights" var="all_rights"/>
+    <fmt:message bundle="${locale}" key="text.main.profile" var="profile"/>
+    <fmt:message bundle="${locale}" key="text.numberofseats.label" var="number_of_seats"/>
+    <fmt:message bundle="${locale}" key="text.numberofseats.label.error" var="number_of_seats_error"/>
+    <fmt:message bundle="${locale}" key="text.speciality.label" var="speciality"/>
+    <fmt:message bundle="${locale}" key="text.change.submit" var="change"/>
+
+    <title>${title}</title>
 
     <link rel="shortcut icon" href="../../../images/pageLogo.png" type="image/png">
     <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900" rel="stylesheet" />
@@ -11,7 +32,7 @@
 
     <style type="text/css">
         h1 {
-            z-index: 100; /* текст не размыт */
+            z-index: 100;
             color: #86bd3b;
             text-align: center;
             text-shadow: 0 0 5px rgba(0,0,0,255);
@@ -22,36 +43,68 @@
 <div id="header-wrapper">
     <div id="header" class="container">
         <div id="logo">
-            <h1><a href="../../../jsp/welcome.jsp">Selection Committee</a></h1>
+            <h1><a href="../../../jsp/welcome.jsp">${main_title}</a></h1>
         </div>
-        <form id="menu" action="/Controller" method="get">
+        <div id="menu">
             <ul>
                 <li>
                     <a>
-                        <input type="hidden" name="command" value="profile">
-                        <input type="submit" style="background:none!important;
-                                                                 color:inherit;
-                                                                 border:none;
-                                                                 padding:0!important;
-                                                                 font: inherit;
-                                                                 cursor: pointer;"
-                               accesskey="1" value="PROFILE">
+                        <form action="/Controller" method="get">
+                            <input type="hidden" name="command" value="profile">
+                            <input type="submit" style="background:none!important;
+    														 color:inherit;
+     														 border:none;
+    														 padding:0!important;
+  														   	 font: inherit;
+    														 cursor: pointer;"
+                                   accesskey="1" value="${profile}">
+                        </form>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <form action="/Controller" method="get">
+                            <input type="hidden" name="command" value="changelang">
+                            <input type="hidden" name="lang" value="en">
+                            <input type="submit" style="background:none!important;
+    														 color:inherit;
+     														 border:none;
+    														 padding:0!important;
+  														   	 font: inherit;
+    														 cursor: pointer;"
+                                   accesskey="2" value="${en_button}">
+                        </form>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <form action="/Controller" method="get">
+                            <input type="hidden" name="command" value="changelang">
+                            <input type="hidden" name="lang" value="ru">
+                            <input type="submit" style="background:none!important;
+    														 color:inherit;
+     														 border:none;
+    														 padding:0!important;
+  														   	 font: inherit;
+    														 cursor: pointer;"
+                                   accesskey="3" value="${ru_button}">
+                        </form>
                     </a>
                 </li>
             </ul>
-        </form>
+        </div>
     </div>
 </div>
 <div id="banner-wrapper">
     <div id="content">
         <div class="tittle">
-            <p>CHANGE NUMBER OF SEATS</p>
+            <p>${title}</p>
         </div>
         <form class="login" action="/Controller" method="post">
             <input type="hidden" name="command" value="changenumberofseats">
             <h1>
                 <select name="speciality">
-                    <option disabled>speciality</option>
+                    <option disabled>${speciality}</option>
                     <option>Проектирование и производство программно-управляемых электронных средств</option>
                     <option>Моделирование и компьютерное проектирование радиоэлектронных средств</option>
                     <option>Программируемые мобильные системы</option>
@@ -95,19 +148,19 @@
             </h1>
             <br>
             <p>
-                <label for="login">number of seats:</label>
+                <label for="login">${number_of_seats}</label>
                 <input type="text" name="numberOfSeats" id="login" pattern="^([0-9]+)$" required>
-                <span class="form_error">number</span>
+                <span class="form_error">${number_of_seats_error}</span>
             </p>
             <br>
             <p class="login-submit">
-            <button type="submit" class="login-button">change</button>
+            <button type="submit" class="login-button">${change}</button>
             </p>
         </form>
     </div>
 </div>
 <div id="copyright" class="container">
-    <p>&copy; 2018. CREATED BY EGOR MAKEDON FOR EPAM SYSTEMS. <a href="http://epam.by" style="color: white">epam.by</a> All rights reserved.</p>
+    <p>${created_by} <a href="http://epam.by" style="color: white">epam.by</a> ${all_rights}</p>
 </div>
 </body>
 </html>

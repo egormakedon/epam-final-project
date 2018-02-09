@@ -17,6 +17,7 @@
     <fmt:message bundle="${locale}" key="text.main.created.by" var="created_by"/>
     <fmt:message bundle="${locale}" key="text.main.all.rights" var="all_rights"/>
     <fmt:message bundle="${locale}" key="text.main.logout" var="logout"/>
+
     <fmt:message bundle="${locale}" key="text.admin.setstatement" var="set_statement"/>
     <fmt:message bundle="${locale}" key="text.admin.resetstatement" var="reset_statement"/>
     <fmt:message bundle="${locale}" key="text.admin.changenumberofseats" var="change_number_of_seats"/>
