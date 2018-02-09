@@ -30,8 +30,8 @@ CREATE TABLE IF NOT EXISTS `selection_committee`.`university` (
   `u_name` VARCHAR(100) NOT NULL COMMENT 'Имя учебного заведения.',
   PRIMARY KEY (`u_id`),
   UNIQUE INDEX `u_name_UNIQUE` (`u_name` ASC))
-ENGINE = InnoDB
-COMMENT = 'Таблица о высших учебных заведениях.';
+  ENGINE = InnoDB
+  COMMENT = 'Таблица о высших учебных заведениях.';
 
 
 -- -----------------------------------------------------
@@ -44,12 +44,12 @@ CREATE TABLE IF NOT EXISTS `selection_committee`.`faculty` (
   PRIMARY KEY (`f_id`),
   INDEX `u_id_idx` (`u_id` ASC),
   CONSTRAINT `u_id`
-    FOREIGN KEY (`u_id`)
-    REFERENCES `selection_committee`.`university` (`u_id`)
+  FOREIGN KEY (`u_id`)
+  REFERENCES `selection_committee`.`university` (`u_id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
-ENGINE = InnoDB
-COMMENT = 'Таблица о факультетах.';
+  ENGINE = InnoDB
+  COMMENT = 'Таблица о факультетах.';
 
 
 -- -----------------------------------------------------
@@ -63,18 +63,18 @@ CREATE TABLE IF NOT EXISTS `selection_committee`.`speciality` (
   PRIMARY KEY (`s_id`),
   INDEX `f_id_idx` (`f_id` ASC),
   CONSTRAINT `f_id`
-    FOREIGN KEY (`f_id`)
-    REFERENCES `selection_committee`.`faculty` (`f_id`)
+  FOREIGN KEY (`f_id`)
+  REFERENCES `selection_committee`.`faculty` (`f_id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
-ENGINE = InnoDB
-COMMENT = 'Таблица о специальностях.';
+  ENGINE = InnoDB
+  COMMENT = 'Таблица о специальностях.';
 
 
 -- -----------------------------------------------------
--- Table `selection_committee`.`enrolleeForm`
+-- Table `selection_committee`.`enrollee`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `selection_committee`.`enrolleeForm` (
+CREATE TABLE IF NOT EXISTS `selection_committee`.`enrollee` (
   `passport_id` VARCHAR(10) NOT NULL COMMENT 'ID пасспорта.',
   `country_domen` CHAR(2) NOT NULL COMMENT 'Домен страны.',
   `e_id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Идентификатор.',
@@ -101,12 +101,12 @@ CREATE TABLE IF NOT EXISTS `selection_committee`.`enrolleeForm` (
   PRIMARY KEY (`passport_id`, `country_domen`),
   UNIQUE INDEX `e_id_UNIQUE` (`e_id` ASC),
   CONSTRAINT `s_id`
-    FOREIGN KEY (`s_id`)
-    REFERENCES `selection_committee`.`speciality` (`s_id`)
+  FOREIGN KEY (`s_id`)
+  REFERENCES `selection_committee`.`speciality` (`s_id`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE)
-ENGINE = InnoDB
-COMMENT = 'Таблица об абитуриентах.';
+  ENGINE = InnoDB
+  COMMENT = 'Таблица об абитуриентах.';
 
 
 -- -----------------------------------------------------
@@ -124,12 +124,12 @@ CREATE TABLE IF NOT EXISTS `selection_committee`.`user` (
   UNIQUE INDEX `e_id_UNIQUE` (`e_id` ASC),
   UNIQUE INDEX `email_UNIQUE` (`email` ASC),
   CONSTRAINT `fk_user_1`
-    FOREIGN KEY (`e_id`)
-    REFERENCES `selection_committee`.`enrolleeForm` (`e_id`)
+  FOREIGN KEY (`e_id`)
+  REFERENCES `selection_committee`.`enrollee` (`e_id`)
     ON DELETE SET NULL
     ON UPDATE CASCADE)
-ENGINE = InnoDB
-COMMENT = 'Таблица о пользователях.';
+  ENGINE = InnoDB
+  COMMENT = 'Таблица о пользователях.';
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
