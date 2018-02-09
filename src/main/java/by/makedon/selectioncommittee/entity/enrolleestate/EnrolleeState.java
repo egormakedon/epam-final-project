@@ -13,6 +13,7 @@ public class EnrolleeState {
         this.enrolleeId = enrolleeId;
         this.specialityId = specialityId;
         this.score = score;
+        this.date = date;
     }
 
     public String getStatement() {

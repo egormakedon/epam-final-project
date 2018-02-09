@@ -17,7 +17,7 @@
         <fmt:message bundle="${locale}" key="text.error.request.from" var="request_from"/>
         <fmt:message bundle="${locale}" key="text.error.servlet.name" var="servlet_name"/>
         <fmt:message bundle="${locale}" key="text.error.status.code" var="status_code"/>
-        <fmt:message bundle="${locale}" key="text.error404.exception" var="exception"/>
+        <fmt:message bundle="${locale}" key="text.error.exception" var="exception"/>
         <fmt:message bundle="${locale}" key="text.main.created.by" var="created_by"/>
         <fmt:message bundle="${locale}" key="text.main.all.rights" var="all_rights"/>
 
