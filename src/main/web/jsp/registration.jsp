@@ -21,8 +21,8 @@
         <fmt:message bundle="${locale}" key="text.username.label" var="username"/>
         <fmt:message bundle="${locale}" key="text.username.label.error" var="username_error"/>
         <fmt:message bundle="${locale}" key="text.password.label" var="password"/>
-        <fmt:message bundle="${locale}" key="text.password.label.again" var="password_again"/>
         <fmt:message bundle="${locale}" key="text.password.label.error" var="password_error"/>
+        <fmt:message bundle="${locale}" key="text.password.label.again" var="password_again"/>
 
         <fmt:message bundle="${locale}" key="text.register.submit" var="register"/>
 
