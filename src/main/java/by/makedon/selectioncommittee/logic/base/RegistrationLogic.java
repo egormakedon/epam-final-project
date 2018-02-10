@@ -5,11 +5,12 @@ import by.makedon.selectioncommittee.dao.base.BaseDAOImpl;
 import by.makedon.selectioncommittee.exception.DAOException;
 import by.makedon.selectioncommittee.exception.LogicException;
 import by.makedon.selectioncommittee.logic.Logic;
+import by.makedon.selectioncommittee.mail.MailBuilder;
 import by.makedon.selectioncommittee.mail.MailProperty;
+import by.makedon.selectioncommittee.mail.MailTemplatePath;
 import by.makedon.selectioncommittee.mail.MailThread;
 import by.makedon.selectioncommittee.validator.UserValidator;
 import com.sun.istack.internal.NotNull;
-
 import java.util.List;
 
 public class RegistrationLogic implements Logic {
@@ -38,25 +39,15 @@ public class RegistrationLogic implements Logic {
             if (dao.matchEmailUsername(emailValue, usernameValue)) {
                 throw new LogicException("this user already exist");
             }
-
-            String mailText = "<form action=\"http://localhost:8080/Controller\" method=\"post\">\n" +
-                    "\t\t\t\t\t<input type=\"hidden\" name=\"email\" value=\""+emailValue+"\">\n" +
-                    "\t\t\t\t\t<input type=\"hidden\" name=\"username\" value=\""+usernameValue+"\">\n" +
-                    "\t\t\t\t\t<input type=\"hidden\" name=\"password\" value=\""+password1Value+"\">\n" +
-                    "\t\t\t\t\t<input type=\"hidden\" name=\"command\" value=\"acceptregistration\">\n" +
-                    "\t\t\t\t\t<input type=\"submit\" style=\"background:none!important;\n" +
-                    "     color:purple;\n" +
-                    "     border:none; \n" +
-                    "     padding:0!important;\n" +
-                    "     font: inherit;\n" +
-                    "     border-bottom:1px solid #444; \n" +
-                    "     cursor: pointer;\" value=\"accept registration\">\n" +
-                    "\t\t\t\t</form>";
-
-            MailThread mail = new MailThread(emailValue, CONFIRM_REGISTRATION, mailText, MailProperty.getInstance().getProperties());
-            mail.start();
         } catch (DAOException e) {
             throw new LogicException(e);
         }
+
+        String templatePath = MailTemplatePath.REGISTRATION.getTemplatePath();
+        MailBuilder mailBuilder = new MailBuilder(templatePath);
+        String mailText = String.format(mailBuilder.takeMailTemplate(), emailValue, usernameValue, password1Value);
+
+        MailThread mail = new MailThread(emailValue, CONFIRM_REGISTRATION, mailText, MailProperty.getInstance().getProperties());
+        mail.start();
     }
 }
