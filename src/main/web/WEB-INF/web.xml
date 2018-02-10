@@ -54,7 +54,15 @@
     </filter>
     <filter-mapping>
         <filter-name>SaveQueryToSessionFilter</filter-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/jsp/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>SaveQueryToSessionFilter</filter-name>
+        <url-pattern>/WEB-INF/security/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>SaveQueryToSessionFilter</filter-name>
+        <url-pattern>/Controller</url-pattern>
     </filter-mapping>
     <servlet>
         <display-name>Controller</display-name>
