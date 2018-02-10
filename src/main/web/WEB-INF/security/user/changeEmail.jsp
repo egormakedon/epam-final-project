@@ -1,7 +1,25 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
+
 <html lang="en">
 <head>
-    <title>Change email</title>
+    <fmt:setLocale value="${sessionScope.lang}"/>
+    <fmt:setBundle basename="property.text" var="locale" scope="session"/>
+
+    <fmt:message bundle="${locale}" key="text.changeemail.title" var="title"/>
+    <fmt:message bundle="${locale}" key="text.main.title" var="main_title"/>
+    <fmt:message bundle="${locale}" key="text.main.local.en" var="en_button"/>
+    <fmt:message bundle="${locale}" key="text.main.local.ru" var="ru_button"/>
+    <fmt:message bundle="${locale}" key="text.main.created.by" var="created_by"/>
+    <fmt:message bundle="${locale}" key="text.main.all.rights" var="all_rights"/>
+    <fmt:message bundle="${locale}" key="text.email.label" var="email"/>
+    <fmt:message bundle="${locale}" key="text.changeemail.submit" var="change_email"/>
+
+    <title>${title}</title>
 
     <link rel="shortcut icon" href="../../../images/pageLogo.png" type="image/png">
     <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900" rel="stylesheet" />
@@ -13,31 +31,65 @@
 <div id="header-wrapper">
     <div id="header" class="container">
         <div id="logo">
-            <h1><a href="../../../jsp/welcome.jsp">Selection Committee</a></h1>
+            <h1><a href="../../../jsp/welcome.jsp">${main_title}</a></h1>
+        </div>
+        <div id="menu">
+            <ul>
+                <li>
+                    <a>
+                        <form action="/Controller" method="get">
+                            <input type="hidden" name="command" value="changelang">
+                            <input type="hidden" name="lang" value="en">
+                            <input type="submit" style="background:none!important;
+    														 color:inherit;
+     														 border:none;
+    														 padding:0!important;
+  														   	 font: inherit;
+    														 cursor: pointer;"
+                                   accesskey="1" value="${en_button}">
+                        </form>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <form action="/Controller" method="get">
+                            <input type="hidden" name="command" value="changelang">
+                            <input type="hidden" name="lang" value="ru">
+                            <input type="submit" style="background:none!important;
+    														 color:inherit;
+     														 border:none;
+    														 padding:0!important;
+  														   	 font: inherit;
+    														 cursor: pointer;"
+                                   accesskey="2" value="${ru_button}">
+                        </form>
+                    </a>
+                </li>
+            </ul>
         </div>
     </div>
 </div>
 <div id="banner-wrapper">
     <div id="content">
         <div class="tittle">
-            <p>CHANGE EMAIL</p>
+            <p>${title}</p>
         </div>
         <form class="login" action="/Controller" method="post">
             <input type="hidden" name="command" value="changeemail">
             <input type="hidden" name="username" value="${param.username}">
             <p>
-                <label for="login">new email:</label>
+                <label for="login">${email}</label>
                 <input type="text" name="newemail" id="login" pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$" required>
                 <span class="form_error">example@site.com</span>
             </p>
             <p class="login-submit">
-                <button type="submit" class="login-button">change email</button>
+                <button type="submit" class="login-button">${change_email}</button>
             </p>
         </form>
     </div>
 </div>
 <div id="copyright" class="container">
-    <p>&copy; 2018. CREATED BY EGOR MAKEDON FOR EPAM SYSTEMS. <a href="http://epam.by" style="color: white">epam.by</a> All rights reserved.</p>
+    <p>${created_by} <a href="http://epam.by" style="color: white">epam.by</a> ${all_rights}</p>
 </div>
 </body>
 </html>
