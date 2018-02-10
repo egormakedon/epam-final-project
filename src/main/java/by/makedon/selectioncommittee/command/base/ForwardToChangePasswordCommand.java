@@ -11,8 +11,8 @@ public class ForwardToChangePasswordCommand implements Command {
     @Override
     public Router execute(HttpServletRequest req) {
         Router router = new Router();
-        router.setPagePath(Page.CHANGE_PASSWORD);
-        router.setRoute(Router.RouteType.FORWARD);
+        router.setPagePath(Page.FORWARD + "?pagePath=" + Page.CHANGE_PASSWORD);
+        router.setRoute(Router.RouteType.REDIRECT);
         return router;
     }
 }
