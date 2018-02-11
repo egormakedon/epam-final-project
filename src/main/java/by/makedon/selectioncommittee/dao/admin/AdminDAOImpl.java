@@ -5,6 +5,7 @@ import by.makedon.selectioncommittee.connectionpool.ProxyConnection;
 import by.makedon.selectioncommittee.entity.enrollee.AdminEnrolleeForm;
 import by.makedon.selectioncommittee.entity.enrollee.EnrolleeFormCriteria;
 import by.makedon.selectioncommittee.entity.enrollee.EnrolleeState;
+import by.makedon.selectioncommittee.entity.speciality.SpecialityState;
 import by.makedon.selectioncommittee.exception.DAOException;
 import com.sun.istack.internal.NotNull;
 import org.apache.logging.log4j.Level;
@@ -46,6 +47,7 @@ public final class AdminDAOImpl implements AdminDAO {
     private static final String STATEMENT_IN_PROCESS = "В процессе";
     private static final String DATE = "date";
     private static final String USERNAME = "username";
+    private static final String FILLED_DOCUMENTS = "filledDocuments";
 
     private static final String SQL_SELECT_ALL_ENROLLEE_ID_SPECIALITY_ID_SCORE = "SELECT e_id enrolleeId, s_id specialityId, date, " +
             "russian_lang+belorussian_lang+physics+math+chemistry+biology+foreign_lang+history_of_belarus+social_studies+geography+" +
@@ -64,6 +66,8 @@ public final class AdminDAOImpl implements AdminDAO {
             "russian_lang+belorussian_lang+physics+math+chemistry+biology+foreign_lang+history_of_belarus+social_studies+" +
             "geography+history+certificate score FROM user u INNER JOIN enrollee e ON u.e_id = e.e_id " +
             "INNER JOIN speciality s ON e.s_id = s.s_id ORDER BY SPECIALITY ASC, score DESC";
+    private static final String SQL_SELECT_SPECIALITY_STATES = "SELECT s.s_name SPECIALITY, s.number_of_seats numberOfSeats, " +
+            "(SELECT COUNT(e.e_id) FROM enrollee e WHERE s.s_id = e.s_id GROUP BY s.s_id) filledDocuments FROM speciality s";
 
     @Override
     public Set<EnrolleeState> takeEnrolleeStateSet() throws DAOException {
@@ -275,6 +279,36 @@ public final class AdminDAOImpl implements AdminDAO {
                 throw new DAOException("enrollee form is empty");
             }
             return adminEnrolleeFormList;
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            close(statement);
+            close(connection);
+        }
+    }
+
+    @Override
+    public List<SpecialityState> takeSpecialityStateList() throws DAOException {
+        ProxyConnection connection = null;
+        Statement statement = null;
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(SQL_SELECT_SPECIALITY_STATES);
+
+            List<SpecialityState> specialityStateList = new ArrayList<SpecialityState>();
+            while (resultSet.next()) {
+                SpecialityState specialityState = new SpecialityState();
+                specialityState.setSpeciality(resultSet.getString(EnrolleeFormCriteria.SPECIALITY.toString()));
+                specialityState.setNumberOfSeats(resultSet.getInt(NUMBER_OF_SEATS));
+                specialityState.setFilledDocuments(resultSet.getInt(FILLED_DOCUMENTS));
+                specialityStateList.add(specialityState);
+            }
+
+            if (specialityStateList.isEmpty()) {
+                throw new DAOException("no one speciality doesn't exist");
+            }
+            return specialityStateList;
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {

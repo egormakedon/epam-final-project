@@ -22,4 +22,5 @@ public class Page {
     public static final String DELETE_USER = "/WEB-INF/security/admin/deleteUserPage.jsp";
     public static final String CHANGE_NUMBER_OF_SEATS = "/WEB-INF/security/admin/changeNumberOfSeats.jsp";
     public static final String SHOW_ENROLLEES = "/WEB-INF/security/admin/showEnrollees.jsp";
+    public static final String SHOW_SPECIALITYS = "/WEB-INF/security/admin/showSpecialitys.jsp";
 }
