@@ -6,6 +6,7 @@ import by.makedon.selectioncommittee.command.admin.ForwardChangeNumberOfSeatsCom
 import by.makedon.selectioncommittee.command.admin.ForwardDeleteUserCommand;
 import by.makedon.selectioncommittee.command.admin.ResetStatementCommand;
 import by.makedon.selectioncommittee.command.admin.SetStatementCommand;
+import by.makedon.selectioncommittee.command.admin.ShowEnrolleesCommand;
 import by.makedon.selectioncommittee.command.base.AcceptRegistrationCommand;
 import by.makedon.selectioncommittee.command.base.ChangeLangCommand;
 import by.makedon.selectioncommittee.command.base.ChangePasswordCommand;
@@ -30,6 +31,7 @@ import by.makedon.selectioncommittee.logic.admin.ChangeNumberOfSeatsLogic;
 import by.makedon.selectioncommittee.logic.admin.DeleteUserLogic;
 import by.makedon.selectioncommittee.logic.admin.ResetStatementLogic;
 import by.makedon.selectioncommittee.logic.admin.SetStatementLogic;
+import by.makedon.selectioncommittee.logic.admin.ShowEnrolleesLogic;
 import by.makedon.selectioncommittee.logic.base.AcceptRegistrationLogic;
 import by.makedon.selectioncommittee.logic.base.ChangePasswordLogic;
 import by.makedon.selectioncommittee.logic.base.ForgotPasswordLogic;
@@ -71,7 +73,8 @@ public enum CommandType {
     FORWARDDELETEUSER(new ForwardDeleteUserCommand()),
     DELETEUSER(new DeleteUserCommand(new DeleteUserLogic())),
     FORWARDCHANGENUMBEROFSEATS(new ForwardChangeNumberOfSeatsCommand()),
-    CHANGENUMBEROFSEATS(new ChangeNumberOfSeatsCommand(new ChangeNumberOfSeatsLogic()));
+    CHANGENUMBEROFSEATS(new ChangeNumberOfSeatsCommand(new ChangeNumberOfSeatsLogic())),
+    SHOWENROLLEES(new ShowEnrolleesCommand(new ShowEnrolleesLogic()));
 
     private Command command;
     CommandType(Command command) {

@@ -32,7 +32,7 @@ public class AdminCommandProtectFilter implements Filter {
             if (commandValue.equals(CommandType.SETSTATEMENT.toString()) || commandValue.equals(CommandType.RESETSTATEMENT.toString()) ||
                     commandValue.equals(CommandType.FORWARDDELETEUSER.toString()) || commandValue.equals(CommandType.DELETEUSER.toString()) ||
                     commandValue.equals(CommandType.FORWARDCHANGENUMBEROFSEATS.toString()) ||
-                    commandValue.equals(CommandType.CHANGENUMBEROFSEATS.toString())) {
+                    commandValue.equals(CommandType.CHANGENUMBEROFSEATS.toString()) || commandValue.equals(CommandType.SHOWENROLLEES.toString())) {
 
                 HttpSession session = ((HttpServletRequest)servletRequest).getSession();
                 String typeValue = (String) session.getAttribute(TYPE);

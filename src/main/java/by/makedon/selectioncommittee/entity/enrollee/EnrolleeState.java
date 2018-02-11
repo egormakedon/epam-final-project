@@ -1,4 +1,4 @@
-package by.makedon.selectioncommittee.entity.enrolleestate;
+package by.makedon.selectioncommittee.entity.enrollee;
 
 import java.util.Objects;
 

@@ -2,7 +2,7 @@ package by.makedon.selectioncommittee.logic.admin;
 
 import by.makedon.selectioncommittee.dao.admin.AdminDAO;
 import by.makedon.selectioncommittee.dao.admin.AdminDAOImpl;
-import by.makedon.selectioncommittee.entity.enrolleestate.EnrolleeState;
+import by.makedon.selectioncommittee.entity.enrollee.EnrolleeState;
 import by.makedon.selectioncommittee.exception.DAOException;
 import by.makedon.selectioncommittee.exception.LogicException;
 import by.makedon.selectioncommittee.logic.Logic;

@@ -1,9 +1,11 @@
 package by.makedon.selectioncommittee.dao.admin;
 
 import by.makedon.selectioncommittee.dao.DAO;
-import by.makedon.selectioncommittee.entity.enrolleestate.EnrolleeState;
+import by.makedon.selectioncommittee.entity.enrollee.AdminEnrolleeForm;
+import by.makedon.selectioncommittee.entity.enrollee.EnrolleeState;
 import by.makedon.selectioncommittee.exception.DAOException;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -16,4 +18,5 @@ public interface AdminDAO extends DAO {
     void deleteUserByUsername(String usernameValue) throws DAOException;
     boolean isStatementInProcess() throws DAOException;
     void changeNumberOfSeats(String specialityValue, String numberOfSeatsValue) throws DAOException;
+    List<AdminEnrolleeForm> takeAdminEnrolleeFormList() throws DAOException;
 }

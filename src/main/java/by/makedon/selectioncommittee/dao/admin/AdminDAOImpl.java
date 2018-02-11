@@ -2,7 +2,9 @@ package by.makedon.selectioncommittee.dao.admin;
 
 import by.makedon.selectioncommittee.connectionpool.ConnectionPool;
 import by.makedon.selectioncommittee.connectionpool.ProxyConnection;
-import by.makedon.selectioncommittee.entity.enrolleestate.EnrolleeState;
+import by.makedon.selectioncommittee.entity.enrollee.AdminEnrolleeForm;
+import by.makedon.selectioncommittee.entity.enrollee.EnrolleeFormCriteria;
+import by.makedon.selectioncommittee.entity.enrollee.EnrolleeState;
 import by.makedon.selectioncommittee.exception.DAOException;
 import com.sun.istack.internal.NotNull;
 import org.apache.logging.log4j.Level;
@@ -11,8 +13,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -41,6 +45,7 @@ public final class AdminDAOImpl implements AdminDAO {
     private static final String STATEMENT = "statement";
     private static final String STATEMENT_IN_PROCESS = "В процессе";
     private static final String DATE = "date";
+    private static final String USERNAME = "username";
 
     private static final String SQL_SELECT_ALL_ENROLLEE_ID_SPECIALITY_ID_SCORE = "SELECT e_id enrolleeId, s_id specialityId, date, " +
             "russian_lang+belorussian_lang+physics+math+chemistry+biology+foreign_lang+history_of_belarus+social_studies+geography+" +
@@ -54,6 +59,11 @@ public final class AdminDAOImpl implements AdminDAO {
     private static final String SQL_UPDATE_RESET_STATEMENT = "UPDATE enrollee SET statement='В процессе'";
     private static final String SQL_UPDATE_NUMBER_OF_SEATS_BY_SPECIALITY = "UPDATE speciality SET number_of_seats=? WHERE s_name=?";
     private static final String SQL_SELECT_STATEMENT_FIRST = "SELECT statement FROM enrollee LIMIT 1";
+    private static final String SQL_SELECT_ADMIN_ENROLLEE_FORMS = "SELECT u.username username, e.passport_id PASSPORTID, " +
+            "e.country_domen COUNTRYDOMEN, e.surname SURNAME, e.name NAME, e.second_name SECONDNAME, e.phone PHONE, s.s_name SPECIALITY, " +
+            "russian_lang+belorussian_lang+physics+math+chemistry+biology+foreign_lang+history_of_belarus+social_studies+" +
+            "geography+history+certificate score FROM user u INNER JOIN enrollee e ON u.e_id = e.e_id " +
+            "INNER JOIN speciality s ON e.s_id = s.s_id ORDER BY SPECIALITY ASC, score DESC";
 
     @Override
     public Set<EnrolleeState> takeEnrolleeStateSet() throws DAOException {
@@ -229,6 +239,42 @@ public final class AdminDAOImpl implements AdminDAO {
             if (rows == 0) {
                 throw new DAOException("speciality doesn't exist");
             }
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            close(statement);
+            close(connection);
+        }
+    }
+
+    @Override
+    public List<AdminEnrolleeForm> takeAdminEnrolleeFormList() throws DAOException {
+        ProxyConnection connection = null;
+        Statement statement = null;
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(SQL_SELECT_ADMIN_ENROLLEE_FORMS);
+
+            List<AdminEnrolleeForm> adminEnrolleeFormList = new ArrayList<AdminEnrolleeForm>();
+            while (resultSet.next()) {
+                AdminEnrolleeForm adminEnrolleeForm = new AdminEnrolleeForm();
+                adminEnrolleeForm.setUsername(resultSet.getString(USERNAME));
+                adminEnrolleeForm.setPassportId(resultSet.getString(EnrolleeFormCriteria.PASSPORTID.toString()));
+                adminEnrolleeForm.setCountryDomen(resultSet.getString(EnrolleeFormCriteria.COUNTRYDOMEN.toString()));
+                adminEnrolleeForm.setSurname(resultSet.getString(EnrolleeFormCriteria.SURNAME.toString()));
+                adminEnrolleeForm.setName(resultSet.getString(EnrolleeFormCriteria.NAME.toString()));
+                adminEnrolleeForm.setSecondname(resultSet.getString(EnrolleeFormCriteria.SECONDNAME.toString()));
+                adminEnrolleeForm.setPhone(resultSet.getString(EnrolleeFormCriteria.PHONE.toString()));
+                adminEnrolleeForm.setSpeciality(resultSet.getString(EnrolleeFormCriteria.SPECIALITY.toString()));
+                adminEnrolleeForm.setScore(resultSet.getInt(SCORE));
+                adminEnrolleeFormList.add(adminEnrolleeForm);
+            }
+
+            if (adminEnrolleeFormList.isEmpty()) {
+                throw new DAOException("enrollee form is empty");
+            }
+            return adminEnrolleeFormList;
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {
