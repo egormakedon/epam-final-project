@@ -48,6 +48,8 @@ public final class AdminDAOImpl implements AdminDAO {
     private static final String DATE = "date";
     private static final String USERNAME = "username";
     private static final String FILLED_DOCUMENTS = "filledDocuments";
+    private static final String EMAIl = "email";
+    private static final String RESULT = "result";
 
     private static final String SQL_SELECT_ALL_ENROLLEE_ID_SPECIALITY_ID_SCORE = "SELECT e_id enrolleeId, s_id specialityId, date, " +
             "russian_lang+belorussian_lang+physics+math+chemistry+biology+foreign_lang+history_of_belarus+social_studies+geography+" +
@@ -68,6 +70,7 @@ public final class AdminDAOImpl implements AdminDAO {
             "INNER JOIN speciality s ON e.s_id = s.s_id ORDER BY SPECIALITY ASC, score DESC";
     private static final String SQL_SELECT_SPECIALITY_STATES = "SELECT s.s_name SPECIALITY, s.number_of_seats numberOfSeats, " +
             "(SELECT COUNT(e.e_id) FROM enrollee e WHERE s.s_id = e.s_id GROUP BY s.s_id) filledDocuments FROM speciality s";
+    private static final String SQL_SELECT_ALL_EMAIL_IS_NULL_E_ID = "SELECT email, isNull(e_id) result from user";
 
     @Override
     public Set<EnrolleeState> takeEnrolleeStateSet() throws DAOException {
@@ -309,6 +312,31 @@ public final class AdminDAOImpl implements AdminDAO {
                 throw new DAOException("no one speciality doesn't exist");
             }
             return specialityStateList;
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            close(statement);
+            close(connection);
+        }
+    }
+
+    @Override
+    public List<String> takeEnrolleeEmailList() throws DAOException {
+        ProxyConnection connection = null;
+        Statement statement = null;
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(SQL_SELECT_ALL_EMAIL_IS_NULL_E_ID);
+
+            List<String> emailList = new ArrayList<String>();
+            while (resultSet.next()) {
+                int result = resultSet.getInt(RESULT);
+                if (result == 0) {
+                    emailList.add(resultSet.getString(EMAIl));
+                }
+            }
+            return emailList;
         } catch (SQLException e) {
             throw new DAOException(e);
         } finally {

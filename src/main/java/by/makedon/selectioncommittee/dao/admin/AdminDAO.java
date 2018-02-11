@@ -21,4 +21,5 @@ public interface AdminDAO extends DAO {
     void changeNumberOfSeats(String specialityValue, String numberOfSeatsValue) throws DAOException;
     List<AdminEnrolleeForm> takeAdminEnrolleeFormList() throws DAOException;
     List<SpecialityState> takeSpecialityStateList() throws DAOException;
+    List<String> takeEnrolleeEmailList() throws DAOException;
 }

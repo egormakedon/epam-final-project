@@ -4,7 +4,8 @@ public enum MailTemplatePath {
     FORGOT_PASSWORD("/mailtemplates/forgotPassword.txt"),
     REGISTRATION("/mailtemplates/registration.txt"),
     CHANGE_USER_DATA("/mailtemplates/changeUserData.txt"),
-    DELETE_USER("/mailtemplates/deleteUser.txt");
+    DELETE_USER("/mailtemplates/deleteUser.txt"),
+    SET_STATEMENT("/mailtemplates/setStatement.txt");
 
     private String templatePath;
 

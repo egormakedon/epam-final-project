@@ -6,6 +6,10 @@ import by.makedon.selectioncommittee.entity.enrollee.EnrolleeState;
 import by.makedon.selectioncommittee.exception.DAOException;
 import by.makedon.selectioncommittee.exception.LogicException;
 import by.makedon.selectioncommittee.logic.Logic;
+import by.makedon.selectioncommittee.mail.MailBuilder;
+import by.makedon.selectioncommittee.mail.MailProperty;
+import by.makedon.selectioncommittee.mail.MailTemplatePath;
+import by.makedon.selectioncommittee.mail.MailThread;
 import com.sun.istack.internal.NotNull;
 
 import java.sql.Date;
@@ -20,6 +24,8 @@ public class SetStatementLogic implements Logic {
     private static final String ENLISTED = "Зачислен";
     private static final String NOT_LISTED = "Не зачислен";
 
+    private static final String CHANGED_STATEMENT_NOTICE = "changed statement notice";
+
     @Override
     public void doAction(@NotNull List<String> parameters) throws LogicException {
         if (!parameters.isEmpty()) {
@@ -32,6 +38,16 @@ public class SetStatementLogic implements Logic {
             Map<Long,Integer> specialityIdNumberOfSeatsMap = dao.takeSpecialityIdNumberOfSeatsMap();
             setStatement(enrolleeStateSet, specialityIdNumberOfSeatsMap);
             dao.refreshStatement(enrolleeStateSet);
+
+            List<String> emailList = dao.takeEnrolleeEmailList();
+            for (String emailValue : emailList) {
+                String templatePath = MailTemplatePath.SET_STATEMENT.getTemplatePath();
+                MailBuilder mailBuilder = new MailBuilder(templatePath);
+                String mailText = mailBuilder.takeMailTemplate();
+
+                MailThread mail = new MailThread(emailValue, CHANGED_STATEMENT_NOTICE, mailText, MailProperty.getInstance().getProperties());
+                mail.start();
+            }
         } catch (DAOException e) {
             throw new LogicException(e);
         }
