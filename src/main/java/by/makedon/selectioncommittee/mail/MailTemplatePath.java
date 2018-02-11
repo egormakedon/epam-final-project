@@ -2,7 +2,8 @@ package by.makedon.selectioncommittee.mail;
 
 public enum MailTemplatePath {
     FORGOT_PASSWORD("/mailtemplates/forgotPassword.txt"),
-    REGISTRATION("/mailtemplates/registration.txt");
+    REGISTRATION("/mailtemplates/registration.txt"),
+    CHANGE_USER_DATA("/mailtemplates/changeUserData.txt");
 
     private String templatePath;
 
