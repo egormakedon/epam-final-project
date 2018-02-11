@@ -1,0 +1,1 @@
+Your account (%s) was deleted from the system by administrator.
