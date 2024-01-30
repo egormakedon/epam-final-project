@@ -1,5 +1,12 @@
-.idea
-log
-out
-target
+.DS_Store
+
+.idea/
+.idea_modules/
 *.iml
+
+*.class
+*.jar
+*.war
+*.log
+target/
+logs/
