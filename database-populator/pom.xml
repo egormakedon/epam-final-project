@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>by.makedon</groupId>
+		<artifactId>selection-committee</artifactId>
+		<version>1.0</version>
+	</parent>
+	<artifactId>database-populator</artifactId>
+	<packaging>jar</packaging>
+
+	<properties>
+		<jcommander.version>1.83</jcommander.version>
+		<logback.version>1.3.14</logback.version>
+		<jupiter.version>5.9.2</jupiter.version>
+	</properties>
+
+	<build>
+		<finalName>database-populator</finalName>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.jcommander</groupId>
+			<artifactId>jcommander</artifactId>
+			<version>${jcommander.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${logback.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<version>${jupiter.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>
