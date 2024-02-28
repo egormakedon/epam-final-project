@@ -29,7 +29,7 @@ class PropertyContext {
     @NotNull
     public PropertyHolder getResource(@NotNull String resourceName) {
         return takeResourceBy(resourceName)
-            .orElse(validateAndLoadResource(resourceName));
+            .orElseGet(() -> validateAndLoadResource(resourceName));
     }
 
     private Optional<PropertyHolder> takeResourceBy(@NotNull String resourceName) {
@@ -46,7 +46,7 @@ class PropertyContext {
         try {
             validateResourceMissing(resourceName);
             return takeResourceBy(resourceName)
-                .orElse(loadResource(resourceName));
+                .orElseGet(() -> loadResource(resourceName));
         } finally {
             loadResourceLock.unlock();
             log.debug("PropertyContext: load resource unlock!");
