@@ -49,6 +49,14 @@ public interface Dao<T, ID> {
         }
     }
 
+    default void rollback(Connection connection) {
+        try {
+            connection.rollback();
+        } catch (SQLException e) {
+            getLogger().warn(e.getMessage(), e);
+        }
+    }
+
     default <R> Optional<R> executeDefaultMode(Function<Connection, Optional<R>> executeFunction) {
         try (Connection connection = ConnectionPool.getInstance().getConnection()) {
             connection.setReadOnly(false);
