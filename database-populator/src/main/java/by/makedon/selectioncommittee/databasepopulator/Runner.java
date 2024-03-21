@@ -1,5 +1,7 @@
 package by.makedon.selectioncommittee.databasepopulator;
 
+import by.makedon.selectioncommittee.common.connectionpool.ConnectionPool;
+import by.makedon.selectioncommittee.databasepopulator.service.EnrolleeDatabasePopulatorFacadeService;
 import by.makedon.selectioncommittee.databasepopulator.util.ArgsUtil;
 import com.beust.jcommander.ParameterException;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +25,8 @@ public class Runner {
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
+        } finally {
+            ConnectionPool.getInstance().destroy();
         }
     }
 
@@ -34,5 +38,7 @@ public class Runner {
     }
 
     private static void populateDatabase(int numberOfEnrollees) {
+        EnrolleeDatabasePopulatorFacadeService service = new EnrolleeDatabasePopulatorFacadeService();
+        service.populateDatabaseWith(numberOfEnrollees);
     }
 }
