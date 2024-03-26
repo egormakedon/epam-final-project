@@ -13,6 +13,8 @@ import java.util.function.Function;
  * @author Yahor Makedon
  */
 public interface Dao<T, ID> {
+    String GENERATED_KEY = "GENERATED_KEY";
+
     default void create(T entity) {
         final String message = String.format("`%s` does not support operation `create`!", this.getClass().getSimpleName());
         throw new UnsupportedOperationException(message);
@@ -51,7 +53,9 @@ public interface Dao<T, ID> {
 
     default void rollback(Connection connection) {
         try {
+            getLogger().debug("Processing rollback within transaction!!");
             connection.rollback();
+            getLogger().debug("Changes have been successfully rolled back!!");
         } catch (SQLException e) {
             getLogger().warn(e.getMessage(), e);
         }
