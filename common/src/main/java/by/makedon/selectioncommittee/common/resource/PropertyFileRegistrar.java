@@ -40,6 +40,9 @@ class PropertyFileRegistrar implements FileRegistrar {
         log.debug("Trying to register property file: {}", fileNameWithoutExtension);
         validate(fileNameWithoutExtension);
         propertyContext.putFile(fileNameWithoutExtension, file);
+        // prevent lazy-loading, load properties to the memory
+        // todo: make lazy-loading possible for assembled (jar) files
+        propertyContext.getResource(fileNameWithoutExtension);
         log.debug("Property file `{}` has been registered successfully", fileNameWithoutExtension);
     }
 
