@@ -20,6 +20,7 @@ import java.util.Optional;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Slf4j
 public final class ResourceUtil {
+    public static final String DEFAULT_RESOURCE_ROOT_FOLDER = "props";
     private static final PropertyContext propertyContext = new PropertyContext();
 
     static {
@@ -65,7 +66,7 @@ public final class ResourceUtil {
             FileRegistrationVisitor visitor = new FileRegistrationVisitor(fileRegistrar, FileRegistrar::register);
 
             log.debug("Begin property files registration");
-            Files.walkFileTree(classPath, visitor);
+            Files.walkFileTree(classPath.resolve(DEFAULT_RESOURCE_ROOT_FOLDER), visitor);
             log.debug("End property files registration");
         } catch (IOException e) {
             log.warn(e.getMessage(), e);
