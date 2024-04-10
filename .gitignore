@@ -10,3 +10,6 @@
 *.log
 target/
 logs/
+
+database.properties
+mail.properties
