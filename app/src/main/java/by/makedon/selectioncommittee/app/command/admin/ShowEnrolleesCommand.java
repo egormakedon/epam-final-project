@@ -1,40 +1,40 @@
 package by.makedon.selectioncommittee.app.command.admin;
 
-import by.makedon.selectioncommittee.command.Command;
-import by.makedon.selectioncommittee.constant.Page;
-import by.makedon.selectioncommittee.controller.Router;
-import by.makedon.selectioncommittee.exception.LogicException;
-import by.makedon.selectioncommittee.logic.Logic;
-import by.makedon.selectioncommittee.logic.admin.ShowEnrolleesLogic;
-import org.apache.logging.log4j.Level;
+import by.makedon.selectioncommittee.app.command.Command;
+import by.makedon.selectioncommittee.app.configuration.controller.Router;
+import by.makedon.selectioncommittee.app.configuration.util.Page;
+import by.makedon.selectioncommittee.app.configuration.util.RequestParameterKey;
+import by.makedon.selectioncommittee.app.logic.Logic;
+import by.makedon.selectioncommittee.app.logic.LogicException;
+import by.makedon.selectioncommittee.app.logic.admin.ShowEnrolleesLogic;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 
 public class ShowEnrolleesCommand implements Command {
-    private static final String MESSAGE = "message";
+    private static final Logger logger = LoggerFactory.getLogger(ShowEnrolleesCommand.class);
 
-    private Logic logic;
+    private final Logic logic;
 
     public ShowEnrolleesCommand(Logic logic) {
         this.logic = logic;
     }
 
     @Override
-    public Router execute(HttpServletRequest req) {
-        List<String> parameters = new ArrayList<String>();
+    public Router execute(HttpServletRequest request) {
+        logger.debug("Execute ShowEnrolleesCommand");
 
-        Router router = new Router();
-        router.setRoute(Router.RouteType.FORWARD);
+        Router router = Router.forwardRouter();
         try {
-            logic.doAction(parameters);
+            logic.doAction(Collections.emptyList());
             ShowEnrolleesLogic showEnrolleesLogic = (ShowEnrolleesLogic) logic;
-            showEnrolleesLogic.updateServletRequest(req);
+            showEnrolleesLogic.updateServletRequest(request);
             router.setPagePath(Page.SHOW_ENROLLEES);
         } catch (LogicException e) {
-            LOGGER.log(Level.ERROR, e);
-            req.setAttribute(MESSAGE, e.getMessage());
+            logger.error(e.getMessage(), e);
+            request.setAttribute(RequestParameterKey.MESSAGE, e.getMessage());
             router.setPagePath(Page.MESSAGE);
         }
         return router;

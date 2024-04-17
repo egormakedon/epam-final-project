@@ -1,53 +1,54 @@
 package by.makedon.selectioncommittee.app.command.user;
 
-import by.makedon.selectioncommittee.command.Command;
-import by.makedon.selectioncommittee.constant.Page;
-import by.makedon.selectioncommittee.controller.Router;
-import by.makedon.selectioncommittee.exception.LogicException;
-import by.makedon.selectioncommittee.logic.Logic;
-import org.apache.logging.log4j.Level;
+import by.makedon.selectioncommittee.app.command.Command;
+import by.makedon.selectioncommittee.app.configuration.controller.Router;
+import by.makedon.selectioncommittee.app.configuration.util.Page;
+import by.makedon.selectioncommittee.app.configuration.util.RequestParameterBuilder;
+import by.makedon.selectioncommittee.app.configuration.util.RequestParameterKey;
+import by.makedon.selectioncommittee.app.logic.Logic;
+import by.makedon.selectioncommittee.app.logic.LogicException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 public class ChangeUsernameCommand implements Command {
-    private static final String USERNAME = "username";
-    private static final String NEW_USERNAME = "newusername";
-    private static final String LOGIN = "login";
-    private static final String FALSE = "false";
+    private static final Logger logger = LoggerFactory.getLogger(ChangeUsernameCommand.class);
 
-    private Logic logic;
+    private final Logic logic;
 
     public ChangeUsernameCommand(Logic logic) {
         this.logic = logic;
     }
 
     @Override
-    public Router execute(HttpServletRequest req) {
-        String usernameValue = req.getParameter(USERNAME);
-        String newUsernameValue = req.getParameter(NEW_USERNAME);
+    public Router execute(HttpServletRequest request) {
+        String usernameValue = request.getParameter(RequestParameterKey.USERNAME);
+        String newUsernameValue = request.getParameter(RequestParameterKey.NEW_USERNAME);
 
-        List<String> parameters = new ArrayList<String>();
-        parameters.add(usernameValue);
-        parameters.add(newUsernameValue);
+        logger.debug("Execute ChangeUsernameCommand: {}={}, {}={}",
+            RequestParameterKey.USERNAME, usernameValue,
+            RequestParameterKey.NEW_USERNAME, newUsernameValue);
 
-        Router router = new Router();
-        router.setRoute(Router.RouteType.REDIRECT);
+        RequestParameterBuilder parameterBuilder = RequestParameterBuilder.builder();
         try {
-            logic.doAction(parameters);
+            logic.doAction(Arrays.asList(usernameValue, newUsernameValue));
 
-            HttpSession session = req.getSession();
+            HttpSession session = request.getSession();
             if (session != null) {
-                session.setAttribute(LOGIN, FALSE);
+                session.setAttribute(RequestParameterKey.LOGIN, Boolean.FALSE.toString());
             }
 
-            router.setPagePath(Page.MESSAGE + "?message=username changed successfully");
+            parameterBuilder.put(RequestParameterKey.MESSAGE, "username has been changed successfully!!");
         } catch (LogicException e) {
-            LOGGER.log(Level.ERROR, e);
-            router.setPagePath(Page.MESSAGE + "?message=" + e.getMessage());
+            logger.error(e.getMessage(), e);
+            parameterBuilder.put(RequestParameterKey.MESSAGE, e.getMessage());
         }
+
+        Router router = Router.redirectRouter();
+        router.setPagePath(Page.MESSAGE + "?" + parameterBuilder.build());
         return router;
     }
 }

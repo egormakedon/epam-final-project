@@ -1,44 +1,43 @@
 package by.makedon.selectioncommittee.app.command.user;
 
-import by.makedon.selectioncommittee.command.Command;
-import by.makedon.selectioncommittee.constant.Page;
-import by.makedon.selectioncommittee.controller.Router;
-import by.makedon.selectioncommittee.exception.LogicException;
-import by.makedon.selectioncommittee.logic.Logic;
-import org.apache.logging.log4j.Level;
+import by.makedon.selectioncommittee.app.command.Command;
+import by.makedon.selectioncommittee.app.configuration.controller.Router;
+import by.makedon.selectioncommittee.app.configuration.util.Page;
+import by.makedon.selectioncommittee.app.configuration.util.RequestParameterBuilder;
+import by.makedon.selectioncommittee.app.configuration.util.RequestParameterKey;
+import by.makedon.selectioncommittee.app.logic.Logic;
+import by.makedon.selectioncommittee.app.logic.LogicException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 public class ChangeUserDataCommand implements Command {
-    private static final String USERNAME = "username";
-    private static final String TYPE_CHANGER = "typechanger";
+    private static final Logger logger = LoggerFactory.getLogger(ChangeUserDataCommand.class);
 
-    private Logic logic;
+    private final Logic logic;
 
     public ChangeUserDataCommand(Logic logic) { this.logic = logic; }
 
     @Override
-    public Router execute(HttpServletRequest req) {
-        HttpSession session = req.getSession();
-        String usernameValue = (String)session.getAttribute(USERNAME);
-        String typeChangerValue = req.getParameter(TYPE_CHANGER);
+    public Router execute(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        String usernameValue = (String) session.getAttribute(RequestParameterKey.USERNAME);
+        String typeChangerValue = request.getParameter(RequestParameterKey.TYPE_CHANGER);
 
-        List<String> parameters = new ArrayList<String>();
-        parameters.add(usernameValue);
-        parameters.add(typeChangerValue);
-
-        Router router = new Router();
-        router.setRoute(Router.RouteType.REDIRECT);
+        RequestParameterBuilder parameterBuilder = RequestParameterBuilder.builder();
         try {
-            logic.doAction(parameters);
-            router.setPagePath(Page.MESSAGE + "?message=check your email");
+            logic.doAction(Arrays.asList(usernameValue, typeChangerValue));
+            parameterBuilder.put(RequestParameterKey.MESSAGE, "check your email");
         } catch (LogicException e) {
-            LOGGER.log(Level.ERROR, e);
-            router.setPagePath(Page.MESSAGE + "?message=" + e.getMessage());
+            logger.error(e.getMessage(), e);
+            parameterBuilder.put(RequestParameterKey.MESSAGE, e.getMessage());
         }
+
+        Router router = Router.redirectRouter();
+        router.setPagePath(Page.MESSAGE + "?" + parameterBuilder.build());
         return router;
     }
 }

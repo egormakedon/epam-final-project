@@ -1,41 +1,45 @@
 package by.makedon.selectioncommittee.app.command.admin;
 
-import by.makedon.selectioncommittee.command.Command;
-import by.makedon.selectioncommittee.constant.Page;
-import by.makedon.selectioncommittee.controller.Router;
-import by.makedon.selectioncommittee.exception.LogicException;
-import by.makedon.selectioncommittee.logic.Logic;
-import org.apache.logging.log4j.Level;
+import by.makedon.selectioncommittee.app.command.Command;
+import by.makedon.selectioncommittee.app.configuration.controller.Router;
+import by.makedon.selectioncommittee.app.configuration.util.Page;
+import by.makedon.selectioncommittee.app.configuration.util.RequestParameterBuilder;
+import by.makedon.selectioncommittee.app.configuration.util.RequestParameterKey;
+import by.makedon.selectioncommittee.app.logic.Logic;
+import by.makedon.selectioncommittee.app.logic.LogicException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 
 public class DeleteUserCommand implements Command {
-    private static final String USERNAME = "username";
+    private static final Logger logger = LoggerFactory.getLogger(DeleteUserCommand.class);
 
-    private Logic logic;
+    private final Logic logic;
 
     public DeleteUserCommand(Logic logic) {
         this.logic = logic;
     }
 
     @Override
-    public Router execute(HttpServletRequest req) {
-        String usernameValue = req.getParameter(USERNAME);
+    public Router execute(HttpServletRequest request) {
+        String usernameValue = request.getParameter(RequestParameterKey.USERNAME);
 
-        List<String> parameters = new ArrayList<String>();
-        parameters.add(usernameValue);
+        logger.debug("Execute DeleteUserCommand: {}={}",
+            RequestParameterKey.USERNAME, usernameValue);
 
-        Router router = new Router();
-        router.setRoute(Router.RouteType.REDIRECT);
+        RequestParameterBuilder parameterBuilder = RequestParameterBuilder.builder();
         try {
-            logic.doAction(parameters);
-            router.setPagePath(Page.MESSAGE + "?message=" + usernameValue + " user has deleted");
+            logic.doAction(Collections.singletonList(usernameValue));
+            parameterBuilder.put(RequestParameterKey.MESSAGE, usernameValue + " user has been deleted");
         } catch (LogicException e) {
-            LOGGER.log(Level.ERROR, e);
-            router.setPagePath(Page.MESSAGE + "?message=" + e.getMessage());
+            logger.error(e.getMessage(), e);
+            parameterBuilder.put(RequestParameterKey.MESSAGE, e.getMessage());
         }
+
+        Router router = Router.redirectRouter();
+        router.setPagePath(Page.MESSAGE + "?" + parameterBuilder.build());
         return router;
     }
 }

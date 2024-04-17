@@ -1,158 +1,235 @@
 package by.makedon.selectioncommittee.app.command.user;
 
-import by.makedon.selectioncommittee.command.Command;
-import by.makedon.selectioncommittee.constant.Page;
-import by.makedon.selectioncommittee.controller.Router;
-import by.makedon.selectioncommittee.entity.enrollee.EnrolleeFormCriteria;
-import by.makedon.selectioncommittee.exception.LogicException;
-import by.makedon.selectioncommittee.logic.Logic;
-import org.apache.logging.log4j.Level;
+import by.makedon.selectioncommittee.app.command.Command;
+import by.makedon.selectioncommittee.app.configuration.controller.Router;
+import by.makedon.selectioncommittee.app.configuration.util.Page;
+import by.makedon.selectioncommittee.app.configuration.util.RequestParameterBuilder;
+import by.makedon.selectioncommittee.app.configuration.util.RequestParameterKey;
+import by.makedon.selectioncommittee.app.entity.enrollee.EnrolleeFormCriteria;
+import by.makedon.selectioncommittee.app.logic.Logic;
+import by.makedon.selectioncommittee.app.logic.LogicException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.function.Consumer;
 
 public class SendFormCommand implements Command {
-    private static final String USERNAME = "username";
+    private static final Logger logger = LoggerFactory.getLogger(SendFormCommand.class);
 
-    private static final String SUBJECT_ID_1 = "subjectId1";
-    private static final String SUBJECT_ID_2 = "subjectId2";
-    private static final String SUBJECT_ID_3 = "subjectId3";
-
-    private static final String SUBJECT_VALUE_1 = "subjectValue1";
-    private static final String SUBJECT_VALUE_2 = "subjectValue2";
-    private static final String SUBJECT_VALUE_3 = "subjectValue3";
-
-    private static final String ZERO = "0";
-    private static final String ONE = "1";
-    private static final String TWO = "2";
-    private static final String THREE = "3";
-    private static final String FOUR = "4";
-    private static final String FIVE = "5";
-    private static final String SIX = "6";
-    private static final String SEVEN = "7";
-    private static final String EIGHT = "8";
-    private static final String NINE = "9";
-    private static final String TEN = "10";
-
-    private String russianLangValue ;
-    private String belorussianLangValue;
-    private String physicsValue;
-    private String mathValue;
-    private String chemistryValue;
-    private String biologyValue;
-    private String foreignLangValue;
-    private String historyOfBelarusValue;
-    private String socialStudiesValue;
-    private String geographyValue;
-    private String historyValue;
-
-    private Logic logic;
+    private final Logic logic;
 
     public SendFormCommand(Logic logic) {
         this.logic = logic;
     }
 
     @Override
-    public Router execute(HttpServletRequest req) {
-        HttpSession session = req.getSession();
-        String usernameValue = (String)session.getAttribute(USERNAME);
+    public Router execute(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        String usernameValue = (String) session.getAttribute(RequestParameterKey.USERNAME);
 
-        String universityValue = req.getParameter(EnrolleeFormCriteria.UNIVERSITY.toString());
-        String facultyValue = req.getParameter(EnrolleeFormCriteria.FACULTY.toString());
-        String specialityValue = req.getParameter(EnrolleeFormCriteria.SPECIALITY.toString());
-        String nameValue = req.getParameter(EnrolleeFormCriteria.NAME.toString());
-        String surnameValue = req.getParameter(EnrolleeFormCriteria.SURNAME.toString());
-        String secondNameValue = req.getParameter(EnrolleeFormCriteria.SECONDNAME.toString());
-        String passportIdValue = req.getParameter(EnrolleeFormCriteria.PASSPORTID.toString());
-        String countryDomenValue = req.getParameter(EnrolleeFormCriteria.COUNTRYDOMEN.toString());
-        String phoneValue = req.getParameter(EnrolleeFormCriteria.PHONE.toString());
-        String certificateValue = req.getParameter(EnrolleeFormCriteria.CERTIFICATE.toString());
+        String universityValue = request.getParameter(EnrolleeFormCriteria.UNIVERSITY.toString());
+        String facultyValue = request.getParameter(EnrolleeFormCriteria.FACULTY.toString());
+        String specialityValue = request.getParameter(EnrolleeFormCriteria.SPECIALITY.toString());
+        String nameValue = request.getParameter(EnrolleeFormCriteria.NAME.toString());
+        String surnameValue = request.getParameter(EnrolleeFormCriteria.SURNAME.toString());
+        String secondNameValue = request.getParameter(EnrolleeFormCriteria.SECONDNAME.toString());
+        String passportIdValue = request.getParameter(EnrolleeFormCriteria.PASSPORTID.toString());
+        String countryDomenValue = request.getParameter(EnrolleeFormCriteria.COUNTRYDOMEN.toString());
+        String phoneValue = request.getParameter(EnrolleeFormCriteria.PHONE.toString());
+        String certificateValue = request.getParameter(EnrolleeFormCriteria.CERTIFICATE.toString());
 
-        String subjectId1 = req.getParameter(SUBJECT_ID_1);
-        String subjectId2 = req.getParameter(SUBJECT_ID_2);
-        String subjectId3 = req.getParameter(SUBJECT_ID_3);
+        String subjectId1Value = request.getParameter(RequestParameterKey.SUBJECT_ID_1);
+        String subjectId2Value = request.getParameter(RequestParameterKey.SUBJECT_ID_2);
+        String subjectId3Value = request.getParameter(RequestParameterKey.SUBJECT_ID_3);
+        String subject1Value = request.getParameter(RequestParameterKey.SUBJECT_VALUE_1);
+        String subject2Value = request.getParameter(RequestParameterKey.SUBJECT_VALUE_2);
+        String subject3Value = request.getParameter(RequestParameterKey.SUBJECT_VALUE_3);
 
-        String subjectValue1 = req.getParameter(SUBJECT_VALUE_1);
-        String subjectValue2 = req.getParameter(SUBJECT_VALUE_2);
-        String subjectValue3 = req.getParameter(SUBJECT_VALUE_3);
+        logger.debug("Execute SendFormCommand: {}={} {}={} {}={} {}={} {}={} {}={} {}={} {}={} {}={} {}={} {}={} {}={} {}={} {}={} {}={} {}={}",
+            EnrolleeFormCriteria.UNIVERSITY, universityValue,
+            EnrolleeFormCriteria.FACULTY, facultyValue,
+            EnrolleeFormCriteria.SPECIALITY, specialityValue,
+            EnrolleeFormCriteria.NAME, nameValue,
+            EnrolleeFormCriteria.SURNAME, surnameValue,
+            EnrolleeFormCriteria.SECONDNAME, secondNameValue,
+            EnrolleeFormCriteria.PASSPORTID, passportIdValue,
+            EnrolleeFormCriteria.COUNTRYDOMEN, countryDomenValue,
+            EnrolleeFormCriteria.PHONE, phoneValue,
+            EnrolleeFormCriteria.CERTIFICATE, certificateValue,
+            RequestParameterKey.SUBJECT_ID_1, subjectId1Value,
+            RequestParameterKey.SUBJECT_ID_2, subjectId2Value,
+            RequestParameterKey.SUBJECT_ID_3, subjectId3Value,
+            RequestParameterKey.SUBJECT_VALUE_1, subject1Value,
+            RequestParameterKey.SUBJECT_VALUE_2, subject2Value,
+            RequestParameterKey.SUBJECT_VALUE_3, subject3Value);
 
-        factory(subjectId1, subjectValue1);
-        factory(subjectId2, subjectValue2);
-        factory(subjectId3, subjectValue3);
+        List<String> parameters = ParameterBuilder.builder()
+            .username(usernameValue)
+            .university(universityValue)
+            .faculty(facultyValue)
+            .speciality(specialityValue)
+            .name(nameValue)
+            .surname(surnameValue)
+            .secondName(secondNameValue)
+            .passportId(passportIdValue)
+            .countryDomen(countryDomenValue)
+            .phone(phoneValue)
+            .certificate(certificateValue)
+            .putSubject(subjectId1Value, subject1Value)
+            .putSubject(subjectId2Value, subject2Value)
+            .putSubject(subjectId3Value, subject3Value)
+            .build();
 
-        List<String> parameters = new ArrayList<String>();
-        parameters.add(usernameValue);
-        parameters.add(universityValue);
-        parameters.add(facultyValue);
-        parameters.add(specialityValue);
-        parameters.add(nameValue);
-        parameters.add(surnameValue);
-        parameters.add(secondNameValue);
-        parameters.add(passportIdValue);
-        parameters.add(countryDomenValue);
-        parameters.add(phoneValue);
-        parameters.add(russianLangValue);
-        parameters.add(belorussianLangValue);
-        parameters.add(physicsValue);
-        parameters.add(mathValue);
-        parameters.add(chemistryValue);
-        parameters.add(biologyValue);
-        parameters.add(foreignLangValue);
-        parameters.add(historyOfBelarusValue);
-        parameters.add(socialStudiesValue);
-        parameters.add(geographyValue);
-        parameters.add(historyValue);
-        parameters.add(certificateValue);
-
-        Router router = new Router();
-        router.setRoute(Router.RouteType.REDIRECT);
+        RequestParameterBuilder parameterBuilder = RequestParameterBuilder.builder();
         try {
             logic.doAction(parameters);
-            router.setPagePath(Page.MESSAGE + "?message=" + "form sent successfully");
+            parameterBuilder.put(RequestParameterKey.MESSAGE, "form has been sent successfully!!");
         } catch (LogicException e) {
-            LOGGER.log(Level.ERROR, e);
-            router.setPagePath(Page.MESSAGE + "?message=" + e.getMessage());
+            logger.error(e.getMessage(), e);
+            parameterBuilder.put(RequestParameterKey.MESSAGE, e.getMessage());
         }
+
+        Router router = Router.redirectRouter();
+        router.setPagePath(Page.MESSAGE + "?" + parameterBuilder.build());
         return router;
     }
 
-    private void factory(String key, String value) {
-        switch (key) {
-            case ZERO:
-                russianLangValue = value;
-                break;
-            case ONE:
-                belorussianLangValue = value;
-                break;
-            case TWO:
-                physicsValue = value;
-                break;
-            case THREE:
-                mathValue = value;
-                break;
-            case FOUR:
-                chemistryValue = value;
-                break;
-            case FIVE:
-                biologyValue = value;
-                break;
-            case SIX:
-                foreignLangValue = value;
-                break;
-            case SEVEN:
-                historyOfBelarusValue = value;
-                break;
-            case EIGHT:
-                socialStudiesValue = value;
-                break;
-            case NINE:
-                geographyValue = value;
-                break;
-            case TEN:
-                historyValue = value;
-                break;
+    private static class ParameterBuilder {
+        private final Map<String, Consumer<String>> subjectIdToSubjectValueSetterConsumer;
+
+        private String usernameValue;
+        private String universityValue;
+        private String facultyValue;
+        private String specialityValue;
+        private String nameValue;
+        private String surnameValue;
+        private String secondNameValue;
+        private String passportIdValue;
+        private String countryDomenValue;
+        private String phoneValue;
+        private String certificateValue;
+
+        private String russianLangValue;
+        private String belorussianLangValue;
+        private String physicsValue;
+        private String mathValue;
+        private String chemistryValue;
+        private String biologyValue;
+        private String foreignLangValue;
+        private String historyOfBelarusValue;
+        private String socialStudiesValue;
+        private String geographyValue;
+        private String historyValue;
+
+        private ParameterBuilder() {
+            subjectIdToSubjectValueSetterConsumer = new HashMap<>();
+            subjectIdToSubjectValueSetterConsumer.put("0", value -> russianLangValue = value);
+            subjectIdToSubjectValueSetterConsumer.put("1", value -> belorussianLangValue = value);
+            subjectIdToSubjectValueSetterConsumer.put("2", value -> physicsValue = value);
+            subjectIdToSubjectValueSetterConsumer.put("3", value -> mathValue = value);
+            subjectIdToSubjectValueSetterConsumer.put("4", value -> chemistryValue = value);
+            subjectIdToSubjectValueSetterConsumer.put("5", value -> biologyValue = value);
+            subjectIdToSubjectValueSetterConsumer.put("6", value -> foreignLangValue = value);
+            subjectIdToSubjectValueSetterConsumer.put("7", value -> historyOfBelarusValue = value);
+            subjectIdToSubjectValueSetterConsumer.put("8", value -> socialStudiesValue = value);
+            subjectIdToSubjectValueSetterConsumer.put("9", value -> geographyValue = value);
+            subjectIdToSubjectValueSetterConsumer.put("10", value -> historyValue = value);
+        }
+
+        public static ParameterBuilder builder() {
+            return new ParameterBuilder();
+        }
+
+        public ParameterBuilder putSubject(String subjectId, String subjectValue) {
+            Optional<Consumer<String>> subjectValueSetterConsumerOptional =
+                Optional.ofNullable(subjectIdToSubjectValueSetterConsumer.get(subjectId));
+            subjectValueSetterConsumerOptional.ifPresent(f -> f.accept(subjectValue));
+            return this;
+        }
+
+        public ParameterBuilder username(String usernameValue) {
+            this.usernameValue = usernameValue;
+            return this;
+        }
+
+        public ParameterBuilder university(String universityValue) {
+            this.universityValue = universityValue;
+            return this;
+        }
+
+        public ParameterBuilder faculty(String facultyValue) {
+            this.facultyValue = facultyValue;
+            return this;
+        }
+
+        public ParameterBuilder speciality(String specialityValue) {
+            this.specialityValue = specialityValue;
+            return this;
+        }
+
+        public ParameterBuilder name(String nameValue) {
+            this.nameValue = nameValue;
+            return this;
+        }
+
+        public ParameterBuilder surname(String surnameValue) {
+            this.surnameValue = surnameValue;
+            return this;
+        }
+
+        public ParameterBuilder secondName(String secondNameValue) {
+            this.secondNameValue = secondNameValue;
+            return this;
+        }
+
+        public ParameterBuilder passportId(String passportIdValue) {
+            this.passportIdValue = passportIdValue;
+            return this;
+        }
+
+        public ParameterBuilder countryDomen(String countryDomenValue) {
+            this.countryDomenValue = countryDomenValue;
+            return this;
+        }
+
+        public ParameterBuilder phone(String phoneValue) {
+            this.phoneValue = phoneValue;
+            return this;
+        }
+
+        public ParameterBuilder certificate(String certificateValue) {
+            this.certificateValue = certificateValue;
+            return this;
+        }
+
+        public List<String> build() {
+            List<String> parameters = new ArrayList<>();
+            parameters.add(usernameValue);
+            parameters.add(universityValue);
+            parameters.add(facultyValue);
+            parameters.add(specialityValue);
+            parameters.add(nameValue);
+            parameters.add(surnameValue);
+            parameters.add(secondNameValue);
+            parameters.add(passportIdValue);
+            parameters.add(countryDomenValue);
+            parameters.add(phoneValue);
+            parameters.add(russianLangValue);
+            parameters.add(belorussianLangValue);
+            parameters.add(physicsValue);
+            parameters.add(mathValue);
+            parameters.add(chemistryValue);
+            parameters.add(biologyValue);
+            parameters.add(foreignLangValue);
+            parameters.add(historyOfBelarusValue);
+            parameters.add(socialStudiesValue);
+            parameters.add(geographyValue);
+            parameters.add(historyValue);
+            parameters.add(certificateValue);
+            return parameters;
         }
     }
 }

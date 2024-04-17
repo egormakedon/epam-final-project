@@ -1,38 +1,63 @@
 package by.makedon.selectioncommittee.app.command.user;
 
-import by.makedon.selectioncommittee.command.Command;
-import by.makedon.selectioncommittee.constant.Page;
-import by.makedon.selectioncommittee.controller.Router;
+import by.makedon.selectioncommittee.app.command.Command;
+import by.makedon.selectioncommittee.app.configuration.controller.Router;
+import by.makedon.selectioncommittee.app.configuration.util.Page;
+import by.makedon.selectioncommittee.app.configuration.util.RequestParameterBuilder;
+import by.makedon.selectioncommittee.app.configuration.util.RequestParameterKey;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.UnaryOperator;
 
 public class ForwardChangeUserDataLinkCommand implements Command {
-    private static final String TYPE_CHANGER = "typechanger";
-    private static final String EMAIL = "email";
-    private static final String USERNAME = "username";
-    private static final String PASSWORD = "password";
+    private static final Logger logger = LoggerFactory.getLogger(ForwardChangeUserDataLinkCommand.class);
+
+    private final Map<String, UnaryOperator<String>> typeChangerToPagePathFunctionMap;
+
+    public ForwardChangeUserDataLinkCommand() {
+        typeChangerToPagePathFunctionMap = new HashMap<>();
+
+        typeChangerToPagePathFunctionMap.put(RequestParameterKey.EMAIL,
+            usernameValue -> Page.FORWARD + "?" + RequestParameterBuilder
+                .builder()
+                .put(RequestParameterKey.USERNAME, usernameValue)
+                .put(RequestParameterKey.PAGE_PATH, Page.CHANGE_EMAIL)
+                .build());
+        typeChangerToPagePathFunctionMap.put(RequestParameterKey.USERNAME,
+            usernameValue -> Page.FORWARD + "?" + RequestParameterBuilder
+                .builder()
+                .put(RequestParameterKey.USERNAME, usernameValue)
+                .put(RequestParameterKey.PAGE_PATH, Page.CHANGE_USERNAME)
+                .build());
+        typeChangerToPagePathFunctionMap.put(RequestParameterKey.PASSWORD,
+            usernameValue -> Page.FORWARD + "?" + RequestParameterBuilder
+                .builder()
+                .put(RequestParameterKey.USERNAME, usernameValue)
+                .put(RequestParameterKey.PAGE_PATH, Page.CHANGE_PASSWORD)
+                .build());
+    }
 
     @Override
-    public Router execute(HttpServletRequest req) {
-        String usernameValue = req.getParameter(USERNAME);
-        String typeChangerValue = req.getParameter(TYPE_CHANGER);
+    public Router execute(HttpServletRequest request) {
+        String usernameValue = request.getParameter(RequestParameterKey.USERNAME);
+        String typeChangerValue = request.getParameter(RequestParameterKey.TYPE_CHANGER);
 
-        Router router = new Router();
-        router.setRoute(Router.RouteType.REDIRECT);
-        switch (typeChangerValue) {
-            case EMAIL:
-                router.setPagePath(Page.FORWARD + "?username=" + usernameValue + "&pagePath=" + Page.CHANGE_EMAIL);
-                break;
-            case USERNAME:
-                router.setPagePath(Page.FORWARD + "?username=" + usernameValue + "&pagePath=" + Page.CHANGE_USERNAME);
-                break;
-            case PASSWORD:
-                router.setPagePath(Page.FORWARD + "?username=" + usernameValue + "&pagePath=" + Page.CHANGE_PASSWORD);
-                break;
-            default:
-                router.setPagePath(Page.MESSAGE + "?message=invalid parameter");
-                break;
-        }
+        logger.debug("Execute ForwardChangeUserDataLinkCommand: {}={}, {}={}",
+            RequestParameterKey.USERNAME, usernameValue,
+            RequestParameterKey.TYPE_CHANGER, typeChangerValue);
+
+        Router router = Router.redirectRouter();
+        String pagePath = Optional
+            .ofNullable(typeChangerToPagePathFunctionMap.get(typeChangerValue))
+            .map(pagePathFunction -> pagePathFunction.apply(usernameValue))
+            .orElse(Page.MESSAGE + "?"
+                + RequestParameterBuilder.builder().put(RequestParameterKey.MESSAGE, "invalid parameter").build());
+        router.setPagePath(pagePath);
         return router;
     }
 }

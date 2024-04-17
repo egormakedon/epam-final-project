@@ -1,36 +1,42 @@
 package by.makedon.selectioncommittee.app.command.admin;
 
-import by.makedon.selectioncommittee.command.Command;
-import by.makedon.selectioncommittee.constant.Page;
-import by.makedon.selectioncommittee.controller.Router;
-import by.makedon.selectioncommittee.exception.LogicException;
-import by.makedon.selectioncommittee.logic.Logic;
-import org.apache.logging.log4j.Level;
+import by.makedon.selectioncommittee.app.command.Command;
+import by.makedon.selectioncommittee.app.configuration.controller.Router;
+import by.makedon.selectioncommittee.app.configuration.util.Page;
+import by.makedon.selectioncommittee.app.configuration.util.RequestParameterBuilder;
+import by.makedon.selectioncommittee.app.configuration.util.RequestParameterKey;
+import by.makedon.selectioncommittee.app.logic.Logic;
+import by.makedon.selectioncommittee.app.logic.LogicException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 
 public class ResetStatementCommand implements Command {
-    private Logic logic;
+    private static final Logger logger = LoggerFactory.getLogger(ResetStatementCommand.class);
+
+    private final Logic logic;
 
     public ResetStatementCommand(Logic logic) {
         this.logic = logic;
     }
 
     @Override
-    public Router execute(HttpServletRequest req) {
-        List<String> parameters = new ArrayList<String>();
+    public Router execute(HttpServletRequest request) {
+        logger.debug("Execute ResetStatementCommand");
 
-        Router router = new Router();
-        router.setRoute(Router.RouteType.REDIRECT);
+        RequestParameterBuilder parameterBuilder = RequestParameterBuilder.builder();
         try {
-            logic.doAction(parameters);
-            router.setPagePath(Page.MESSAGE + "?message=statements reset successfully");
+            logic.doAction(Collections.emptyList());
+            parameterBuilder.put(RequestParameterKey.MESSAGE, "statements have been reset successfully!!");
         } catch (LogicException e) {
-            LOGGER.log(Level.ERROR, e);
-            router.setPagePath(Page.MESSAGE + "?message=" + e.getMessage());
+            logger.error(e.getMessage(), e);
+            parameterBuilder.put(RequestParameterKey.MESSAGE, e.getMessage());
         }
+
+        Router router = Router.redirectRouter();
+        router.setPagePath(Page.MESSAGE + "?" + parameterBuilder.build());
         return router;
     }
 }

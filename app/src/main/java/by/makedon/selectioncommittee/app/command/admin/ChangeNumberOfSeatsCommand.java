@@ -1,44 +1,47 @@
 package by.makedon.selectioncommittee.app.command.admin;
 
-import by.makedon.selectioncommittee.command.Command;
-import by.makedon.selectioncommittee.constant.Page;
-import by.makedon.selectioncommittee.controller.Router;
-import by.makedon.selectioncommittee.exception.LogicException;
-import by.makedon.selectioncommittee.logic.Logic;
-import org.apache.logging.log4j.Level;
+import by.makedon.selectioncommittee.app.command.Command;
+import by.makedon.selectioncommittee.app.configuration.controller.Router;
+import by.makedon.selectioncommittee.app.configuration.util.Page;
+import by.makedon.selectioncommittee.app.configuration.util.RequestParameterBuilder;
+import by.makedon.selectioncommittee.app.configuration.util.RequestParameterKey;
+import by.makedon.selectioncommittee.app.logic.Logic;
+import by.makedon.selectioncommittee.app.logic.LogicException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 public class ChangeNumberOfSeatsCommand implements Command {
-    private static final String SPECIALITY = "speciality";
-    private static final String NUMBER_OF_SEATS = "numberOfSeats";
+    private static final Logger logger = LoggerFactory.getLogger(ChangeNumberOfSeatsCommand.class);
 
-    private Logic logic;
+    private final Logic logic;
 
     public ChangeNumberOfSeatsCommand(Logic logic) {
         this.logic = logic;
     }
 
     @Override
-    public Router execute(HttpServletRequest req) {
-        String specialityValue = req.getParameter(SPECIALITY);
-        String numberOfSeatsValue = req.getParameter(NUMBER_OF_SEATS);
+    public Router execute(HttpServletRequest request) {
+        String specialityValue = request.getParameter(RequestParameterKey.SPECIALITY);
+        String numberOfSeatsValue = request.getParameter(RequestParameterKey.NUMBER_OF_SEATS);
 
-        List<String> parameters = new ArrayList<String>();
-        parameters.add(specialityValue);
-        parameters.add(numberOfSeatsValue);
+        logger.debug("Execute ChangeNumberOfSeatsCommand: {}={}, {}={}",
+            RequestParameterKey.SPECIALITY, specialityValue,
+            RequestParameterKey.NUMBER_OF_SEATS, numberOfSeatsValue);
 
-        Router router = new Router();
-        router.setRoute(Router.RouteType.REDIRECT);
+        RequestParameterBuilder parameterBuilder = RequestParameterBuilder.builder();
         try {
-            logic.doAction(parameters);
-            router.setPagePath(Page.MESSAGE + "?message=number of seats changed");
+            logic.doAction(Arrays.asList(specialityValue, numberOfSeatsValue));
+            parameterBuilder.put(RequestParameterKey.MESSAGE, "number of seats have been changed");
         } catch (LogicException e) {
-            LOGGER.log(Level.ERROR, e);
-            router.setPagePath(Page.MESSAGE + "?message=" + e.getMessage());
+            logger.error(e.getMessage(), e);
+            parameterBuilder.put(RequestParameterKey.MESSAGE, e.getMessage());
         }
+
+        Router router = Router.redirectRouter();
+        router.setPagePath(Page.MESSAGE + "?" + parameterBuilder.build());
         return router;
     }
 }

@@ -1,66 +1,66 @@
 package by.makedon.selectioncommittee.app.command.base;
 
-import by.makedon.selectioncommittee.command.Command;
-import by.makedon.selectioncommittee.constant.Page;
-import by.makedon.selectioncommittee.controller.Router;
-import by.makedon.selectioncommittee.exception.LogicException;
-import by.makedon.selectioncommittee.logic.Logic;
-import by.makedon.selectioncommittee.logic.base.LoginLogic;
-import org.apache.logging.log4j.Level;
+import by.makedon.selectioncommittee.app.command.Command;
+import by.makedon.selectioncommittee.app.configuration.controller.Router;
+import by.makedon.selectioncommittee.app.configuration.util.Page;
+import by.makedon.selectioncommittee.app.configuration.util.RequestParameterBuilder;
+import by.makedon.selectioncommittee.app.configuration.util.RequestParameterKey;
+import by.makedon.selectioncommittee.app.logic.Logic;
+import by.makedon.selectioncommittee.app.logic.LogicException;
+import by.makedon.selectioncommittee.app.logic.base.LoginLogic;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 public class LoginCommand implements Command {
-    private static final String USERNAME = "username";
-    private static final String PASSWORD = "password";
+    private static final Logger logger = LoggerFactory.getLogger(LoginCommand.class);
 
-    private static final String TYPE = "type";
-    private static final String LOGIN = "login";
-    private static final String TRUE = "true";
-
-    private static final String ADMIN = "admin";
-
-    private Logic logic;
+    private final Logic logic;
 
     public LoginCommand(Logic logic) {
-        this.logic=logic;
+        this.logic = logic;
     }
 
     @Override
-    public Router execute(HttpServletRequest req) {
-        String usernameValue = req.getParameter(USERNAME);
-        String passwordValue = req.getParameter(PASSWORD);
+    public Router execute(HttpServletRequest request) {
+        String usernameValue = request.getParameter(RequestParameterKey.USERNAME);
+        String passwordValue = request.getParameter(RequestParameterKey.PASSWORD);
 
-        List<String> parameters = new ArrayList<String>();
-        parameters.add(usernameValue);
-        parameters.add(passwordValue);
+        logger.debug("Execute LoginCommand: {}={}, {}={}",
+            RequestParameterKey.USERNAME, usernameValue,
+            RequestParameterKey.PASSWORD, "*******");
 
-        Router router = new Router();
-        router.setRoute(Router.RouteType.REDIRECT);
+        Router router = Router.redirectRouter();
         try {
-            logic.doAction(parameters);
+            logic.doAction(Arrays.asList(usernameValue, passwordValue));
 
             LoginLogic loginLogic = (LoginLogic) logic;
             String type = loginLogic.getType();
 
-            HttpSession session = req.getSession();
-            session.setAttribute(USERNAME, usernameValue);
-            session.setAttribute(TYPE, type);
-            session.setAttribute(LOGIN, TRUE);
+            HttpSession session = request.getSession();
+            session.setAttribute(RequestParameterKey.USERNAME, usernameValue);
+            session.setAttribute(RequestParameterKey.TYPE, type);
+            session.setAttribute(RequestParameterKey.LOGIN, Boolean.TRUE.toString());
 
-            if (type.equals(ADMIN)) {
-                router.setPagePath(Page.FORWARD + "?pagePath=" + Page.ADMIN);
+            RequestParameterBuilder parameterBuilder = RequestParameterBuilder.builder();
+            if (RequestParameterKey.ADMIN.equals(type)) {
+                parameterBuilder.put(RequestParameterKey.PAGE_PATH, Page.ADMIN);
             } else {
-                router.setPagePath(Page.FORWARD + "?pagePath=" + Page.USER);
+                parameterBuilder.put(RequestParameterKey.PAGE_PATH, Page.USER);
             }
-
+            router.setPagePath(Page.FORWARD + "?" + parameterBuilder.build());
         } catch (LogicException e) {
-            LOGGER.log(Level.ERROR, e);
-            router.setPagePath(Page.MESSAGE + "?message=" + e.getMessage());
+            logger.error(e.getMessage(), e);
+            String requestParameters = RequestParameterBuilder
+                .builder()
+                .put(RequestParameterKey.MESSAGE, e.getMessage())
+                .build();
+            router.setPagePath(Page.MESSAGE + "?" + requestParameters);
         }
+
         return router;
     }
 }

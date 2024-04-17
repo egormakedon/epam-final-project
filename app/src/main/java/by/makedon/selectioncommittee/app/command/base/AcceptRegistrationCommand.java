@@ -1,47 +1,50 @@
 package by.makedon.selectioncommittee.app.command.base;
 
-import by.makedon.selectioncommittee.command.Command;
-import by.makedon.selectioncommittee.constant.Page;
-import by.makedon.selectioncommittee.controller.Router;
-import by.makedon.selectioncommittee.exception.LogicException;
-import by.makedon.selectioncommittee.logic.Logic;
-import org.apache.logging.log4j.Level;
+import by.makedon.selectioncommittee.app.command.Command;
+import by.makedon.selectioncommittee.app.configuration.controller.Router;
+import by.makedon.selectioncommittee.app.configuration.util.Page;
+import by.makedon.selectioncommittee.app.configuration.util.RequestParameterBuilder;
+import by.makedon.selectioncommittee.app.configuration.util.RequestParameterKey;
+import by.makedon.selectioncommittee.app.logic.Logic;
+import by.makedon.selectioncommittee.app.logic.LogicException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 public class AcceptRegistrationCommand implements Command {
-    private static final String EMAIL = "email";
-    private static final String USERNAME = "username";
-    private static final String PASSWORD = "password";
+    private static final Logger logger = LoggerFactory.getLogger(AcceptRegistrationCommand.class);
 
-    private Logic logic;
+    private final Logic logic;
 
     public AcceptRegistrationCommand(Logic logic) {
         this.logic = logic;
     }
 
     @Override
-    public Router execute(HttpServletRequest req) {
-        String emailValue = req.getParameter(EMAIL);
-        String usernameValue = req.getParameter(USERNAME);
-        String password = req.getParameter(PASSWORD);
+    public Router execute(HttpServletRequest request) {
+        String emailValue = request.getParameter(RequestParameterKey.EMAIL);
+        String usernameValue = request.getParameter(RequestParameterKey.USERNAME);
+        String password = request.getParameter(RequestParameterKey.PASSWORD);
 
-        List<String> parameters = new ArrayList<String>();
-        parameters.add(emailValue);
-        parameters.add(usernameValue);
-        parameters.add(password);
+        logger.debug("Execute AcceptRegistrationCommand: {}={}, {}={}, {}={}",
+            RequestParameterKey.EMAIL, emailValue,
+            RequestParameterKey.USERNAME, usernameValue,
+            RequestParameterKey.PASSWORD, "*******");
 
-        Router router = new Router();
-        router.setRoute(Router.RouteType.REDIRECT);
+        RequestParameterBuilder parameterBuilder = RequestParameterBuilder.builder();
         try {
-            logic.doAction(parameters);
-            router.setPagePath(Page.MESSAGE + "?message=user " + usernameValue + " register successfully");
+            logic.doAction(Arrays.asList(emailValue, usernameValue, password));
+            parameterBuilder.put(RequestParameterKey.MESSAGE,
+                String.format("user '%s' has been registered successfully!!", usernameValue));
         } catch (LogicException e) {
-            LOGGER.log(Level.ERROR, e);
-            router.setPagePath(Page.MESSAGE + "?message=" + e.getMessage());
+            logger.error(e.getMessage(), e);
+            parameterBuilder.put(RequestParameterKey.MESSAGE, e.getMessage());
         }
+
+        Router router = Router.redirectRouter();
+        router.setPagePath(Page.MESSAGE + "?" + parameterBuilder.build());
         return router;
     }
 }

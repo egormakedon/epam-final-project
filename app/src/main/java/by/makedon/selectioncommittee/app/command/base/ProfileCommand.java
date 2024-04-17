@@ -1,51 +1,51 @@
 package by.makedon.selectioncommittee.app.command.base;
 
-import by.makedon.selectioncommittee.command.Command;
-import by.makedon.selectioncommittee.constant.Page;
-import by.makedon.selectioncommittee.controller.Router;
-import by.makedon.selectioncommittee.exception.LogicException;
-import by.makedon.selectioncommittee.logic.Logic;
-import by.makedon.selectioncommittee.logic.base.ProfileLogic;
-import org.apache.logging.log4j.Level;
+import by.makedon.selectioncommittee.app.command.Command;
+import by.makedon.selectioncommittee.app.configuration.controller.Router;
+import by.makedon.selectioncommittee.app.configuration.util.Page;
+import by.makedon.selectioncommittee.app.configuration.util.RequestParameterKey;
+import by.makedon.selectioncommittee.app.logic.Logic;
+import by.makedon.selectioncommittee.app.logic.LogicException;
+import by.makedon.selectioncommittee.app.logic.base.ProfileLogic;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
+import javax.servlet.http.HttpSession;
+import java.util.Arrays;
 
 public class ProfileCommand implements Command {
-    private static final String LOGIN = "login";
-    private static final String TYPE = "type";
-    private static final String MESSAGE = "message";
+    private static final Logger logger = LoggerFactory.getLogger(ProfileCommand.class);
 
-    private Logic logic;
+    private final Logic logic;
 
     public ProfileCommand(Logic logic) {
-        this.logic=logic;
+        this.logic = logic;
     }
 
     @Override
-    public Router execute(HttpServletRequest req) {
-        String loginValue = (String)req.getSession().getAttribute(LOGIN);
-        String typeValue = (String)req.getSession().getAttribute(TYPE);
+    public Router execute(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        String loginValue = (String) session.getAttribute(RequestParameterKey.LOGIN);
+        String typeValue = (String) session.getAttribute(RequestParameterKey.TYPE);
 
-        List<String> parameters = new ArrayList<String>();
-        parameters.add(loginValue);
-        parameters.add(typeValue);
+        logger.debug("Execute ProfileCommand: {}={}, {}={}",
+            RequestParameterKey.LOGIN, loginValue,
+            RequestParameterKey.TYPE, typeValue);
 
-        Router router = new Router();
-        router.setRoute(Router.RouteType.FORWARD);
+        Router router = Router.forwardRouter();
         try {
-            logic.doAction(parameters);
+            logic.doAction(Arrays.asList(loginValue, typeValue));
 
             ProfileLogic profileLogic = (ProfileLogic) logic;
             String pagePath = profileLogic.getPagePath();
-
             router.setPagePath(pagePath);
         } catch (LogicException e) {
-            LOGGER.log(Level.ERROR, e);
-            req.setAttribute(MESSAGE, e.getMessage());
+            logger.error(e.getMessage(), e);
+            request.setAttribute(RequestParameterKey.MESSAGE, e.getMessage());
             router.setPagePath(Page.MESSAGE);
         }
+
         return router;
     }
 }

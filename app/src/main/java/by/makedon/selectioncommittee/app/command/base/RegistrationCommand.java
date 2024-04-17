@@ -1,50 +1,52 @@
 package by.makedon.selectioncommittee.app.command.base;
 
-import by.makedon.selectioncommittee.command.Command;
-import by.makedon.selectioncommittee.constant.Page;
-import by.makedon.selectioncommittee.controller.Router;
-import by.makedon.selectioncommittee.exception.LogicException;
-import by.makedon.selectioncommittee.logic.Logic;
-import org.apache.logging.log4j.Level;
+import by.makedon.selectioncommittee.app.command.Command;
+import by.makedon.selectioncommittee.app.configuration.controller.Router;
+import by.makedon.selectioncommittee.app.configuration.util.Page;
+import by.makedon.selectioncommittee.app.configuration.util.RequestParameterBuilder;
+import by.makedon.selectioncommittee.app.configuration.util.RequestParameterKey;
+import by.makedon.selectioncommittee.app.logic.Logic;
+import by.makedon.selectioncommittee.app.logic.LogicException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 public class RegistrationCommand implements Command {
-    private static final String EMAIL = "email";
-    private static final String USERNAME = "username";
-    private static final String PASSWORD1 = "password1";
-    private static final String PASSWORD2 = "password2";
+    private static final Logger logger = LoggerFactory.getLogger(RegistrationCommand.class);
 
-    private Logic logic;
+    private final Logic logic;
 
     public RegistrationCommand(Logic logic) {
         this.logic = logic;
     }
 
     @Override
-    public Router execute(HttpServletRequest req) {
-        String emailValue = req.getParameter(EMAIL);
-        String usernameValue = req.getParameter(USERNAME);
-        String password1Value = req.getParameter(PASSWORD1);
-        String password2Value = req.getParameter(PASSWORD2);
+    public Router execute(HttpServletRequest request) {
+        String emailValue = request.getParameter(RequestParameterKey.EMAIL);
+        String usernameValue = request.getParameter(RequestParameterKey.USERNAME);
+        String password1Value = request.getParameter(RequestParameterKey.PASSWORD1);
+        String password2Value = request.getParameter(RequestParameterKey.PASSWORD2);
 
-        List<String> parameters = new ArrayList<String>();
-        parameters.add(emailValue);
-        parameters.add(usernameValue);
-        parameters.add(password1Value);
-        parameters.add(password2Value);
+        logger.debug("Execute RegistrationCommand: {}={}, {}={}, {}={}, {}={}",
+            RequestParameterKey.EMAIL, emailValue,
+            RequestParameterKey.USERNAME, usernameValue,
+            RequestParameterKey.PASSWORD1, "*******",
+            RequestParameterKey.PASSWORD2, "*******");
 
-        Router router = new Router();
-        router.setRoute(Router.RouteType.REDIRECT);
+        RequestParameterBuilder parameterBuilder = RequestParameterBuilder.builder();
         try {
-            logic.doAction(parameters);
-            router.setPagePath(Page.MESSAGE + "?message=confirm of registration sent to the email");
+            logic.doAction(Arrays.asList(emailValue, usernameValue, password1Value, password2Value));
+            parameterBuilder.put(RequestParameterKey.MESSAGE,
+                "registration confirmation has been sent to the provided email");
         } catch (LogicException e) {
-            LOGGER.log(Level.ERROR, e);
-            router.setPagePath(Page.MESSAGE + "?message=" + e.getMessage());
+            logger.error(e.getMessage(), e);
+            parameterBuilder.put(RequestParameterKey.MESSAGE, e.getMessage());
         }
+
+        Router router = Router.redirectRouter();
+        router.setPagePath(Page.MESSAGE + "?" + parameterBuilder.build());
         return router;
     }
 }
