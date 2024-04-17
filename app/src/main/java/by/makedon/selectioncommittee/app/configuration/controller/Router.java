@@ -1,4 +1,4 @@
-package by.makedon.selectioncommittee.controller;
+package by.makedon.selectioncommittee.app.configuration.controller;
 
 public class Router {
     private String pagePath;

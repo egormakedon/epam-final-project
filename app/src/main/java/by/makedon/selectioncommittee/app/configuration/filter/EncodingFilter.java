@@ -1,4 +1,4 @@
-package by.makedon.selectioncommittee.filter;
+package by.makedon.selectioncommittee.app.configuration.filter;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;

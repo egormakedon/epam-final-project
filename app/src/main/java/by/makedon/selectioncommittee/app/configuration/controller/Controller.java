@@ -1,8 +1,8 @@
-package by.makedon.selectioncommittee.controller;
+package by.makedon.selectioncommittee.app.configuration.controller;
 
-import by.makedon.selectioncommittee.command.factory.ActionFactory;
-import by.makedon.selectioncommittee.command.Command;
-import by.makedon.selectioncommittee.connectionpool.ConnectionPool;
+import by.makedon.selectioncommittee.app.command.Command;
+import by.makedon.selectioncommittee.app.command.CommandFactory;
+import by.makedon.selectioncommittee.common.connectionpool.ConnectionPool;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,7 +27,7 @@ public class Controller extends HttpServlet {
 
     @Override
     public void destroy() {
-        ConnectionPool.getInstance().destroyConnections();
+        ConnectionPool.getInstance().destroy();
         LOGGER.log(Level.INFO, "Destroy servlet");
     }
 
@@ -42,7 +42,7 @@ public class Controller extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Optional<Command> commandOptional = ActionFactory.defineCommand(req.getParameter(COMMAND));
+        Optional<Command> commandOptional = CommandFactory.getCommandBy(req.getParameter(COMMAND));
         Command command = commandOptional.get();
         Router router = command.execute(req);
         if (router.getRoute() == Router.RouteType.FORWARD) {

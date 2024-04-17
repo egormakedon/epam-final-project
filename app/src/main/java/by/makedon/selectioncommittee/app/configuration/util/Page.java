@@ -1,4 +1,4 @@
-package by.makedon.selectioncommittee.constant;
+package by.makedon.selectioncommittee.app.configuration.util;
 
 public class Page {
     public static final String FORGOT_PASSWORD = "/jsp/forgotpassword.jsp";

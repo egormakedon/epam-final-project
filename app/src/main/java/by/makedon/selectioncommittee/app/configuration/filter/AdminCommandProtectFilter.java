@@ -1,7 +1,7 @@
-package by.makedon.selectioncommittee.filter;
+package by.makedon.selectioncommittee.app.configuration.filter;
 
-import by.makedon.selectioncommittee.command.factory.CommandType;
-import by.makedon.selectioncommittee.constant.Page;
+import by.makedon.selectioncommittee.app.command.CommandType;
+import by.makedon.selectioncommittee.app.configuration.util.Page;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;

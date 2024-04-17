@@ -1,6 +1,6 @@
-package by.makedon.selectioncommittee.listener;
+package by.makedon.selectioncommittee.app.configuration.listener;
 
-import by.makedon.selectioncommittee.constant.Page;
+import by.makedon.selectioncommittee.app.configuration.util.Page;
 
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;

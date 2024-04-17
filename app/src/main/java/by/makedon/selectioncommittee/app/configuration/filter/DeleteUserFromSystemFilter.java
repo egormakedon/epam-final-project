@@ -1,9 +1,9 @@
-package by.makedon.selectioncommittee.filter;
+package by.makedon.selectioncommittee.app.configuration.filter;
 
-import by.makedon.selectioncommittee.constant.Page;
-import by.makedon.selectioncommittee.dao.base.BaseDAO;
-import by.makedon.selectioncommittee.dao.base.BaseDAOImpl;
-import by.makedon.selectioncommittee.exception.DAOException;
+import by.makedon.selectioncommittee.app.dao.base.BaseDAOImpl;
+import by.makedon.selectioncommittee.app.configuration.util.Page;
+import by.makedon.selectioncommittee.app.dao.base.BaseDAO;
+import by.makedon.selectioncommittee.app.dao.DAOException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
