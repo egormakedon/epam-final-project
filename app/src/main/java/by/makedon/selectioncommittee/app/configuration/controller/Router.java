@@ -1,23 +1,40 @@
 package by.makedon.selectioncommittee.app.configuration.controller;
 
-public class Router {
-    private String pagePath;
-    private RouteType route;
+import java.util.Optional;
 
-    public enum RouteType {
-        FORWARD, REDIRECT
+public final class Router {
+    private final RouteType routeType;
+    private String pagePath;
+
+    private Router(RouteType routeType) {
+        this.routeType = routeType;
+    }
+
+    public static Router redirectRouter() {
+        return new Router(RouteType.REDIRECT);
+    }
+
+    public static Router forwardRouter() {
+        return new Router(RouteType.FORWARD);
+    }
+
+    public boolean isRedirectRouter() {
+        return routeType == RouteType.REDIRECT;
+    }
+
+    public boolean isForwardRouter() {
+        return routeType == RouteType.FORWARD;
     }
 
     public void setPagePath(String pagePath) {
         this.pagePath = pagePath;
     }
-    public void setRoute(RouteType route) {
-        this.route = route;
+
+    public Optional<String> getPagePath() {
+        return Optional.ofNullable(pagePath);
     }
-    public String getPagePath() {
-        return pagePath;
-    }
-    public RouteType getRoute() {
-        return route;
+
+    private enum RouteType {
+        FORWARD, REDIRECT
     }
 }
