@@ -12,9 +12,14 @@ public final class CommandFactory {
     }
 
     public static Optional<Command> getCommandBy(String commandTypeName) {
+        return getCommandTypeBy(commandTypeName)
+            .map(CommandType::getCommand);
+    }
+
+    public static Optional<CommandType> getCommandTypeBy(String commandTypeName) {
         try {
             CommandType commandType = CommandType.valueOf(commandTypeName.toUpperCase());
-            return Optional.of(commandType.getCommand());
+            return Optional.of(commandType);
         } catch (Exception e) {
             logger.warn(e.getMessage(), e);
             return Optional.empty();
