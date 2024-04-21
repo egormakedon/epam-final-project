@@ -1,4 +1,4 @@
-package by.makedon.selectioncommittee.dao;
+package by.makedon.selectioncommittee.app.dao;
 
 import by.makedon.selectioncommittee.connectionpool.ProxyConnection;
 import org.apache.logging.log4j.Level;

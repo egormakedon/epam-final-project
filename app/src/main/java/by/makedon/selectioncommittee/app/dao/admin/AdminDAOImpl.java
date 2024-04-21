@@ -1,13 +1,14 @@
-package by.makedon.selectioncommittee.dao.admin;
+package by.makedon.selectioncommittee.app.dao.admin;
 
+import by.makedon.selectioncommittee.app.dao.DAO;
+import by.makedon.selectioncommittee.app.entity.enrollee.AdminEnrolleeForm;
+import by.makedon.selectioncommittee.app.entity.enrollee.EnrolleeFormCriteria;
+import by.makedon.selectioncommittee.app.entity.enrollee.EnrolleeState;
+import by.makedon.selectioncommittee.app.entity.speciality.SpecialityState;
+import by.makedon.selectioncommittee.app.dao.DAOException;
 import by.makedon.selectioncommittee.connectionpool.ConnectionPool;
 import by.makedon.selectioncommittee.connectionpool.ProxyConnection;
-import by.makedon.selectioncommittee.entity.enrollee.AdminEnrolleeForm;
-import by.makedon.selectioncommittee.entity.enrollee.EnrolleeFormCriteria;
-import by.makedon.selectioncommittee.entity.enrollee.EnrolleeState;
-import by.makedon.selectioncommittee.entity.speciality.SpecialityState;
-import by.makedon.selectioncommittee.exception.DAOException;
-import com.sun.istack.internal.NotNull;
+import org.jetbrains.annotations.NotNull;
 import org.apache.logging.log4j.Level;
 
 import java.sql.PreparedStatement;
@@ -31,7 +32,7 @@ public final class AdminDAOImpl implements AdminDAO {
     }
     private AdminDAOImpl() {
         if (instanceCreated.get()) {
-            LOGGER.log(Level.FATAL, "Tried to create singleton object with reflection api");
+            DAO.LOGGER.log(Level.FATAL, "Tried to create singleton object with reflection api");
             throw new RuntimeException("Tried to create singleton object with reflection api");
         }
     }
@@ -347,7 +348,7 @@ public final class AdminDAOImpl implements AdminDAO {
 
     @Override
     public Object clone() throws CloneNotSupportedException {
-        LOGGER.log(Level.ERROR, "Tried to clone singleton object");
+        DAO.LOGGER.log(Level.ERROR, "Tried to clone singleton object");
         throw new CloneNotSupportedException("Tried to clone singleton object");
     }
 }

@@ -1,8 +1,8 @@
-package by.makedon.selectioncommittee.dao.user;
+package by.makedon.selectioncommittee.app.dao.user;
 
-import by.makedon.selectioncommittee.dao.DAO;
-import by.makedon.selectioncommittee.entity.enrollee.EnrolleeForm;
-import by.makedon.selectioncommittee.exception.DAOException;
+import by.makedon.selectioncommittee.app.entity.enrollee.EnrolleeForm;
+import by.makedon.selectioncommittee.app.dao.DAOException;
+import by.makedon.selectioncommittee.app.dao.DAO;
 
 public interface UserDAO extends DAO {
     boolean couldChangeForm() throws DAOException;

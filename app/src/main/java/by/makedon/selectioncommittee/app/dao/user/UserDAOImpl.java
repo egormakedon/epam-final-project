@@ -1,11 +1,11 @@
-package by.makedon.selectioncommittee.dao.user;
+package by.makedon.selectioncommittee.app.dao.user;
 
 import by.makedon.selectioncommittee.connectionpool.ConnectionPool;
 import by.makedon.selectioncommittee.connectionpool.ProxyConnection;
-import by.makedon.selectioncommittee.entity.enrollee.EnrolleeForm;
-import by.makedon.selectioncommittee.entity.enrollee.EnrolleeFormCriteria;
-import by.makedon.selectioncommittee.exception.DAOException;
-import com.sun.istack.internal.NotNull;
+import by.makedon.selectioncommittee.app.entity.enrollee.EnrolleeForm;
+import by.makedon.selectioncommittee.app.entity.enrollee.EnrolleeFormCriteria;
+import by.makedon.selectioncommittee.app.dao.DAOException;
+import org.jetbrains.annotations.NotNull;
 import org.apache.logging.log4j.Level;
 
 import java.sql.PreparedStatement;

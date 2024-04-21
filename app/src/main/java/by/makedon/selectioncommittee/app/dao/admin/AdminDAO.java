@@ -1,10 +1,10 @@
-package by.makedon.selectioncommittee.dao.admin;
+package by.makedon.selectioncommittee.app.dao.admin;
 
-import by.makedon.selectioncommittee.dao.DAO;
-import by.makedon.selectioncommittee.entity.enrollee.AdminEnrolleeForm;
-import by.makedon.selectioncommittee.entity.enrollee.EnrolleeState;
-import by.makedon.selectioncommittee.entity.speciality.SpecialityState;
-import by.makedon.selectioncommittee.exception.DAOException;
+import by.makedon.selectioncommittee.app.entity.enrollee.AdminEnrolleeForm;
+import by.makedon.selectioncommittee.app.entity.enrollee.EnrolleeState;
+import by.makedon.selectioncommittee.app.entity.speciality.SpecialityState;
+import by.makedon.selectioncommittee.app.dao.DAOException;
+import by.makedon.selectioncommittee.app.dao.DAO;
 
 import java.util.List;
 import java.util.Map;

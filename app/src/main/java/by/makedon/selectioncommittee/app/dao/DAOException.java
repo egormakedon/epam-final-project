@@ -1,4 +1,4 @@
-package by.makedon.selectioncommittee.exception;
+package by.makedon.selectioncommittee.app.dao;
 
 public class DAOException extends Exception {
     public DAOException() {}

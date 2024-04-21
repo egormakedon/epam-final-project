@@ -1,8 +1,8 @@
-package by.makedon.selectioncommittee.dao.base;
+package by.makedon.selectioncommittee.app.dao.base;
 
-import by.makedon.selectioncommittee.dao.DAO;
-import by.makedon.selectioncommittee.entity.user.User;
-import by.makedon.selectioncommittee.exception.DAOException;
+import by.makedon.selectioncommittee.app.entity.user.User;
+import by.makedon.selectioncommittee.app.dao.DAOException;
+import by.makedon.selectioncommittee.app.dao.DAO;
 
 public interface BaseDAO extends DAO {
     void addUser(User user) throws DAOException;
