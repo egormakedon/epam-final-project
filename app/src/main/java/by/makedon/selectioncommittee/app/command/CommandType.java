@@ -20,6 +20,7 @@ public enum CommandType {
     CHANGELANG(new ChangeLangCommand()),
     //---------- BASE ----------
 
+
     //---------- USER ----------
     FORWARDSENDFORM(new ForwardSendFormCommand()),
     SENDFORM(new SendFormCommand(new SendFormLogic())),
@@ -33,6 +34,7 @@ public enum CommandType {
     CHECKSTATUS(new CheckStatusCommand(new CheckStatusLogic())),
     //---------- USER ----------
 
+
     //---------- ADMIN ----------
     SETSTATEMENT(new SetStatementCommand(new SetStatementLogic())),
     RESETSTATEMENT(new ResetStatementCommand(new ResetStatementLogic())),
@@ -43,6 +45,7 @@ public enum CommandType {
     SHOWENROLLEES(new ShowEnrolleesCommand(new ShowEnrolleesLogic())),
     SHOWSPECIALITYS(new ShowSpecialitysCommand(new ShowSpecialitysLogic()));
     //---------- ADMIN ----------
+
 
     private final Command command;
 
