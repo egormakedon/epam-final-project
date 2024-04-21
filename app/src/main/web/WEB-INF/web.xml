@@ -7,7 +7,7 @@
 
     <filter>
         <filter-name>Encodingfilter</filter-name>
-        <filter-class>by.makedon.selectioncommittee.app.filter.EncodingFilter</filter-class>
+        <filter-class>by.makedon.selectioncommittee.app.configuration.filter.EncodingFilter</filter-class>
         <init-param>
             <param-name>encoding</param-name>
             <param-value>UTF-8</param-value>
@@ -20,7 +20,7 @@
 
     <filter>
         <filter-name>DeleteUserFromSystemFilter</filter-name>
-        <filter-class>by.makedon.selectioncommittee.app.filter.DeleteUserFromSystemFilter</filter-class>
+        <filter-class>by.makedon.selectioncommittee.app.configuration.filter.DeleteUserFromSystemFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>DeleteUserFromSystemFilter</filter-name>
@@ -29,7 +29,7 @@
 
     <filter>
         <filter-name>SessionCreatorFilter</filter-name>
-        <filter-class>by.makedon.selectioncommittee.app.filter.SessionCreatorFilter</filter-class>
+        <filter-class>by.makedon.selectioncommittee.app.configuration.filter.SessionCreatorFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>SessionCreatorFilter</filter-name>
@@ -38,7 +38,7 @@
 
     <filter>
         <filter-name>AdminCommandProtectFilter</filter-name>
-        <filter-class>by.makedon.selectioncommittee.app.filter.AdminCommandProtectFilter</filter-class>
+        <filter-class>by.makedon.selectioncommittee.app.configuration.filter.AdminCommandProtectFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>AdminCommandProtectFilter</filter-name>
@@ -47,7 +47,7 @@
 
     <filter>
         <filter-name>UserCommandProtectFilter</filter-name>
-        <filter-class>by.makedon.selectioncommittee.app.filter.UserCommandProtectFilter</filter-class>
+        <filter-class>by.makedon.selectioncommittee.app.configuration.filter.UserCommandProtectFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>UserCommandProtectFilter</filter-name>
@@ -56,7 +56,7 @@
 
     <filter>
         <filter-name>SaveQueryToSessionFilter</filter-name>
-        <filter-class>by.makedon.selectioncommittee.app.filter.SaveQueryToSessionFilter</filter-class>
+        <filter-class>by.makedon.selectioncommittee.app.configuration.filter.SaveQueryToSessionFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>SaveQueryToSessionFilter</filter-name>
@@ -74,7 +74,7 @@
     <servlet>
         <display-name>Controller</display-name>
         <servlet-name>Controller</servlet-name>
-        <servlet-class>by.makedon.selectioncommittee.app.controller.Controller</servlet-class>
+        <servlet-class>by.makedon.selectioncommittee.app.configuration.controller.Controller</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Controller</servlet-name>
@@ -110,6 +110,6 @@
     </error-page>
 
     <listener>
-        <listener-class>by.makedon.selectioncommittee.app.listener.SessionListener</listener-class>
+        <listener-class>by.makedon.selectioncommittee.app.configuration.listener.SessionListener</listener-class>
     </listener>
 </web-app>
