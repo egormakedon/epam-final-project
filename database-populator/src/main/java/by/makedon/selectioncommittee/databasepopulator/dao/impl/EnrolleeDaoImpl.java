@@ -7,7 +7,6 @@ import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,7 +21,7 @@ import java.util.Optional;
 public class EnrolleeDaoImpl implements EnrolleeDao {
     @Override
     public void batchCreate(List<Enrollee> enrollees) {
-        executeTransactionMode(Connection.TRANSACTION_READ_COMMITTED, connection -> {
+        executeTransactionMode(connection -> {
             try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT, AUTO_GENERATED_KEYS)) {
                 for (List<Enrollee> enrolleesBatch : Lists.partition(enrollees, BATCH_SIZE)) {
                     for (Enrollee enrollee : enrolleesBatch) {

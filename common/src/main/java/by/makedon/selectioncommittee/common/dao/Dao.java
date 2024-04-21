@@ -36,6 +36,10 @@ public interface Dao<T, ID> {
         throw new UnsupportedOperationException(message);
     }
 
+    default <R> Optional<R> executeTransactionMode(Function<Connection, Optional<R>> executeFunction) {
+        return executeTransactionMode(Connection.TRANSACTION_READ_COMMITTED, executeFunction);
+    }
+
     default <R> Optional<R> executeTransactionMode(int transactionIsolationLevel,
                                                    Function<Connection, Optional<R>> executeFunction) {
         try (Connection connection = ConnectionPool.getInstance().getConnection()) {
