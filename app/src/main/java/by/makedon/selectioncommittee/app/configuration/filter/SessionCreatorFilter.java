@@ -1,52 +1,50 @@
 package by.makedon.selectioncommittee.app.configuration.filter;
 
 import by.makedon.selectioncommittee.app.configuration.util.Page;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class SessionCreatorFilter implements Filter {
+    private static final Logger logger = LoggerFactory.getLogger(SessionCreatorFilter.class);
     private static final String INDEX_JSP = "/index.jsp";
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-
+        //empty
     }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        HttpServletRequest req = (HttpServletRequest) servletRequest;
-        HttpServletResponse res = (HttpServletResponse) servletResponse;
+        HttpServletRequest request = (HttpServletRequest) servletRequest;
+        HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        if (req.getServletPath().equals(INDEX_JSP)) {
-            req.getSession(true);
-            filterChain.doFilter(req, res);
+        if (request.getServletPath().equals(INDEX_JSP)) {
+            request.getSession(true);
+            filterChain.doFilter(request, response);
             return;
         }
 
-        HttpSession session = req.getSession(false);
+        HttpSession session = request.getSession(false);
         if (session == null) {
-            req.getSession(true);
-            res.sendRedirect(Page.WELCOME);
+            request.getSession(true);
+            response.sendRedirect(Page.WELCOME);
             return;
         } else if (session.isNew()) {
-            res.sendRedirect(Page.WELCOME);
+            response.sendRedirect(Page.WELCOME);
             return;
         }
 
-        filterChain.doFilter(req, res);
+        filterChain.doFilter(request, response);
     }
 
     @Override
     public void destroy() {
-
+        //empty
     }
 }

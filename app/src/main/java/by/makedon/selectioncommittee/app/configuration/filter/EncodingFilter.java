@@ -1,29 +1,27 @@
 package by.makedon.selectioncommittee.app.configuration.filter;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.*;
 import java.io.IOException;
 
 public class EncodingFilter implements Filter {
-    private static final String ENCODING = "encoding";
-
-    private String code;
+    private static final Logger logger = LoggerFactory.getLogger(EncodingFilter.class);
+    private String encoding;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        code = filterConfig.getInitParameter(ENCODING);
+        encoding = filterConfig.getInitParameter("encoding");
+        logger.info("Initial encoding: `{}`", encoding);
     }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        String codeRequest = servletRequest.getCharacterEncoding();
-        if (code != null && !code.equalsIgnoreCase(codeRequest)) {
-            servletRequest.setCharacterEncoding(code);
-            servletResponse.setCharacterEncoding(code);
+        String requestEncoding = servletRequest.getCharacterEncoding();
+        if (encoding != null && !encoding.equalsIgnoreCase(requestEncoding)) {
+            servletRequest.setCharacterEncoding(encoding);
+            servletResponse.setCharacterEncoding(encoding);
         }
 
         filterChain.doFilter(servletRequest, servletResponse);
@@ -31,6 +29,6 @@ public class EncodingFilter implements Filter {
 
     @Override
     public void destroy() {
-        code = null;
+        //empty
     }
 }

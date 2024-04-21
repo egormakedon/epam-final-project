@@ -1,44 +1,45 @@
 package by.makedon.selectioncommittee.app.configuration.filter;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import by.makedon.selectioncommittee.app.configuration.util.RequestParameterKey;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-public class SaveQueryToSessionFilter implements Filter{
-    private static final String LAST_PAGE = "lastPage";
-    private static final String COMMAND = "command";
-    private static final String CHANGE_LANG = "changelang";
+public class SaveQueryToSessionFilter implements Filter {
+    private static final Logger logger = LoggerFactory.getLogger(SaveQueryToSessionFilter.class);
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-
+        //empty
     }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        HttpServletRequest req = (HttpServletRequest) servletRequest;
+        HttpServletRequest request = (HttpServletRequest) servletRequest;
+        String commandValue = request.getParameter(RequestParameterKey.COMMAND);
 
-        String commandValue = req.getParameter(COMMAND);
-        if (commandValue != null && commandValue.equals(CHANGE_LANG)) {
+        logger.info("{}=`{}`", RequestParameterKey.COMMAND, commandValue);
+
+        if (RequestParameterKey.CHANGE_LANG.equals(commandValue)) {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
 
-        String lastPage = req.getServletPath() + "?" + req.getQueryString();
-        HttpSession session = req.getSession();
-        session.setAttribute(LAST_PAGE, lastPage);
+        String lastPage = request.getServletPath() + "?" + request.getQueryString();
+        HttpSession session = request.getSession();
+        session.setAttribute(RequestParameterKey.LAST_PAGE, lastPage);
+
+        logger.info("{}=`{}`", RequestParameterKey.LAST_PAGE, lastPage);
 
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
     @Override
     public void destroy() {
-
+        //empty
     }
 }
