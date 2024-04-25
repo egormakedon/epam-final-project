@@ -173,7 +173,7 @@ public final class ConnectionPool {
     @Override
     public Object clone() throws CloneNotSupportedException {
         if (isInstanceCreated.get()) {
-            final String message = "Trying to clone ConnectionPool";
+            final String message = "Prohibited attempt to clone ConnectionPool";
             log.error(message);
             throw new CloneNotSupportedException(message);
         }
