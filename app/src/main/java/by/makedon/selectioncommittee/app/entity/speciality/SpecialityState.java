@@ -1,4 +1,4 @@
-package by.makedon.selectioncommittee.entity.speciality;
+package by.makedon.selectioncommittee.app.entity.speciality;
 
 import java.util.Objects;
 
