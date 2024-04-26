@@ -1,4 +1,4 @@
-package by.makedon.selectioncommittee.app.entity.enrollee;
+package by.makedon.selectioncommittee.app.entity;
 
 public enum EnrolleeFormCriteria {
     UNIVERSITY,

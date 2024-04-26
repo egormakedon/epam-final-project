@@ -1,4 +1,4 @@
-package by.makedon.selectioncommittee.app.entity.enrollee;
+package by.makedon.selectioncommittee.app.entity;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
