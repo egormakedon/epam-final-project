@@ -2,9 +2,9 @@ package by.makedon.selectioncommittee.app.configuration.filter;
 
 import by.makedon.selectioncommittee.app.configuration.util.Page;
 import by.makedon.selectioncommittee.app.configuration.util.RequestParameterKey;
-import by.makedon.selectioncommittee.app.dao.DAOException;
-import by.makedon.selectioncommittee.app.dao.base.BaseDAO;
-import by.makedon.selectioncommittee.app.dao.base.BaseDAOImpl;
+import by.makedon.selectioncommittee.app.dao.BaseDao;
+import by.makedon.selectioncommittee.app.dao.impl.BaseDaoImpl;
+import by.makedon.selectioncommittee.common.dao.DaoException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +16,7 @@ import java.io.IOException;
 
 public class DeleteUserFromSystemFilter implements Filter {
     private static final Logger logger = LoggerFactory.getLogger(DeleteUserFromSystemFilter.class);
-    private final BaseDAO baseDAO = BaseDAOImpl.getInstance();
+    private final BaseDao baseDAO = BaseDaoImpl.getInstance();
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -53,7 +53,7 @@ public class DeleteUserFromSystemFilter implements Filter {
     private boolean isUsernameMatched(String usernameValue) {
         try {
             return baseDAO.matchUsername(usernameValue);
-        } catch (DAOException e) {
+        } catch (DaoException e) {
             logger.error(e.getMessage(), e);
             return false;
         }

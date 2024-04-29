@@ -5,7 +5,6 @@ import by.makedon.selectioncommittee.app.configuration.controller.Router;
 import by.makedon.selectioncommittee.app.configuration.util.Page;
 import by.makedon.selectioncommittee.app.configuration.util.RequestParameterBuilder;
 import by.makedon.selectioncommittee.app.configuration.util.RequestParameterKey;
-import by.makedon.selectioncommittee.app.entity.enrollee.EnrolleeFormCriteria;
 import by.makedon.selectioncommittee.app.logic.Logic;
 import by.makedon.selectioncommittee.app.logic.LogicException;
 import org.slf4j.Logger;
@@ -19,6 +18,17 @@ import java.util.function.Consumer;
 public class SendFormCommand implements Command {
     private static final Logger logger = LoggerFactory.getLogger(SendFormCommand.class);
 
+    private static final String PARAMETER_KEY_UNIVERSITY = "UNIVERSITY";
+    private static final String PARAMETER_KEY_FACULTY = "FACULTY";
+    private static final String PARAMETER_KEY_SPECIALITY = "SPECIALITY";
+    private static final String PARAMETER_KEY_NAME = "NAME";
+    private static final String PARAMETER_KEY_SURNAME = "SURNAME";
+    private static final String PARAMETER_KEY_SECONDNAME = "SECONDNAME";
+    private static final String PARAMETER_KEY_PASSPORTID = "PASSPORTID";
+    private static final String PARAMETER_KEY_COUNTRYDOMEN = "COUNTRYDOMEN";
+    private static final String PARAMETER_KEY_PHONE = "PHONE";
+    private static final String PARAMETER_KEY_CERTIFICATE = "CERTIFICATE";
+
     private final Logic logic;
 
     public SendFormCommand(Logic logic) {
@@ -30,16 +40,16 @@ public class SendFormCommand implements Command {
         HttpSession session = request.getSession();
         String usernameValue = (String) session.getAttribute(RequestParameterKey.USERNAME);
 
-        String universityValue = request.getParameter(EnrolleeFormCriteria.UNIVERSITY.toString());
-        String facultyValue = request.getParameter(EnrolleeFormCriteria.FACULTY.toString());
-        String specialityValue = request.getParameter(EnrolleeFormCriteria.SPECIALITY.toString());
-        String nameValue = request.getParameter(EnrolleeFormCriteria.NAME.toString());
-        String surnameValue = request.getParameter(EnrolleeFormCriteria.SURNAME.toString());
-        String secondNameValue = request.getParameter(EnrolleeFormCriteria.SECONDNAME.toString());
-        String passportIdValue = request.getParameter(EnrolleeFormCriteria.PASSPORTID.toString());
-        String countryDomenValue = request.getParameter(EnrolleeFormCriteria.COUNTRYDOMEN.toString());
-        String phoneValue = request.getParameter(EnrolleeFormCriteria.PHONE.toString());
-        String certificateValue = request.getParameter(EnrolleeFormCriteria.CERTIFICATE.toString());
+        String universityValue = request.getParameter(PARAMETER_KEY_UNIVERSITY);
+        String facultyValue = request.getParameter(PARAMETER_KEY_FACULTY);
+        String specialityValue = request.getParameter(PARAMETER_KEY_SPECIALITY);
+        String nameValue = request.getParameter(PARAMETER_KEY_NAME);
+        String surnameValue = request.getParameter(PARAMETER_KEY_SURNAME);
+        String secondNameValue = request.getParameter(PARAMETER_KEY_SECONDNAME);
+        String passportIdValue = request.getParameter(PARAMETER_KEY_PASSPORTID);
+        String countryDomenValue = request.getParameter(PARAMETER_KEY_COUNTRYDOMEN);
+        String phoneValue = request.getParameter(PARAMETER_KEY_PHONE);
+        String certificateValue = request.getParameter(PARAMETER_KEY_CERTIFICATE);
 
         String subjectId1Value = request.getParameter(RequestParameterKey.SUBJECT_ID_1);
         String subjectId2Value = request.getParameter(RequestParameterKey.SUBJECT_ID_2);
@@ -49,16 +59,16 @@ public class SendFormCommand implements Command {
         String subject3Value = request.getParameter(RequestParameterKey.SUBJECT_VALUE_3);
 
         logger.debug("Execute SendFormCommand: {}={} {}={} {}={} {}={} {}={} {}={} {}={} {}={} {}={} {}={} {}={} {}={} {}={} {}={} {}={} {}={}",
-            EnrolleeFormCriteria.UNIVERSITY, universityValue,
-            EnrolleeFormCriteria.FACULTY, facultyValue,
-            EnrolleeFormCriteria.SPECIALITY, specialityValue,
-            EnrolleeFormCriteria.NAME, nameValue,
-            EnrolleeFormCriteria.SURNAME, surnameValue,
-            EnrolleeFormCriteria.SECONDNAME, secondNameValue,
-            EnrolleeFormCriteria.PASSPORTID, passportIdValue,
-            EnrolleeFormCriteria.COUNTRYDOMEN, countryDomenValue,
-            EnrolleeFormCriteria.PHONE, phoneValue,
-            EnrolleeFormCriteria.CERTIFICATE, certificateValue,
+            PARAMETER_KEY_UNIVERSITY, universityValue,
+            PARAMETER_KEY_FACULTY, facultyValue,
+            PARAMETER_KEY_SPECIALITY, specialityValue,
+            PARAMETER_KEY_NAME, nameValue,
+            PARAMETER_KEY_SURNAME, surnameValue,
+            PARAMETER_KEY_SECONDNAME, secondNameValue,
+            PARAMETER_KEY_PASSPORTID, passportIdValue,
+            PARAMETER_KEY_COUNTRYDOMEN, countryDomenValue,
+            PARAMETER_KEY_PHONE, phoneValue,
+            PARAMETER_KEY_CERTIFICATE, certificateValue,
             RequestParameterKey.SUBJECT_ID_1, subjectId1Value,
             RequestParameterKey.SUBJECT_ID_2, subjectId2Value,
             RequestParameterKey.SUBJECT_ID_3, subjectId3Value,
