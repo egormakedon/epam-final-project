@@ -1,4 +1,4 @@
-package by.makedon.selectioncommittee.mail;
+package by.makedon.selectioncommittee.app.mail;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;

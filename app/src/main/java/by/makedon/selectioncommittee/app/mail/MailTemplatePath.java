@@ -1,4 +1,4 @@
-package by.makedon.selectioncommittee.mail;
+package by.makedon.selectioncommittee.app.mail;
 
 public enum MailTemplatePath {
     FORGOT_PASSWORD("/mailtemplates/forgotPassword.txt"),

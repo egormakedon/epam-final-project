@@ -1,4 +1,4 @@
-package by.makedon.selectioncommittee.mail;
+package by.makedon.selectioncommittee.app.mail;
 
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
