@@ -1,18 +1,18 @@
 package by.makedon.selectioncommittee.app.logic;
 
-public class LogicException extends Exception {
+public final class LogicException extends RuntimeException {
     public LogicException() {
     }
-    public LogicException(String m) {
-        super(m);
+
+    public LogicException(String message) {
+        super(message);
     }
-    public LogicException(String m, Throwable th) {
-        super(m, th);
+
+    public LogicException(String message, Throwable cause) {
+        super(message, cause);
     }
-    public LogicException(Throwable th) {
-        super(th);
-    }
-    public LogicException(String m, Throwable th, boolean enableSuppression, boolean writableStackTrace) {
-        super(m, th, enableSuppression, writableStackTrace);
+
+    public LogicException(Throwable cause) {
+        super(cause);
     }
 }
