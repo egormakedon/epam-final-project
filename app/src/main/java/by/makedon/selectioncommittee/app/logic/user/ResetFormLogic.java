@@ -1,11 +1,11 @@
-package by.makedon.selectioncommittee.logic.user;
+package by.makedon.selectioncommittee.app.logic.user;
 
-import by.makedon.selectioncommittee.dao.user.UserDAO;
-import by.makedon.selectioncommittee.dao.user.UserDAOImpl;
-import by.makedon.selectioncommittee.exception.DAOException;
-import by.makedon.selectioncommittee.exception.LogicException;
-import by.makedon.selectioncommittee.logic.Logic;
-import com.sun.istack.internal.NotNull;
+import by.makedon.selectioncommittee.app.dao.UserDao;
+import by.makedon.selectioncommittee.app.dao.impl.UserDaoImpl;
+import by.makedon.selectioncommittee.app.dao.DAOException;
+import by.makedon.selectioncommittee.app.logic.LogicException;
+import by.makedon.selectioncommittee.app.logic.Logic;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -20,15 +20,15 @@ public class ResetFormLogic implements Logic {
 
         String usernameValue = parameters.get(0);
 
-        UserDAO dao = UserDAOImpl.getInstance();
+        UserDao dao = UserDaoImpl.getInstance();
         try {
-            if (!dao.couldChangeForm()) {
+            if (!dao.isStatementInProcess()) {
                 throw new LogicException("you couldn't reset form");
             }
-            if (!dao.isUserEnrolleeFormAdded(usernameValue)) {
+            if (!dao.isUserEnrolleeFormInserted(usernameValue)) {
                 throw new LogicException("form has empty yet");
             }
-            dao.resetForm(usernameValue);
+            dao.resetEnrolleeFormByUsername(usernameValue);
         } catch (DAOException e) {
             throw new LogicException(e);
         }

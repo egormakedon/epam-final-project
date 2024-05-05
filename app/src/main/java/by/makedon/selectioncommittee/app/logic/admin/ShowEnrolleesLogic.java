@@ -1,12 +1,12 @@
-package by.makedon.selectioncommittee.logic.admin;
+package by.makedon.selectioncommittee.app.logic.admin;
 
-import by.makedon.selectioncommittee.dao.admin.AdminDAO;
-import by.makedon.selectioncommittee.dao.admin.AdminDAOImpl;
-import by.makedon.selectioncommittee.entity.enrollee.AdminEnrolleeForm;
-import by.makedon.selectioncommittee.exception.DAOException;
-import by.makedon.selectioncommittee.exception.LogicException;
-import by.makedon.selectioncommittee.logic.Logic;
-import com.sun.istack.internal.NotNull;
+import by.makedon.selectioncommittee.app.dao.AdminDao;
+import by.makedon.selectioncommittee.app.dao.impl.AdminDaoImpl;
+import by.makedon.selectioncommittee.app.entity.AdminEnrolleeForm;
+import by.makedon.selectioncommittee.app.dao.DAOException;
+import by.makedon.selectioncommittee.app.logic.LogicException;
+import by.makedon.selectioncommittee.app.logic.Logic;
+import org.jetbrains.annotations.NotNull;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -21,9 +21,9 @@ public class ShowEnrolleesLogic implements Logic {
             throw new LogicException("wrong number of parameters");
         }
 
-        AdminDAO dao = AdminDAOImpl.getInstance();
+        AdminDao dao = AdminDaoImpl.getInstance();
         try {
-            adminEnrolleeFormList = dao.takeAdminEnrolleeFormList();
+            adminEnrolleeFormList = dao.getAdminEnrolleeFormList();
         } catch (DAOException e) {
             throw new LogicException(e);
         }

@@ -1,12 +1,12 @@
-package by.makedon.selectioncommittee.logic.base;
+package by.makedon.selectioncommittee.app.logic.base;
 
-import by.makedon.selectioncommittee.dao.base.BaseDAO;
-import by.makedon.selectioncommittee.dao.base.BaseDAOImpl;
-import by.makedon.selectioncommittee.exception.DAOException;
-import by.makedon.selectioncommittee.exception.LogicException;
-import by.makedon.selectioncommittee.logic.Logic;
-import by.makedon.selectioncommittee.validator.UserValidator;
-import com.sun.istack.internal.NotNull;
+import by.makedon.selectioncommittee.app.dao.BaseDao;
+import by.makedon.selectioncommittee.app.dao.impl.BaseDaoImpl;
+import by.makedon.selectioncommittee.app.dao.DAOException;
+import by.makedon.selectioncommittee.app.logic.LogicException;
+import by.makedon.selectioncommittee.app.logic.Logic;
+import by.makedon.selectioncommittee.app.validator.UserValidator;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -27,9 +27,9 @@ public class ChangePasswordLogic implements Logic {
             throw new LogicException("invalid input parameters");
         }
 
-        BaseDAO dao = BaseDAOImpl.getInstance();
+        BaseDao dao = BaseDaoImpl.getInstance();
         try {
-            dao.changePasswordByUsername(usernameValue, password1Value);
+            dao.updatePasswordByUsername(usernameValue, password1Value);
         } catch (DAOException e) {
             throw new LogicException(e);
         }

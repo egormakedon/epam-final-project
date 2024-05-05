@@ -1,14 +1,14 @@
-package by.makedon.selectioncommittee.logic.user;
+package by.makedon.selectioncommittee.app.logic.user;
 
-import by.makedon.selectioncommittee.dao.user.UserDAO;
-import by.makedon.selectioncommittee.dao.user.UserDAOImpl;
-import by.makedon.selectioncommittee.entity.enrollee.EnrolleeForm;
-import by.makedon.selectioncommittee.entity.enrollee.EnrolleeFormCriteria;
-import by.makedon.selectioncommittee.exception.DAOException;
-import by.makedon.selectioncommittee.exception.LogicException;
-import by.makedon.selectioncommittee.logic.Logic;
-import by.makedon.selectioncommittee.validator.EnrolleeValidator;
-import com.sun.istack.internal.NotNull;
+import by.makedon.selectioncommittee.app.dao.UserDao;
+import by.makedon.selectioncommittee.app.dao.impl.UserDaoImpl;
+import by.makedon.selectioncommittee.app.entity.enrolleeform.EnrolleeForm;
+import by.makedon.selectioncommittee.app.entity.enrolleeform.EnrolleeFormCriteria;
+import by.makedon.selectioncommittee.app.dao.DAOException;
+import by.makedon.selectioncommittee.app.logic.LogicException;
+import by.makedon.selectioncommittee.app.logic.Logic;
+import by.makedon.selectioncommittee.app.validator.EnrolleeValidator;
+import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -131,16 +131,16 @@ public class SendFormLogic implements Logic {
         }
 
         EnrolleeForm enrolleeForm = new EnrolleeForm(parametersMap);
-        UserDAO dao = UserDAOImpl.getInstance();
+        UserDao dao = UserDaoImpl.getInstance();
 
         try {
-            if (!dao.couldChangeForm()) {
+            if (!dao.isStatementInProcess()) {
                 throw new LogicException("you couldn't add form");
             }
-            if (dao.isUserEnrolleeFormAdded(usernameValue)) {
+            if (dao.isUserEnrolleeFormInserted(usernameValue)) {
                 throw new LogicException("form has already added");
             }
-            dao.addForm(usernameValue, enrolleeForm);
+            dao.saveEnrolleeFormByUsername(usernameValue, enrolleeForm);
         } catch (DAOException e) {
             throw new LogicException(e);
         }

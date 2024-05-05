@@ -1,14 +1,14 @@
-package by.makedon.selectioncommittee.logic.user;
+package by.makedon.selectioncommittee.app.logic.user;
 
-import by.makedon.selectioncommittee.dao.base.BaseDAO;
-import by.makedon.selectioncommittee.dao.base.BaseDAOImpl;
-import by.makedon.selectioncommittee.dao.user.UserDAO;
-import by.makedon.selectioncommittee.dao.user.UserDAOImpl;
-import by.makedon.selectioncommittee.exception.DAOException;
-import by.makedon.selectioncommittee.exception.LogicException;
-import by.makedon.selectioncommittee.logic.Logic;
-import by.makedon.selectioncommittee.validator.UserValidator;
-import com.sun.istack.internal.NotNull;
+import by.makedon.selectioncommittee.app.dao.BaseDao;
+import by.makedon.selectioncommittee.app.dao.impl.BaseDaoImpl;
+import by.makedon.selectioncommittee.app.dao.UserDao;
+import by.makedon.selectioncommittee.app.dao.impl.UserDaoImpl;
+import by.makedon.selectioncommittee.app.dao.DAOException;
+import by.makedon.selectioncommittee.app.logic.LogicException;
+import by.makedon.selectioncommittee.app.logic.Logic;
+import by.makedon.selectioncommittee.app.validator.UserValidator;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -28,11 +28,11 @@ public class ChangeUsernameLogic implements Logic {
             throw new LogicException("invalid input parameters");
         }
 
-        BaseDAO baseDAO = BaseDAOImpl.getInstance();
-        UserDAO userDAO = UserDAOImpl.getInstance();
+        BaseDao baseDAO = BaseDaoImpl.getInstance();
+        UserDao userDAO = UserDaoImpl.getInstance();
         try {
             if (baseDAO.matchUsername(usernameValue)) {
-                userDAO.changeUsername(usernameValue, newUsernameValue);
+                userDAO.updateUsername(usernameValue, newUsernameValue);
             } else {
                 throw new LogicException("user doesn't exist");
             }

@@ -1,15 +1,15 @@
-package by.makedon.selectioncommittee.logic.user;
+package by.makedon.selectioncommittee.app.logic.user;
 
-import by.makedon.selectioncommittee.dao.user.UserDAO;
-import by.makedon.selectioncommittee.dao.user.UserDAOImpl;
-import by.makedon.selectioncommittee.exception.DAOException;
-import by.makedon.selectioncommittee.exception.LogicException;
-import by.makedon.selectioncommittee.logic.Logic;
-import by.makedon.selectioncommittee.mail.MailBuilder;
-import by.makedon.selectioncommittee.mail.MailProperty;
-import by.makedon.selectioncommittee.mail.MailTemplatePath;
-import by.makedon.selectioncommittee.mail.MailThread;
-import com.sun.istack.internal.NotNull;
+import by.makedon.selectioncommittee.app.dao.UserDao;
+import by.makedon.selectioncommittee.app.dao.impl.UserDaoImpl;
+import by.makedon.selectioncommittee.app.dao.DAOException;
+import by.makedon.selectioncommittee.app.logic.LogicException;
+import by.makedon.selectioncommittee.app.logic.Logic;
+import by.makedon.selectioncommittee.app.mail.MailBuilder;
+import by.makedon.selectioncommittee.app.mail.MailProperty;
+import by.makedon.selectioncommittee.app.mail.MailTemplateType;
+import by.makedon.selectioncommittee.app.mail.MailSendTask;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -34,19 +34,19 @@ public class ChangeUserDataLogic implements Logic {
         String usernameValue = parameters.get(0);
         String typeChangerValue = parameters.get(1);
 
-        UserDAO dao = UserDAOImpl.getInstance();
+        UserDao dao = UserDaoImpl.getInstance();
         String emailValue;
         try {
-            emailValue = dao.takeEmailByUsername(usernameValue);
+            emailValue = dao.getEmailByUsername(usernameValue);
         } catch (DAOException e) {
             throw new LogicException(e);
         }
 
-        String templatePath = MailTemplatePath.CHANGE_USER_DATA.getTemplatePath();
+        String templatePath = MailTemplateType.CHANGE_USER_DATA.getTemplatePath();
         MailBuilder mailBuilder = new MailBuilder(templatePath);
         String mailText = mailTextCreator(mailBuilder, usernameValue, typeChangerValue);
 
-        MailThread thread = new MailThread(emailValue, CHANGE_USER_DATA, mailText, MailProperty.getInstance().getProperties());
+        MailSendTask thread = new MailSendTask(emailValue, CHANGE_USER_DATA, mailText, MailProperty.getInstance().getProperties());
         thread.start();
     }
 

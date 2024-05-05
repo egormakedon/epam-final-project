@@ -1,16 +1,16 @@
-package by.makedon.selectioncommittee.logic.admin;
+package by.makedon.selectioncommittee.app.logic.admin;
 
-import by.makedon.selectioncommittee.dao.admin.AdminDAO;
-import by.makedon.selectioncommittee.dao.admin.AdminDAOImpl;
-import by.makedon.selectioncommittee.entity.enrollee.EnrolleeState;
-import by.makedon.selectioncommittee.exception.DAOException;
-import by.makedon.selectioncommittee.exception.LogicException;
-import by.makedon.selectioncommittee.logic.Logic;
-import by.makedon.selectioncommittee.mail.MailBuilder;
-import by.makedon.selectioncommittee.mail.MailProperty;
-import by.makedon.selectioncommittee.mail.MailTemplatePath;
-import by.makedon.selectioncommittee.mail.MailThread;
-import com.sun.istack.internal.NotNull;
+import by.makedon.selectioncommittee.app.dao.AdminDao;
+import by.makedon.selectioncommittee.app.dao.impl.AdminDaoImpl;
+import by.makedon.selectioncommittee.app.entity.EnrolleeState;
+import by.makedon.selectioncommittee.app.dao.DAOException;
+import by.makedon.selectioncommittee.app.logic.LogicException;
+import by.makedon.selectioncommittee.app.logic.Logic;
+import by.makedon.selectioncommittee.app.mail.MailBuilder;
+import by.makedon.selectioncommittee.app.mail.MailProperty;
+import by.makedon.selectioncommittee.app.mail.MailTemplateType;
+import by.makedon.selectioncommittee.app.mail.MailSendTask;
+import org.jetbrains.annotations.NotNull;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -21,8 +21,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class SetStatementLogic implements Logic {
-    private static final String ENLISTED = "Зачислен";
-    private static final String NOT_LISTED = "Не зачислен";
+
 
     private static final String CHANGED_STATEMENT_NOTICE = "changed statement notice";
 
@@ -32,20 +31,20 @@ public class SetStatementLogic implements Logic {
             throw new LogicException("wrong number of parameters");
         }
 
-        AdminDAO dao = AdminDAOImpl.getInstance();
+        AdminDao dao = AdminDaoImpl.getInstance();
         try {
-            Set<EnrolleeState> enrolleeStateSet = dao.takeEnrolleeStateSet();
-            Map<Long,Integer> specialityIdNumberOfSeatsMap = dao.takeSpecialityIdNumberOfSeatsMap();
+            Set<EnrolleeState> enrolleeStateSet = dao.getEnrolleeStates();
+            Map<Long,Integer> specialityIdNumberOfSeatsMap = dao.getSpecialityIdToNumberOfSeatsMap();
             setStatement(enrolleeStateSet, specialityIdNumberOfSeatsMap);
             dao.refreshStatement(enrolleeStateSet);
 
-            List<String> emailList = dao.takeEnrolleeEmailList();
+            List<String> emailList = dao.getUserEmailList();
             for (String emailValue : emailList) {
-                String templatePath = MailTemplatePath.SET_STATEMENT.getTemplatePath();
+                String templatePath = MailTemplateType.SET_STATEMENT.getTemplatePath();
                 MailBuilder mailBuilder = new MailBuilder(templatePath);
                 String mailText = mailBuilder.takeMailTemplate();
 
-                MailThread mail = new MailThread(emailValue, CHANGED_STATEMENT_NOTICE, mailText, MailProperty.getInstance().getProperties());
+                MailSendTask mail = new MailSendTask(emailValue, CHANGED_STATEMENT_NOTICE, mailText, MailProperty.getInstance().getProperties());
                 mail.start();
             }
         } catch (DAOException e) {
@@ -98,9 +97,9 @@ public class SetStatementLogic implements Logic {
             EnrolleeState enrolleeState = enrolleeStateList.get(index);
 
             if (index + 1 <= numberOfSeatsValue) {
-                enrolleeState.setStatement(ENLISTED);
+                enrolleeState.setStatementEnlisted();
             } else {
-                enrolleeState.setStatement(NOT_LISTED);
+                enrolleeState.setStatementNotListed();
             }
         }
     }

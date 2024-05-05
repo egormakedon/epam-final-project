@@ -1,12 +1,12 @@
-package by.makedon.selectioncommittee.logic.base;
+package by.makedon.selectioncommittee.app.logic.base;
 
-import by.makedon.selectioncommittee.dao.base.BaseDAO;
-import by.makedon.selectioncommittee.dao.base.BaseDAOImpl;
-import by.makedon.selectioncommittee.exception.DAOException;
-import by.makedon.selectioncommittee.exception.LogicException;
-import by.makedon.selectioncommittee.logic.Logic;
-import by.makedon.selectioncommittee.validator.UserValidator;
-import com.sun.istack.internal.NotNull;
+import by.makedon.selectioncommittee.app.dao.DAOException;
+import by.makedon.selectioncommittee.app.dao.BaseDao;
+import by.makedon.selectioncommittee.app.dao.impl.BaseDaoImpl;
+import by.makedon.selectioncommittee.app.logic.Logic;
+import by.makedon.selectioncommittee.app.logic.LogicException;
+import by.makedon.selectioncommittee.app.validator.UserValidator;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -28,18 +28,19 @@ public class LoginLogic implements Logic {
             throw new LogicException("invalid input parameters");
         }
 
-        BaseDAO dao = BaseDAOImpl.getInstance();
+        BaseDao dao = BaseDaoImpl.getInstance();
         try {
-            if (!dao.matchUsernamePassword(usernameValue, passwordValue)) {
+            if (!dao.matchUsernameAndPassword(usernameValue, passwordValue)) {
                 throw new LogicException("wrong username or password");
             }
-            type = dao.takeTypeByUsername(usernameValue);
+            type = dao.getTypeByUsername(usernameValue);
         } catch (DAOException e) {
             throw new LogicException(e);
         }
     }
 
     public String getType() {
+        throw new ;
         return type;
     }
 }

@@ -1,11 +1,11 @@
-package by.makedon.selectioncommittee.logic.user;
+package by.makedon.selectioncommittee.app.logic.user;
 
-import by.makedon.selectioncommittee.dao.user.UserDAO;
-import by.makedon.selectioncommittee.dao.user.UserDAOImpl;
-import by.makedon.selectioncommittee.exception.DAOException;
-import by.makedon.selectioncommittee.exception.LogicException;
-import by.makedon.selectioncommittee.logic.Logic;
-import com.sun.istack.internal.NotNull;
+import by.makedon.selectioncommittee.app.dao.UserDao;
+import by.makedon.selectioncommittee.app.dao.impl.UserDaoImpl;
+import by.makedon.selectioncommittee.app.dao.DAOException;
+import by.makedon.selectioncommittee.app.logic.LogicException;
+import by.makedon.selectioncommittee.app.logic.Logic;
+import org.jetbrains.annotations.NotNull;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -27,11 +27,11 @@ public class CheckStatusLogic implements Logic {
 
         String usernameValue = parameters.get(0);
 
-        UserDAO dao = UserDAOImpl.getInstance();
+        UserDao dao = UserDaoImpl.getInstance();
         try {
-            statement = dao.takeStatementByUsername(usernameValue);
-            long specialityIdValue = dao.takeSpecialityIdByUsername(usernameValue);
-            place = dao.takeEnrolleePlaceByUsernameSpecialityID(usernameValue, specialityIdValue);
+            statement = dao.getStatementByUsername(usernameValue);
+            long specialityIdValue = dao.getSpecialityIdByUsername(usernameValue);
+            place = dao.getEnrolleePlaceByUsernameAndSpecialityId(usernameValue, specialityIdValue);
         } catch (DAOException e) {
             throw new LogicException(e);
         }

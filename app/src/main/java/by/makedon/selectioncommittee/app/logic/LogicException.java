@@ -1,4 +1,4 @@
-package by.makedon.selectioncommittee.exception;
+package by.makedon.selectioncommittee.app.logic;
 
 public class LogicException extends Exception {
     public LogicException() {

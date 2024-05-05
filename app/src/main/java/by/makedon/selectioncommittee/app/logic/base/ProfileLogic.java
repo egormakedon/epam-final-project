@@ -1,9 +1,9 @@
-package by.makedon.selectioncommittee.logic.base;
+package by.makedon.selectioncommittee.app.logic.base;
 
-import by.makedon.selectioncommittee.constant.Page;
-import by.makedon.selectioncommittee.exception.LogicException;
-import by.makedon.selectioncommittee.logic.Logic;
-import com.sun.istack.internal.NotNull;
+import by.makedon.selectioncommittee.app.configuration.util.Page;
+import by.makedon.selectioncommittee.app.logic.LogicException;
+import by.makedon.selectioncommittee.app.logic.Logic;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -36,6 +36,7 @@ public class ProfileLogic implements Logic {
     }
 
     public String getPagePath() {
+        throw new;
         return pagePath;
     }
 }

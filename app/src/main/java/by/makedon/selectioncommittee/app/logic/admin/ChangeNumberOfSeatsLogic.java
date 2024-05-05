@@ -1,12 +1,12 @@
-package by.makedon.selectioncommittee.logic.admin;
+package by.makedon.selectioncommittee.app.logic.admin;
 
-import by.makedon.selectioncommittee.dao.admin.AdminDAO;
-import by.makedon.selectioncommittee.dao.admin.AdminDAOImpl;
-import by.makedon.selectioncommittee.exception.DAOException;
-import by.makedon.selectioncommittee.exception.LogicException;
-import by.makedon.selectioncommittee.logic.Logic;
-import by.makedon.selectioncommittee.validator.NumberOfSeatsValidator;
-import com.sun.istack.internal.NotNull;
+import by.makedon.selectioncommittee.app.dao.AdminDao;
+import by.makedon.selectioncommittee.app.dao.impl.AdminDaoImpl;
+import by.makedon.selectioncommittee.app.dao.DAOException;
+import by.makedon.selectioncommittee.app.logic.LogicException;
+import by.makedon.selectioncommittee.app.logic.Logic;
+import by.makedon.selectioncommittee.app.validator.NumberOfSeatsValidator;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -26,10 +26,10 @@ public class ChangeNumberOfSeatsLogic implements Logic {
             throw new LogicException("invalid input parameter");
         }
 
-        AdminDAO dao = AdminDAOImpl.getInstance();
+        AdminDao dao = AdminDaoImpl.getInstance();
         try {
             if (dao.isStatementInProcess()) {
-                dao.changeNumberOfSeats(specialityValue, numberOfSeatsValue);
+                dao.updateNumberOfSeatsBy(specialityValue, numberOfSeatsValue);
             } else {
                 throw new LogicException("can't change number of seats: statement is not in process");
             }

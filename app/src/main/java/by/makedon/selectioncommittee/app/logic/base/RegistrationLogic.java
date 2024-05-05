@@ -1,16 +1,16 @@
-package by.makedon.selectioncommittee.logic.base;
+package by.makedon.selectioncommittee.app.logic.base;
 
-import by.makedon.selectioncommittee.dao.base.BaseDAO;
-import by.makedon.selectioncommittee.dao.base.BaseDAOImpl;
-import by.makedon.selectioncommittee.exception.DAOException;
-import by.makedon.selectioncommittee.exception.LogicException;
-import by.makedon.selectioncommittee.logic.Logic;
-import by.makedon.selectioncommittee.mail.MailBuilder;
-import by.makedon.selectioncommittee.mail.MailProperty;
-import by.makedon.selectioncommittee.mail.MailTemplatePath;
-import by.makedon.selectioncommittee.mail.MailThread;
-import by.makedon.selectioncommittee.validator.UserValidator;
-import com.sun.istack.internal.NotNull;
+import by.makedon.selectioncommittee.app.dao.BaseDao;
+import by.makedon.selectioncommittee.app.dao.impl.BaseDaoImpl;
+import by.makedon.selectioncommittee.app.dao.DAOException;
+import by.makedon.selectioncommittee.app.logic.LogicException;
+import by.makedon.selectioncommittee.app.logic.Logic;
+import by.makedon.selectioncommittee.app.mail.MailBuilder;
+import by.makedon.selectioncommittee.app.mail.MailProperty;
+import by.makedon.selectioncommittee.app.mail.MailTemplateType;
+import by.makedon.selectioncommittee.app.mail.MailSendTask;
+import by.makedon.selectioncommittee.app.validator.UserValidator;
+import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class RegistrationLogic implements Logic {
@@ -34,20 +34,20 @@ public class RegistrationLogic implements Logic {
             throw new LogicException("invalid input parameters");
         }
 
-        BaseDAO dao = BaseDAOImpl.getInstance();
+        BaseDao dao = BaseDaoImpl.getInstance();
         try {
-            if (dao.matchEmailUsername(emailValue, usernameValue)) {
+            if (dao.matchEmailAndUsername(emailValue, usernameValue)) {
                 throw new LogicException("this user already exist");
             }
         } catch (DAOException e) {
             throw new LogicException(e);
         }
 
-        String templatePath = MailTemplatePath.REGISTRATION.getTemplatePath();
+        String templatePath = MailTemplateType.REGISTRATION.getTemplatePath();
         MailBuilder mailBuilder = new MailBuilder(templatePath);
         String mailText = String.format(mailBuilder.takeMailTemplate(), emailValue, usernameValue, password1Value);
 
-        MailThread mail = new MailThread(emailValue, CONFIRM_REGISTRATION, mailText, MailProperty.getInstance().getProperties());
+        MailSendTask mail = new MailSendTask(emailValue, CONFIRM_REGISTRATION, mailText, MailProperty.getInstance().getProperties());
         mail.start();
     }
 }
