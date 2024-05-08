@@ -17,8 +17,6 @@ public final class RequestParameterKey {
     public static final String LOGIN = "login";
     public static final String TYPE = "type";
     public static final String TYPE_CHANGER = "typechanger";
-    public static final String ADMIN = "admin";
-    public static final String USER = "user";
 
     public static final String USERNAME = "username";
     public static final String NEW_USERNAME = "newusername";
@@ -39,4 +37,6 @@ public final class RequestParameterKey {
 
     public static final String SPECIALITY = "speciality";
     public static final String NUMBER_OF_SEATS = "numberOfSeats";
+    public static final String ENROLLEE_LIST = "enrolleeList";
+    public static final String SPECIALITY_LIST = "specialityList";
 }

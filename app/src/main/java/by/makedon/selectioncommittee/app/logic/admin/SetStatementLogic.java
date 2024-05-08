@@ -3,104 +3,115 @@ package by.makedon.selectioncommittee.app.logic.admin;
 import by.makedon.selectioncommittee.app.dao.AdminDao;
 import by.makedon.selectioncommittee.app.dao.impl.AdminDaoImpl;
 import by.makedon.selectioncommittee.app.entity.EnrolleeState;
-import by.makedon.selectioncommittee.app.dao.DAOException;
-import by.makedon.selectioncommittee.app.logic.LogicException;
 import by.makedon.selectioncommittee.app.logic.Logic;
-import by.makedon.selectioncommittee.app.mail.MailBuilder;
-import by.makedon.selectioncommittee.app.mail.MailProperty;
-import by.makedon.selectioncommittee.app.mail.MailTemplateType;
+import by.makedon.selectioncommittee.app.logic.LogicException;
+import by.makedon.selectioncommittee.app.mail.Mail;
 import by.makedon.selectioncommittee.app.mail.MailSendTask;
+import by.makedon.selectioncommittee.app.mail.MailTemplateFactory;
+import by.makedon.selectioncommittee.app.mail.MailTemplateType;
+import by.makedon.selectioncommittee.app.validator.ValidationException;
+import by.makedon.selectioncommittee.common.dao.DaoException;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class SetStatementLogic implements Logic {
+    private static final String MAIL_SUBJECT_CHANGED_STATEMENT_NOTIFICATION = "Changed statement notification";
 
+    private final AdminDao adminDao = AdminDaoImpl.getInstance();
 
-    private static final String CHANGED_STATEMENT_NOTICE = "changed statement notice";
+    private final Comparator<EnrolleeState> enrolleeStateScoreComparator = createEnrolleeStateScoreComparator();
+    private final Comparator<EnrolleeState> enrolleeStateDateComparator = createEnrolleeStateDateComparator();
+    private final Comparator<EnrolleeState> enrolleeStateScoreAndDateComparator =
+        enrolleeStateScoreComparator.reversed().thenComparing(enrolleeStateDateComparator);
+
+    private static Comparator<EnrolleeState> createEnrolleeStateScoreComparator() {
+        return Comparator.comparingInt(EnrolleeState::getScore);
+    }
+
+    private static Comparator<EnrolleeState> createEnrolleeStateDateComparator() {
+        return (es1, es2) -> {
+            Date date1 = Date.valueOf(es1.getDate());
+            Date date2 = Date.valueOf(es2.getDate());
+            return date1.compareTo(date2);
+        };
+    }
 
     @Override
-    public void doAction(@NotNull List<String> parameters) throws LogicException {
+    public void validate(@NotNull List<String> parameters) throws ValidationException {
         if (!parameters.isEmpty()) {
-            throw new LogicException("wrong number of parameters");
-        }
-
-        AdminDao dao = AdminDaoImpl.getInstance();
-        try {
-            Set<EnrolleeState> enrolleeStateSet = dao.getEnrolleeStates();
-            Map<Long,Integer> specialityIdNumberOfSeatsMap = dao.getSpecialityIdToNumberOfSeatsMap();
-            setStatement(enrolleeStateSet, specialityIdNumberOfSeatsMap);
-            dao.refreshStatement(enrolleeStateSet);
-
-            List<String> emailList = dao.getUserEmailList();
-            for (String emailValue : emailList) {
-                String templatePath = MailTemplateType.SET_STATEMENT.getTemplatePath();
-                MailBuilder mailBuilder = new MailBuilder(templatePath);
-                String mailText = mailBuilder.takeMailTemplate();
-
-                MailSendTask mail = new MailSendTask(emailValue, CHANGED_STATEMENT_NOTICE, mailText, MailProperty.getInstance().getProperties());
-                mail.start();
-            }
-        } catch (DAOException e) {
-            throw new LogicException(e);
+            final String message = String.format(
+                "Invalid input parameters size: expected=`0`, actual=`%d`", parameters.size());
+            throw new ValidationException(message);
         }
     }
 
-    private void setStatement(Set<EnrolleeState> enrolleeStateSet, Map<Long,Integer> specialityIdNumberOfSeatsMap) {
-        for (Map.Entry<Long,Integer> entry : specialityIdNumberOfSeatsMap.entrySet()) {
-            long specialityIdValue = entry.getKey();
-            int numberOfSeatsValue = entry.getValue();
+    @Override
+    public void action(@NotNull List<String> parameters) throws DaoException, LogicException {
+        Set<EnrolleeState> enrolleeStates = adminDao.getEnrolleeStates();
+        enrolleeStates = updateEnrolleeStateStatementFor(enrolleeStates);
+        adminDao.refreshStatement(enrolleeStates);
 
-            Iterator<EnrolleeState> iterator = enrolleeStateSet.iterator();
-            List<EnrolleeState> enrolleeStateList = createEnrolleeStateListBySpecialityId(iterator, specialityIdValue);
-
-            if (!enrolleeStateList.isEmpty()) {
-                sortEnrolleeStateListByScoreDesc(enrolleeStateList);
-                refreshStatement(enrolleeStateList, numberOfSeatsValue);
-            }
-        }
+        List<String> emails = adminDao.getUserEmailList();
+        sendNotificationEmails(emails);
     }
 
-    private List<EnrolleeState> createEnrolleeStateListBySpecialityId(Iterator<EnrolleeState> iterator, long specialityIdValue) {
-        List<EnrolleeState> enrolleeStateList = new ArrayList<EnrolleeState>();
-        while (iterator.hasNext()) {
-            EnrolleeState enrolleeState = iterator.next();
-            if (enrolleeState.getSpecialityId() == specialityIdValue) {
-                enrolleeStateList.add(enrolleeState);
-            }
-        }
-        return enrolleeStateList;
+    private Set<EnrolleeState> updateEnrolleeStateStatementFor(@NotNull Set<EnrolleeState> enrolleeStates) {
+        Objects.requireNonNull(enrolleeStates);
+
+        Map<Long, List<EnrolleeState>> specialityIdToEnrolleeStatesMap =
+            createSpecialityIdToEnrolleeStatesMapFrom(enrolleeStates);
+        Map<Long, Integer> specialityIdToNumberOfSeatsMap = adminDao.getSpecialityIdToNumberOfSeatsMap();
+
+        return updateStatement(specialityIdToEnrolleeStatesMap, specialityIdToNumberOfSeatsMap);
     }
 
-    private void sortEnrolleeStateListByScoreDesc(List<EnrolleeState> enrolleeStateList) {
-        enrolleeStateList.sort(new Comparator<EnrolleeState>() {
-            @Override
-            public int compare(EnrolleeState enrolleeState1, EnrolleeState enrolleeState2) {
-                if (enrolleeState2.getScore() == enrolleeState1.getScore()) {
-                    Date date1 = Date.valueOf(enrolleeState1.getDate());
-                    Date date2 = Date.valueOf(enrolleeState2.getDate());
-                    return (int)(date1.getTime() - date2.getTime());
-                }
-                return enrolleeState2.getScore() - enrolleeState1.getScore();
-            }
+    private Map<Long, List<EnrolleeState>> createSpecialityIdToEnrolleeStatesMapFrom(Set<EnrolleeState> enrolleeStates) {
+        return enrolleeStates
+            .stream()
+            .collect(Collectors.groupingBy(EnrolleeState::getSpecialityId));
+    }
+
+    private Set<EnrolleeState> updateStatement(Map<Long, List<EnrolleeState>> specialityIdToEnrolleeStatesMap,
+                                               Map<Long, Integer> specialityIdToNumberOfSeatsMap) {
+        return specialityIdToEnrolleeStatesMap
+            .entrySet()
+            .stream()
+            .flatMap(entry -> {
+                List<EnrolleeState> enrolleeStates = entry.getValue();
+                int numberOfSeats = specialityIdToNumberOfSeatsMap.getOrDefault(entry.getKey(), 0);
+                return getStreamOfUpdatedEnrolleeStatesFrom(enrolleeStates, numberOfSeats);
+            })
+            .collect(Collectors.toSet());
+    }
+
+    private Stream<EnrolleeState> getStreamOfUpdatedEnrolleeStatesFrom(List<EnrolleeState> enrolleeStates, int numberOfSeats) {
+        enrolleeStates.sort(enrolleeStateScoreAndDateComparator);
+
+        int separator = Math.min(numberOfSeats, enrolleeStates.size());
+        Stream<EnrolleeState> streamOfEnlistedEnrolleeStates = enrolleeStates
+            .subList(0, separator)
+            .stream()
+            .peek(EnrolleeState::setStatementEnlisted);
+        Stream<EnrolleeState> streamOfNotListedEnrolleeStates = enrolleeStates
+            .subList(separator, enrolleeStates.size())
+            .stream()
+            .peek(EnrolleeState::setStatementNotListed);
+
+        return Stream.concat(streamOfEnlistedEnrolleeStates, streamOfNotListedEnrolleeStates);
+    }
+
+    private void sendNotificationEmails(List<String> emails) {
+        emails.forEach(email -> {
+            String mailTemplate = MailTemplateFactory.getMailTemplateBy(MailTemplateType.SET_STATEMENT);
+
+            Mail mail = new Mail(email, MAIL_SUBJECT_CHANGED_STATEMENT_NOTIFICATION, mailTemplate);
+            MailSendTask mailSendTask = new MailSendTask(mail);
+            CompletableFuture.runAsync(mailSendTask);
         });
-    }
-
-    private void refreshStatement(List<EnrolleeState> enrolleeStateList, int numberOfSeatsValue) {
-        for (int index = 0; index < enrolleeStateList.size(); index++) {
-            EnrolleeState enrolleeState = enrolleeStateList.get(index);
-
-            if (index + 1 <= numberOfSeatsValue) {
-                enrolleeState.setStatementEnlisted();
-            } else {
-                enrolleeState.setStatementNotListed();
-            }
-        }
     }
 }

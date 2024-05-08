@@ -1,35 +1,39 @@
 package by.makedon.selectioncommittee.app.logic.admin;
 
+import by.makedon.selectioncommittee.app.configuration.util.RequestParameterKey;
 import by.makedon.selectioncommittee.app.dao.AdminDao;
 import by.makedon.selectioncommittee.app.dao.impl.AdminDaoImpl;
 import by.makedon.selectioncommittee.app.entity.AdminEnrolleeForm;
-import by.makedon.selectioncommittee.app.dao.DAOException;
-import by.makedon.selectioncommittee.app.logic.LogicException;
 import by.makedon.selectioncommittee.app.logic.Logic;
+import by.makedon.selectioncommittee.app.logic.LogicException;
+import by.makedon.selectioncommittee.app.validator.ValidationException;
+import by.makedon.selectioncommittee.common.dao.DaoException;
 import org.jetbrains.annotations.NotNull;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collections;
 import java.util.List;
 
 public class ShowEnrolleesLogic implements Logic {
-    private static final String ENROLLEE_LIST = "enrolleeList";
-    private List<AdminEnrolleeForm> adminEnrolleeFormList;
+    private final AdminDao adminDao = AdminDaoImpl.getInstance();
+    private List<AdminEnrolleeForm> adminEnrolleeFormList = Collections.emptyList();
 
     @Override
-    public void doAction(@NotNull List<String> parameters) throws LogicException {
+    public void validate(@NotNull List<String> parameters) throws ValidationException {
         if (!parameters.isEmpty()) {
-            throw new LogicException("wrong number of parameters");
-        }
-
-        AdminDao dao = AdminDaoImpl.getInstance();
-        try {
-            adminEnrolleeFormList = dao.getAdminEnrolleeFormList();
-        } catch (DAOException e) {
-            throw new LogicException(e);
+            final String message = String.format(
+                "Invalid input parameters size: expected=`0`, actual=`%d`", parameters.size());
+            throw new ValidationException(message);
         }
     }
 
-    public void updateServletRequest(HttpServletRequest req) {
-        req.setAttribute(ENROLLEE_LIST, adminEnrolleeFormList);
+    @Override
+    public void action(@NotNull List<String> parameters) throws DaoException, LogicException {
+        adminEnrolleeFormList = Collections.emptyList();
+        adminEnrolleeFormList = adminDao.getAdminEnrolleeFormList();
+    }
+
+    public void updateServletRequest(HttpServletRequest request) {
+        request.setAttribute(RequestParameterKey.ENROLLEE_LIST, adminEnrolleeFormList);
     }
 }

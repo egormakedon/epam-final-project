@@ -5,6 +5,7 @@ import by.makedon.selectioncommittee.app.command.CommandType;
 import by.makedon.selectioncommittee.app.command.CommandTypeUtil;
 import by.makedon.selectioncommittee.app.configuration.util.Page;
 import by.makedon.selectioncommittee.app.configuration.util.RequestParameterKey;
+import by.makedon.selectioncommittee.app.entity.UserType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,9 +34,10 @@ public class UserCommandProtectFilter implements Filter {
         if (commandTypeUtil.isUserCommand(commandType)) {
             HttpSession session = ((HttpServletRequest) servletRequest).getSession();
             String typeValue = (String) session.getAttribute(RequestParameterKey.TYPE);
-            logger.info("{}=`{}`", RequestParameterKey.TYPE, typeValue);
+            UserType userType = UserType.of(typeValue);
+            logger.info("{}=`{}`", RequestParameterKey.TYPE, userType);
 
-            if (!RequestParameterKey.USER.equals(typeValue)) {
+            if (userType.isNotUser()) {
                 ((HttpServletResponse) servletResponse).sendRedirect(Page.WELCOME);
                 return;
             }

@@ -5,6 +5,7 @@ import by.makedon.selectioncommittee.app.configuration.controller.Router;
 import by.makedon.selectioncommittee.app.configuration.util.Page;
 import by.makedon.selectioncommittee.app.configuration.util.RequestParameterBuilder;
 import by.makedon.selectioncommittee.app.configuration.util.RequestParameterKey;
+import by.makedon.selectioncommittee.app.entity.UserType;
 import by.makedon.selectioncommittee.app.logic.Logic;
 import by.makedon.selectioncommittee.app.logic.LogicException;
 import by.makedon.selectioncommittee.app.logic.base.LoginLogic;
@@ -45,11 +46,15 @@ public class LoginCommand implements Command {
             session.setAttribute(RequestParameterKey.TYPE, type);
             session.setAttribute(RequestParameterKey.LOGIN, Boolean.TRUE.toString());
 
+            UserType userType = UserType.of(type);
             RequestParameterBuilder parameterBuilder = RequestParameterBuilder.builder();
-            if (RequestParameterKey.ADMIN.equals(type)) {
+            if (userType.isAdmin()) {
                 parameterBuilder.put(RequestParameterKey.PAGE_PATH, Page.ADMIN);
-            } else {
+            } else if (userType.isUser()) {
                 parameterBuilder.put(RequestParameterKey.PAGE_PATH, Page.USER);
+            } else {
+                logger.warn(String.format("Unknown userType=`%s` for redirection", userType));
+                parameterBuilder.put(RequestParameterKey.PAGE_PATH, Page.WELCOME);
             }
             router.setPagePath(Page.FORWARD + "?" + parameterBuilder.build());
         } catch (LogicException e) {
