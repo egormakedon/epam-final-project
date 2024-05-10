@@ -27,7 +27,8 @@ public class ChangeNumberOfSeatsLogic implements Logic {
 
         String numberOfSeatsValue = parameters.get(1);
         if (!numberOfSeatsValidator.validate(numberOfSeatsValue)) {
-            throw new ValidationException(String.format("Invalid input numberOfSeats parameter: `%s`", numberOfSeatsValue));
+            final String message = String.format("Invalid input numberOfSeats parameter: `%s`", numberOfSeatsValue);
+            throw new ValidationException(message);
         }
     }
 

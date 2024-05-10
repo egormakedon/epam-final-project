@@ -2,46 +2,55 @@ package by.makedon.selectioncommittee.app.logic.base;
 
 import by.makedon.selectioncommittee.app.dao.BaseDao;
 import by.makedon.selectioncommittee.app.dao.impl.BaseDaoImpl;
-import by.makedon.selectioncommittee.app.dao.DAOException;
-import by.makedon.selectioncommittee.app.logic.LogicException;
 import by.makedon.selectioncommittee.app.logic.Logic;
-import by.makedon.selectioncommittee.app.mail.MailBuilder;
-import by.makedon.selectioncommittee.app.mail.MailProperty;
-import by.makedon.selectioncommittee.app.mail.MailTemplateType;
+import by.makedon.selectioncommittee.app.logic.LogicException;
+import by.makedon.selectioncommittee.app.mail.Mail;
 import by.makedon.selectioncommittee.app.mail.MailSendTask;
+import by.makedon.selectioncommittee.app.mail.MailTemplateFactory;
+import by.makedon.selectioncommittee.app.mail.MailTemplateType;
 import by.makedon.selectioncommittee.app.validator.UserValidator;
+import by.makedon.selectioncommittee.app.validator.ValidationException;
+import by.makedon.selectioncommittee.common.dao.DaoException;
 import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class ForgotPasswordLogic implements Logic {
-    private static final int LIST_SIZE = 1;
-    private static final String FORGOT_PASSWORD = "forgot password";
+    private static final int VALID_PARAMETERS_SIZE = 1;
+    private static final String MAIL_SUBJECT_FORGOT_PASSWORD_NOTIFICATION = "Forgot password notification";
+
+    private final BaseDao baseDao = BaseDaoImpl.getInstance();
+    private final UserValidator userValidator = new UserValidator();
 
     @Override
-    public void doAction(@NotNull List<String> parameters) throws LogicException {
-        if (parameters.size() != LIST_SIZE) {
-            throw new LogicException("wrong number of parameters");
+    public void validate(@NotNull List<String> parameters) throws ValidationException {
+        if (parameters.size() != VALID_PARAMETERS_SIZE) {
+            final String message = String.format(
+                "Invalid input parameters size: expected=`%d`, actual=`%d`", VALID_PARAMETERS_SIZE, parameters.size());
+            throw new ValidationException(message);
         }
 
         String emailValue = parameters.get(0);
-
-        if (!UserValidator.validateEmail(emailValue)) {
-            throw new LogicException("invalid input parameters");
+        if (!userValidator.validateEmail(emailValue)) {
+            final String message = String.format("Invalid input email parameter: `%s`", emailValue);
+            throw new ValidationException(message);
         }
+    }
 
-        BaseDao dao = BaseDaoImpl.getInstance();
-        String usernameValue;
-        try {
-            usernameValue = dao.getUsernameByEmail(emailValue);
-        } catch (DAOException e) {
-            throw new LogicException(e);
-        }
+    @Override
+    public void action(@NotNull List<String> parameters) throws DaoException, LogicException {
+        String email = parameters.get(0);
+        String username = baseDao.getUsernameByEmail(email);
+        sendNotificationEmail(email, username);
+    }
 
-        String templatePath = MailTemplateType.FORGOT_PASSWORD.getTemplatePath();
-        MailBuilder mailBuilder = new MailBuilder(templatePath);
-        String mailText = String.format(mailBuilder.takeMailTemplate(), usernameValue, usernameValue);
+    private void sendNotificationEmail(String email, String username) {
+        String mailTemplate = MailTemplateFactory.getMailTemplateBy(MailTemplateType.FORGOT_PASSWORD);
+        String content = String.format(mailTemplate, username, username);
 
-        MailSendTask thread = new MailSendTask(emailValue, FORGOT_PASSWORD, mailText, MailProperty.getInstance().getProperties());
-        thread.start();
+        Mail mail = new Mail(email, MAIL_SUBJECT_FORGOT_PASSWORD_NOTIFICATION, content);
+        MailSendTask mailSendTask = new MailSendTask(mail);
+        CompletableFuture.runAsync(mailSendTask);
     }
 }
