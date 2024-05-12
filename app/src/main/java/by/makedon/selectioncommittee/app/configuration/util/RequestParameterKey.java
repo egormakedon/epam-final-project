@@ -39,4 +39,6 @@ public final class RequestParameterKey {
     public static final String NUMBER_OF_SEATS = "numberOfSeats";
     public static final String ENROLLEE_LIST = "enrolleeList";
     public static final String SPECIALITY_LIST = "specialityList";
+    public static final String STATEMENT = "statement";
+    public static final String PLACE = "place";
 }

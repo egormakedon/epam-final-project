@@ -22,4 +22,9 @@ class EnrolleeMark {
     private final byte geography;
     private final byte history;
     private final byte certificate;
+
+    public int calculateScore() {
+        return russianLang + belorussianLang + physics + math + chemistry + biology + foreignLang
+            + historyOfBelarus + socialStudies + geography + history + certificate;
+    }
 }

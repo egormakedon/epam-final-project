@@ -1,11 +1,16 @@
 package by.makedon.selectioncommittee.app.logic.user;
 
-import by.makedon.selectioncommittee.app.dao.DAOException;
+import by.makedon.selectioncommittee.app.dao.BaseDao;
 import by.makedon.selectioncommittee.app.dao.UserDao;
+import by.makedon.selectioncommittee.app.dao.impl.BaseDaoImpl;
 import by.makedon.selectioncommittee.app.dao.impl.UserDaoImpl;
 import by.makedon.selectioncommittee.app.entity.enrolleeform.EnrolleeForm;
+import by.makedon.selectioncommittee.app.entity.enrolleeform.NullEnrolleeForm;
 import by.makedon.selectioncommittee.app.logic.Logic;
 import by.makedon.selectioncommittee.app.logic.LogicException;
+import by.makedon.selectioncommittee.app.validator.UserValidator;
+import by.makedon.selectioncommittee.app.validator.ValidationException;
+import by.makedon.selectioncommittee.common.dao.DaoException;
 import org.jetbrains.annotations.NotNull;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,62 +26,55 @@ public class ShowFormLogic implements Logic {
     private static final String PARAMETER_KEY_PASSPORTID = "PASSPORTID";
     private static final String PARAMETER_KEY_COUNTRYDOMEN = "COUNTRYDOMEN";
     private static final String PARAMETER_KEY_PHONE = "PHONE";
-    private static final String SCORE = "SCORE";
-    private static final String DATE = "DATE";
+    private static final String PARAMETER_KEY_DATE = "DATE";
+    private static final String PARAMETER_KEY_SCORE = "SCORE";
 
-    private static final int LIST_SIZE = 1;
+    private static final int VALID_PARAMETERS_SIZE = 1;
 
+    private final BaseDao baseDao = BaseDaoImpl.getInstance();
+    private final UserDao userDao = UserDaoImpl.getInstance();
+    private final UserValidator userValidator = new UserValidator();
 
-    private EnrolleeForm enrolleeForm;
+    private EnrolleeForm enrolleeForm = NullEnrolleeForm.getInstance();
 
     @Override
-    public void doAction(@NotNull List<String> parameters) throws LogicException {
-        if (parameters.size() != LIST_SIZE) {
-            throw new LogicException("wrong number of parameters");
+    public void validate(@NotNull List<String> parameters) throws ValidationException {
+        if (parameters.size() != VALID_PARAMETERS_SIZE) {
+            final String message = String.format(
+                "Invalid input parameters size: expected=`%d`, actual=`%d`", VALID_PARAMETERS_SIZE, parameters.size());
+            throw new ValidationException(message);
         }
 
         String usernameValue = parameters.get(0);
-
-        UserDao dao = UserDaoImpl.getInstance();
-        try {
-            enrolleeForm = dao.getEnrolleeFormByUsername(usernameValue);
-        } catch (DAOException e) {
-            throw new LogicException(e);
+        if (!userValidator.validateUsername(usernameValue)) {
+            final String message = String.format("Invalid input username parameter: `%s`", usernameValue);
+            throw new ValidationException(message);
+        }
+        if (!baseDao.matchUsername(usernameValue)) {
+            final String message = String.format("Such user with username:`%s` does not exist", usernameValue);
+            throw new ValidationException(message);
         }
     }
 
-    public void updateServletRequest(HttpServletRequest req) {
-        EnrolleeForm.UniversityInfo universityInfo = enrolleeForm.getUniversityInfo();
-        req.setAttribute(PARAMETER_KEY_UNIVERSITY, universityInfo.getUniversity());
-        req.setAttribute(PARAMETER_KEY_FACULTY, universityInfo.getFaculty());
-        req.setAttribute(PARAMETER_KEY_SPECIALITY, universityInfo.getSpeciality());
+    @Override
+    public void action(@NotNull List<String> parameters) throws DaoException, LogicException {
+        enrolleeForm = NullEnrolleeForm.getInstance();
 
-        EnrolleeForm.EnrolleeInfo enrolleeInfo = enrolleeForm.getEnrolleInfo();
-        req.setAttribute(PARAMETER_KEY_COUNTRYDOMEN, enrolleeInfo.getCountryDomen());
-        req.setAttribute(PARAMETER_KEY_PASSPORTID, enrolleeInfo.getPassportId());
-        req.setAttribute(DATE, enrolleeInfo.getDate());
-        req.setAttribute(PARAMETER_KEY_NAME, enrolleeInfo.getName());
-        req.setAttribute(PARAMETER_KEY_PHONE, enrolleeInfo.getPhone());
-        req.setAttribute(PARAMETER_KEY_SECONDNAME, enrolleeInfo.getSecondName());
-        req.setAttribute(PARAMETER_KEY_SURNAME, enrolleeInfo.getSurname());
+        String username = parameters.get(0);
+        enrolleeForm = userDao.getEnrolleeFormByUsername(username);
+    }
 
-        EnrolleeForm.EnrolleeMark enrolleeMark = enrolleeForm.getEnrolleeMark();
-        byte belorussianLang = enrolleeMark.getBelorussianLang();
-        byte biology = enrolleeMark.getBiology();
-        byte certificate = enrolleeMark.getCertificate();
-        byte chemistry = enrolleeMark.getChemistry();
-        byte foreignLang = enrolleeMark.getForeignLang();
-        byte geography = enrolleeMark.getGeography();
-        byte history = enrolleeMark.getHistory();
-        byte historyOfBelarus = enrolleeMark.getHistoryOfBelarus();
-        byte math = enrolleeMark.getMath();
-        byte physics = enrolleeMark.getPhysics();
-        byte russianLang = enrolleeMark.getRussianLang();
-        byte socialStudies = enrolleeMark.getSocialStudies();
-
-        short score = (short) (belorussianLang + biology + certificate + chemistry + foreignLang + geography + history + historyOfBelarus +
-                math + physics + russianLang + socialStudies);
-
-        req.setAttribute(SCORE, score);
+    public void updateServletRequest(HttpServletRequest request) {
+        request.setAttribute(PARAMETER_KEY_UNIVERSITY, enrolleeForm.getUniversity());
+        request.setAttribute(PARAMETER_KEY_FACULTY, enrolleeForm.getFaculty());
+        request.setAttribute(PARAMETER_KEY_SPECIALITY, enrolleeForm.getSpeciality());
+        request.setAttribute(PARAMETER_KEY_NAME, enrolleeForm.getName());
+        request.setAttribute(PARAMETER_KEY_SURNAME, enrolleeForm.getSurname());
+        request.setAttribute(PARAMETER_KEY_SECONDNAME, enrolleeForm.getSecondName());
+        request.setAttribute(PARAMETER_KEY_PASSPORTID, enrolleeForm.getPassportId());
+        request.setAttribute(PARAMETER_KEY_COUNTRYDOMEN, enrolleeForm.getCountryDomen());
+        request.setAttribute(PARAMETER_KEY_PHONE, enrolleeForm.getPhone());
+        request.setAttribute(PARAMETER_KEY_DATE, enrolleeForm.getDate());
+        request.setAttribute(PARAMETER_KEY_SCORE, enrolleeForm.getScore());
     }
 }

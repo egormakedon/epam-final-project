@@ -10,7 +10,7 @@ public class EnrolleeForm {
     private final EnrolleeInfo enrolleeInfo;
     private final EnrolleeMark enrolleeMark;
 
-    private EnrolleeForm(UniversityInfo universityInfo, EnrolleeInfo enrolleeInfo, EnrolleeMark enrolleeMark) {
+    protected EnrolleeForm(UniversityInfo universityInfo, EnrolleeInfo enrolleeInfo, EnrolleeMark enrolleeMark) {
         this.universityInfo = universityInfo;
         this.enrolleeInfo = enrolleeInfo;
         this.enrolleeMark = enrolleeMark;
@@ -106,6 +106,10 @@ public class EnrolleeForm {
 
     public byte getCertificate() {
         return enrolleeMark.getCertificate();
+    }
+
+    public int getScore() {
+        return enrolleeMark.calculateScore();
     }
 
     public static class EnrolleeFormBuilder {

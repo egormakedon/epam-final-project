@@ -30,17 +30,16 @@ public class ChangeNumberOfSeatsLogic implements Logic {
             final String message = String.format("Invalid input numberOfSeats parameter: `%s`", numberOfSeatsValue);
             throw new ValidationException(message);
         }
+
+        if (!adminDao.isStatementInProcess()) {
+            throw new ValidationException("Update number of seats action is declined: statement is not in process!!");
+        }
     }
 
     @Override
     public void action(@NotNull List<String> parameters) throws DaoException, LogicException {
         String speciality = parameters.get(0);
         int numberOfSeats = Integer.parseInt(parameters.get(1));
-
-        if (adminDao.isStatementInProcess()) {
-            adminDao.updateNumberOfSeatsBy(speciality, numberOfSeats);
-        } else {
-            throw new LogicException("Update number of seats action is declined: statement is not in process!!");
-        }
+        adminDao.updateNumberOfSeatsBy(speciality, numberOfSeats);
     }
 }

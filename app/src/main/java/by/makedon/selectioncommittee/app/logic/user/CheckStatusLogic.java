@@ -1,44 +1,48 @@
 package by.makedon.selectioncommittee.app.logic.user;
 
+import by.makedon.selectioncommittee.app.configuration.util.RequestParameterKey;
 import by.makedon.selectioncommittee.app.dao.UserDao;
 import by.makedon.selectioncommittee.app.dao.impl.UserDaoImpl;
-import by.makedon.selectioncommittee.app.dao.DAOException;
-import by.makedon.selectioncommittee.app.logic.LogicException;
 import by.makedon.selectioncommittee.app.logic.Logic;
+import by.makedon.selectioncommittee.app.logic.LogicException;
+import by.makedon.selectioncommittee.app.validator.ValidationException;
+import by.makedon.selectioncommittee.common.dao.DaoException;
 import org.jetbrains.annotations.NotNull;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public class CheckStatusLogic implements Logic {
-    private static final int LIST_SIZE = 1;
+    private static final int VALID_PARAMETERS_SIZE = 1;
 
-    private static final String STATEMENT = "statement";
-    private static final String PLACE = "place";
+    private final UserDao userDao = UserDaoImpl.getInstance();
 
-    private String statement;
+    private String statement = "";
     private int place;
 
     @Override
-    public void doAction(@NotNull List<String> parameters) throws LogicException {
-        if (parameters.size() != LIST_SIZE) {
-            throw new LogicException("wrong number of parameters");
-        }
-
-        String usernameValue = parameters.get(0);
-
-        UserDao dao = UserDaoImpl.getInstance();
-        try {
-            statement = dao.getStatementByUsername(usernameValue);
-            long specialityIdValue = dao.getSpecialityIdByUsername(usernameValue);
-            place = dao.getEnrolleePlaceByUsernameAndSpecialityId(usernameValue, specialityIdValue);
-        } catch (DAOException e) {
-            throw new LogicException(e);
+    public void validate(@NotNull List<String> parameters) throws ValidationException {
+        if (parameters.size() != VALID_PARAMETERS_SIZE) {
+            final String message = String.format(
+                "Invalid input parameters size: expected=`%d`, actual=`%d`", VALID_PARAMETERS_SIZE, parameters.size());
+            throw new ValidationException(message);
         }
     }
 
-    public void updateServletRequest(HttpServletRequest req) {
-        req.setAttribute(STATEMENT, statement);
-        req.setAttribute(PLACE, place);
+    @Override
+    public void action(@NotNull List<String> parameters) throws DaoException, LogicException {
+        statement = "";
+        place = 0;
+
+        String username = parameters.get(0);
+        long specialityId = userDao.getSpecialityIdByUsername(username);
+
+        statement = userDao.getStatementByUsername(username);
+        place = userDao.getEnrolleePlaceByUsernameAndSpecialityId(username, specialityId);
+    }
+
+    public void updateServletRequest(HttpServletRequest request) {
+        request.setAttribute(RequestParameterKey.STATEMENT, statement);
+        request.setAttribute(RequestParameterKey.PLACE, place);
     }
 }
