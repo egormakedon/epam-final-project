@@ -28,7 +28,7 @@ public class MailTemplateReader {
             .orElseThrow(() -> {
                 final String message = String.format("%s - mail template has not been found", templatePath);
                 log.error(message);
-                throw new MailTemplateReaderException(message);
+                return new MailTemplateReaderException(message);
             });
     }
 
