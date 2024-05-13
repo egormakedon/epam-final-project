@@ -16,6 +16,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import static by.makedon.selectioncommittee.app.configuration.util.ErrorMessageTemplate.INVALID_INPUT_PARAMETER_WITH_PARAMETER_VALUE;
+import static by.makedon.selectioncommittee.app.configuration.util.ErrorMessageTemplate.USER_EXISTS_WITH_EMAIL_USERNAME;
+
 public class RegistrationLogic implements Logic {
     private static final int VALID_PARAMETERS_SIZE = 4;
     private static final String MAIL_SUBJECT_CONFIRMATION_REGISTRATION_NOTIFICATION = "Confirmation registration notification";
@@ -24,28 +27,34 @@ public class RegistrationLogic implements Logic {
     private final UserValidator userValidator = new UserValidator();
 
     @Override
-    public void validate(@NotNull List<String> parameters) throws ValidationException {
-        if (parameters.size() != VALID_PARAMETERS_SIZE) {
-            final String message = String.format(
-                "Invalid input parameters size: expected=[%d], actual=[%d]", VALID_PARAMETERS_SIZE, parameters.size());
-            throw new ValidationException(message);
-        }
+    public int getValidParametersSize() {
+        return VALID_PARAMETERS_SIZE;
+    }
 
+    @Override
+    public void validate(@NotNull List<String> parameters) throws ValidationException {
         String emailValue = parameters.get(0);
         String usernameValue = parameters.get(1);
         String password1Value = parameters.get(2);
         String password2Value = parameters.get(3);
 
-        if (!(userValidator.validateEmail(emailValue) && userValidator.validateUsername(usernameValue) &&
-            userValidator.validatePassword(password1Value) && userValidator.arePasswordsEqual(password1Value, password2Value))) {
-            final String message = String.format(
-                "Invalid input email parameter: [%s] or username: [%s] or password1 or password2", emailValue, usernameValue);
+        if (!userValidator.validateEmail(emailValue)) {
+            final String message = String.format(INVALID_INPUT_PARAMETER_WITH_PARAMETER_VALUE, "email", emailValue);
+            throw new ValidationException(message);
+        }
+
+        if (!userValidator.validateUsername(usernameValue)) {
+            final String message = String.format(INVALID_INPUT_PARAMETER_WITH_PARAMETER_VALUE, "username", usernameValue);
+            throw new ValidationException(message);
+        }
+
+        if (!(userValidator.validatePassword(password1Value) && userValidator.arePasswordsEqual(password1Value, password2Value))) {
+            final String message = "Invalid input password1 or password2";
             throw new ValidationException(message);
         }
 
         if (baseDao.matchEmailAndUsername(emailValue, usernameValue)) {
-            final String message = String.format(
-                "Such user with email: [%s] and username: [%s] already exists", emailValue, usernameValue);
+            final String message = String.format(USER_EXISTS_WITH_EMAIL_USERNAME, emailValue, usernameValue);
             throw new ValidationException(message);
         }
     }

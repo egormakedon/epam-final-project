@@ -13,6 +13,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+import static by.makedon.selectioncommittee.app.configuration.util.ErrorMessageTemplate.INVALID_INPUT_PARAMETER_WITH_PARAMETER_VALUE;
+import static by.makedon.selectioncommittee.app.configuration.util.ErrorMessageTemplate.USER_NOT_EXIST_WITH_USERNAME;
+
 public class ChangeEmailLogic implements Logic {
     private static final int VALID_PARAMETERS_SIZE = 2;
 
@@ -21,26 +24,27 @@ public class ChangeEmailLogic implements Logic {
     private final UserValidator userValidator = new UserValidator();
 
     @Override
-    public void validate(@NotNull List<String> parameters) throws ValidationException {
-        if (parameters.size() != VALID_PARAMETERS_SIZE) {
-            final String message = String.format(
-                "Invalid input parameters size: expected=[%d], actual=[%d]", VALID_PARAMETERS_SIZE, parameters.size());
-            throw new ValidationException(message);
-        }
+    public int getValidParametersSize() {
+        return VALID_PARAMETERS_SIZE;
+    }
 
+    @Override
+    public void validate(@NotNull List<String> parameters) throws ValidationException {
         String usernameValue = parameters.get(0);
         if (!userValidator.validateUsername(usernameValue)) {
-            final String message = String.format("Invalid input username parameter: [%s]", usernameValue);
+            final String message = String.format(
+                INVALID_INPUT_PARAMETER_WITH_PARAMETER_VALUE, "username", usernameValue);
             throw new ValidationException(message);
         }
         if (!baseDao.matchUsername(usernameValue)) {
-            final String message = String.format("Such user with username: [%s] does not exist", usernameValue);
+            final String message = String.format(USER_NOT_EXIST_WITH_USERNAME, usernameValue);
             throw new ValidationException(message);
         }
 
         String newEmailValue = parameters.get(1);
         if (!userValidator.validateEmail(newEmailValue)) {
-            final String message = String.format("Invalid input newEmail parameter: [%s]", newEmailValue);
+            final String message = String.format(
+                INVALID_INPUT_PARAMETER_WITH_PARAMETER_VALUE, "newEmail", newEmailValue);
             throw new ValidationException(message);
         }
     }

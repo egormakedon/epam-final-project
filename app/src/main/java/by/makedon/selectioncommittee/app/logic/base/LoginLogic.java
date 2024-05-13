@@ -22,18 +22,17 @@ public class LoginLogic implements Logic {
     private String type = "";
 
     @Override
-    public void validate(@NotNull List<String> parameters) throws ValidationException {
-        if (parameters.size() != VALID_PARAMETERS_SIZE) {
-            final String message = String.format(
-                "Invalid input parameters size: expected=[%d], actual=[%d]", VALID_PARAMETERS_SIZE, parameters.size());
-            throw new ValidationException(message);
-        }
+    public int getValidParametersSize() {
+        return VALID_PARAMETERS_SIZE;
+    }
 
+    @Override
+    public void validate(@NotNull List<String> parameters) throws ValidationException {
         String usernameValue = parameters.get(0);
         String passwordValue = parameters.get(1);
 
         if (!(userValidator.validateUsername(usernameValue) && userValidator.validatePassword(passwordValue))) {
-            final String message = String.format("Invalid input username parameter: [%s] or password", usernameValue);
+            final String message = "Invalid input username or password";
             throw new ValidationException(message);
         }
 

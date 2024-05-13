@@ -30,12 +30,13 @@ public class ProfileLogic implements Logic {
     private String pagePath = "";
 
     @Override
+    public int getValidParametersSize() {
+        return VALID_PARAMETERS_SIZE;
+    }
+
+    @Override
     public void validate(@NotNull List<String> parameters) throws ValidationException {
-        if (parameters.size() != VALID_PARAMETERS_SIZE) {
-            final String message = String.format(
-                "Invalid input parameters size: expected=`%d`, actual=`%d`", VALID_PARAMETERS_SIZE, parameters.size());
-            throw new ValidationException(message);
-        }
+        //empty
     }
 
     @Override

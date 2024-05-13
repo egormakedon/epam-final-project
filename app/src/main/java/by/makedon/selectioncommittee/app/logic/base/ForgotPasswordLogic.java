@@ -16,6 +16,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import static by.makedon.selectioncommittee.app.configuration.util.ErrorMessageTemplate.INVALID_INPUT_PARAMETER_WITH_PARAMETER_VALUE;
+
 public class ForgotPasswordLogic implements Logic {
     private static final int VALID_PARAMETERS_SIZE = 1;
     private static final String MAIL_SUBJECT_FORGOT_PASSWORD_NOTIFICATION = "Forgot password notification";
@@ -24,16 +26,15 @@ public class ForgotPasswordLogic implements Logic {
     private final UserValidator userValidator = new UserValidator();
 
     @Override
-    public void validate(@NotNull List<String> parameters) throws ValidationException {
-        if (parameters.size() != VALID_PARAMETERS_SIZE) {
-            final String message = String.format(
-                "Invalid input parameters size: expected=`%d`, actual=`%d`", VALID_PARAMETERS_SIZE, parameters.size());
-            throw new ValidationException(message);
-        }
+    public int getValidParametersSize() {
+        return VALID_PARAMETERS_SIZE;
+    }
 
+    @Override
+    public void validate(@NotNull List<String> parameters) throws ValidationException {
         String emailValue = parameters.get(0);
         if (!userValidator.validateEmail(emailValue)) {
-            final String message = String.format("Invalid input email parameter: `%s`", emailValue);
+            final String message = String.format(INVALID_INPUT_PARAMETER_WITH_PARAMETER_VALUE, "email", emailValue);
             throw new ValidationException(message);
         }
     }

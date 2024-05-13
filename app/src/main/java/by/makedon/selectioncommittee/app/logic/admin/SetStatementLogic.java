@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class SetStatementLogic implements Logic {
+    private static final int VALID_PARAMETERS_SIZE = 0;
     private static final String MAIL_SUBJECT_CHANGED_STATEMENT_NOTIFICATION = "Changed statement notification";
 
     private final AdminDao adminDao = AdminDaoImpl.getInstance();
@@ -42,12 +43,13 @@ public class SetStatementLogic implements Logic {
     }
 
     @Override
+    public int getValidParametersSize() {
+        return VALID_PARAMETERS_SIZE;
+    }
+
+    @Override
     public void validate(@NotNull List<String> parameters) throws ValidationException {
-        if (!parameters.isEmpty()) {
-            final String message = String.format(
-                "Invalid input parameters size: expected=`0`, actual=`%d`", parameters.size());
-            throw new ValidationException(message);
-        }
+        //empty
     }
 
     @Override

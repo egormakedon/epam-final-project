@@ -21,6 +21,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import static by.makedon.selectioncommittee.app.configuration.util.ErrorMessageTemplate.*;
+
 public class DeleteUserLogic implements Logic {
     private static final int VALID_PARAMETERS_SIZE = 1;
     private static final String MAIL_SUBJECT_USER_REMOVAL_NOTIFICATION = "User removal notification";
@@ -31,29 +33,29 @@ public class DeleteUserLogic implements Logic {
     private final UserValidator userValidator = new UserValidator();
 
     @Override
-    public void validate(@NotNull List<String> parameters) throws ValidationException {
-        if (parameters.size() != VALID_PARAMETERS_SIZE) {
-            final String message = String.format(
-                "Invalid input parameters size: expected=`%d`, actual=`%d`", VALID_PARAMETERS_SIZE, parameters.size());
-            throw new ValidationException(message);
-        }
+    public int getValidParametersSize() {
+        return VALID_PARAMETERS_SIZE;
+    }
 
+    @Override
+    public void validate(@NotNull List<String> parameters) throws ValidationException {
         String usernameValue = parameters.get(0);
 
         if (!userValidator.validateUsername(usernameValue)) {
-            final String message = String.format("Invalid input username parameter: `%s`", usernameValue);
+            final String message = String.format(
+                INVALID_INPUT_PARAMETER_WITH_PARAMETER_VALUE, "username", usernameValue);
             throw new ValidationException(message);
         }
 
         if (!baseDao.matchUsername(usernameValue)) {
-            final String message = String.format("User with username: `%s` does not exist", usernameValue);
+            final String message = String.format(USER_NOT_EXIST_WITH_USERNAME, usernameValue);
             throw new ValidationException(message);
         }
 
         String type = baseDao.getTypeByUsername(usernameValue);
         UserType userType = UserType.of(type);
         if (userType.isAdmin()) {
-            final String message = String.format("Removal action for user: `%s` has been denied!!", usernameValue);
+            final String message = String.format(ACTION_DENIED_WITH_NAME_USERNAME, "removal", usernameValue);
             throw new ValidationException(message);
         }
     }

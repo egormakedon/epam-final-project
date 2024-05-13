@@ -11,24 +11,24 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+import static by.makedon.selectioncommittee.app.configuration.util.ErrorMessageTemplate.USER_EXISTS_WITH_EMAIL_USERNAME;
+
 public class AcceptRegistrationLogic implements Logic {
     private static final int VALID_PARAMETERS_SIZE = 3;
     private final BaseDao baseDao = BaseDaoImpl.getInstance();
 
     @Override
-    public void validate(@NotNull List<String> parameters) throws ValidationException {
-        if (parameters.size() != VALID_PARAMETERS_SIZE) {
-            final String message = String.format(
-                "Invalid input parameters size: expected=`%d`, actual=`%d`", VALID_PARAMETERS_SIZE, parameters.size());
-            throw new ValidationException(message);
-        }
+    public int getValidParametersSize() {
+        return VALID_PARAMETERS_SIZE;
+    }
 
+    @Override
+    public void validate(@NotNull List<String> parameters) throws ValidationException {
         String emailValue = parameters.get(0);
         String usernameValue = parameters.get(1);
 
         if (baseDao.matchEmailAndUsername(emailValue, usernameValue)) {
-            final String message = String.format(
-                "Such user with email:`%s`, username:`%s` already exists", emailValue, usernameValue);
+            final String message = String.format(USER_EXISTS_WITH_EMAIL_USERNAME, emailValue, usernameValue);
             throw new ValidationException(message);
         }
     }

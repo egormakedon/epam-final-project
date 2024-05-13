@@ -18,13 +18,12 @@ public class ChangePasswordLogic implements Logic {
     private final UserValidator userValidator = new UserValidator();
 
     @Override
-    public void validate(@NotNull List<String> parameters) throws ValidationException {
-        if (parameters.size() != VALID_PARAMETERS_SIZE) {
-            final String message = String.format(
-                "Invalid input parameters size: expected=`%d`, actual=`%d`", VALID_PARAMETERS_SIZE, parameters.size());
-            throw new ValidationException(message);
-        }
+    public int getValidParametersSize() {
+        return VALID_PARAMETERS_SIZE;
+    }
 
+    @Override
+    public void validate(@NotNull List<String> parameters) throws ValidationException {
         String password1Value = parameters.get(1);
         String password2Value = parameters.get(2);
         if (!(userValidator.validatePassword(password1Value)

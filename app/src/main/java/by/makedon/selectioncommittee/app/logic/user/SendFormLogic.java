@@ -19,6 +19,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static by.makedon.selectioncommittee.app.configuration.util.ErrorMessageTemplate.INVALID_INPUT_PARAMETER_WITH_PARAMETER_VALUE;
+import static by.makedon.selectioncommittee.app.configuration.util.ErrorMessageTemplate.USER_NOT_EXIST_WITH_USERNAME;
+
 public class SendFormLogic implements Logic {
     private static final int VALID_PARAMETERS_SIZE = 22;
     private static final String DATE_PATTERN = "yyyy-MM-dd";
@@ -29,20 +32,20 @@ public class SendFormLogic implements Logic {
     private final EnrolleeValidator enrolleeValidator = new EnrolleeValidator();
 
     @Override
-    public void validate(@NotNull List<String> parameters) throws ValidationException {
-        if (parameters.size() != VALID_PARAMETERS_SIZE) {
-            final String message = String.format(
-                "Invalid input parameters size: expected=`%d`, actual=`%d`", VALID_PARAMETERS_SIZE, parameters.size());
-            throw new ValidationException(message);
-        }
+    public int getValidParametersSize() {
+        return VALID_PARAMETERS_SIZE;
+    }
 
+    @Override
+    public void validate(@NotNull List<String> parameters) throws ValidationException {
         String usernameValue = parameters.get(0);
         if (!userValidator.validateUsername(usernameValue)) {
-            final String message = String.format("Invalid input username parameter: `%s`", usernameValue);
+            final String message = String.format(
+                INVALID_INPUT_PARAMETER_WITH_PARAMETER_VALUE, "username", usernameValue);
             throw new ValidationException(message);
         }
         if (!baseDao.matchUsername(usernameValue)) {
-            final String message = String.format("Such user with username:`%s` does not exist", usernameValue);
+            final String message = String.format(USER_NOT_EXIST_WITH_USERNAME, usernameValue);
             throw new ValidationException(message);
         }
 
@@ -54,7 +57,7 @@ public class SendFormLogic implements Logic {
 
         if (userDao.isUserEnrolleeFormInserted(usernameValue)) {
             final String message = String.format(
-                "Enrollee form for the user: `%s` has already been submitted!!", usernameValue);
+                "Enrollee form for the user: '%s' has already been submitted!!", usernameValue);
             throw new ValidationException(message);
         }
     }
@@ -85,7 +88,7 @@ public class SendFormLogic implements Logic {
         List<String> errors = enrolleeValidator.validate(enrolleeParametersForValidation);
         if (!errors.isEmpty()) {
             final String message = String.format("Invalid input enrolleeForm parameters:\n%s",
-                errors.stream().map(error -> String.format("<%s>", error)).collect(Collectors.joining(", ")));
+                errors.stream().map(error -> String.format("'<%s>'", error)).collect(Collectors.joining(", ")));
             throw new ValidationException(message);
         }
     }

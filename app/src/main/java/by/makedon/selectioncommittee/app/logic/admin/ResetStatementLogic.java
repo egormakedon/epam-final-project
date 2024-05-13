@@ -11,15 +11,18 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class ResetStatementLogic implements Logic {
+    private static final int VALID_PARAMETERS_SIZE = 0;
+
     private final AdminDao adminDao = AdminDaoImpl.getInstance();
 
     @Override
+    public int getValidParametersSize() {
+        return VALID_PARAMETERS_SIZE;
+    }
+
+    @Override
     public void validate(@NotNull List<String> parameters) throws ValidationException {
-        if (!parameters.isEmpty()) {
-            final String message = String.format(
-                "Invalid input parameters size: expected=`0`, actual=`%d`", parameters.size());
-            throw new ValidationException(message);
-        }
+        //empty
     }
 
     @Override

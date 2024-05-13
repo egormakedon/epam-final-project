@@ -11,6 +11,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+import static by.makedon.selectioncommittee.app.configuration.util.ErrorMessageTemplate.INVALID_INPUT_PARAMETER_WITH_PARAMETER_VALUE;
+
 public class ChangeNumberOfSeatsLogic implements Logic {
     private static final int VALID_PARAMETERS_SIZE = 2;
 
@@ -18,16 +20,16 @@ public class ChangeNumberOfSeatsLogic implements Logic {
     private final NumberOfSeatsValidator numberOfSeatsValidator = new NumberOfSeatsValidator();
 
     @Override
-    public void validate(@NotNull List<String> parameters) throws ValidationException {
-        if (parameters.size() != VALID_PARAMETERS_SIZE) {
-            final String message = String.format(
-                "Invalid input parameters size: expected=`%d`, actual=`%d`", VALID_PARAMETERS_SIZE, parameters.size());
-            throw new ValidationException(message);
-        }
+    public int getValidParametersSize() {
+        return VALID_PARAMETERS_SIZE;
+    }
 
+    @Override
+    public void validate(@NotNull List<String> parameters) throws ValidationException {
         String numberOfSeatsValue = parameters.get(1);
         if (!numberOfSeatsValidator.validate(numberOfSeatsValue)) {
-            final String message = String.format("Invalid input numberOfSeats parameter: `%s`", numberOfSeatsValue);
+            final String message = String.format(
+                INVALID_INPUT_PARAMETER_WITH_PARAMETER_VALUE, "numberOfSeats", numberOfSeatsValue);
             throw new ValidationException(message);
         }
 

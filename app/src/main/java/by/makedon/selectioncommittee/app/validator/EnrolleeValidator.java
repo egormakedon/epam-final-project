@@ -11,20 +11,22 @@ import java.util.function.Consumer;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static by.makedon.selectioncommittee.app.configuration.util.ErrorMessageTemplate.INVALID_INPUT_PARAMETERS_SIZE_WITH_EXPECTED_ACTUAL;
+
 @Slf4j
 public final class EnrolleeValidator {
     private static final String NAME_REGEXP = "^(([А-Я][а-я]{2,50})|([A-Z][a-z]{2,50}))$";
     private static final String PASSPORT_REGEXP = "^([A-Z0-9]{7,10})$";
     private static final String PHONE_REGEXP = "^(375(29|33|25)[0-9]{7})$";
     private static final int VALID_PARAMETERS_SIZE = 17;
-    private static final String ERROR_FIELD_TEMPLATE = "%s=`%s`";
+    private static final String ERROR_FIELD_TEMPLATE = "%s='%s'";
 
     @NotNull
     public List<String> validate(@NotNull List<String> parameters) {
         Objects.requireNonNull(parameters);
         if (parameters.size() != VALID_PARAMETERS_SIZE) {
             return Collections.singletonList(String.format(
-                "Invalid input parameters size: expected=`%d`, actual=`%d`", VALID_PARAMETERS_SIZE, parameters.size()));
+                INVALID_INPUT_PARAMETERS_SIZE_WITH_EXPECTED_ACTUAL, VALID_PARAMETERS_SIZE, parameters.size()));
         }
         return validateParameters(parameters);
     }
@@ -132,7 +134,7 @@ public final class EnrolleeValidator {
             });
         } else {
             final String message = String.format(
-                "only [3] subject marks must be submitted, but provided [%d]", markValues.size());
+                "only '3' subject marks must be submitted, but provided '%d'", markValues.size());
             addToErrorsConsumer.accept(message);
         }
     }
