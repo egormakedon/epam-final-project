@@ -33,7 +33,8 @@
 		<jupiter.version>5.9.2</jupiter.version>
 		<testng.version>7.5</testng.version>
 		<logback.version>1.3.14</logback.version>
-		<log4j.version>2.23.1</log4j.version>
+		<log4j2.version>2.23.1</log4j2.version>
+		<slf4j.version>2.0.13</slf4j.version>
 
 		<mysql.version>8.0.33</mysql.version>
 		<javax.servlet.api.version>4.0.0</javax.servlet.api.version>
@@ -133,22 +134,37 @@
 			<dependency>
 				<groupId>org.apache.logging.log4j</groupId>
 				<artifactId>log4j-api</artifactId>
-				<version>${log4j.version}</version>
+				<version>${log4j2.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.logging.log4j</groupId>
 				<artifactId>log4j-core</artifactId>
-				<version>${log4j.version}</version>
+				<version>${log4j2.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.logging.log4j</groupId>
-				<artifactId>log4j-slf4j-impl</artifactId>
-				<version>${log4j.version}</version>
+				<artifactId>log4j-slf4j2-impl</artifactId>
+				<version>${log4j2.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.logging.log4j</groupId>
+				<artifactId>log4j-jcl</artifactId>
+				<version>${log4j2.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-reload4j</artifactId>
+				<version>${slf4j.version}</version>
 			</dependency>
 
 			<dependency>
-				<groupId>mysql</groupId>
-				<artifactId>mysql-connector-java</artifactId>
+				<groupId>com.mysql</groupId>
+				<artifactId>mysql-connector-j</artifactId>
 				<version>${mysql.version}</version>
 			</dependency>
 			<dependency>
@@ -170,6 +186,12 @@
 				<groupId>displaytag</groupId>
 				<artifactId>displaytag</artifactId>
 				<version>${displaytag.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.slf4j</groupId>
+						<artifactId>jcl104-over-slf4j</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
