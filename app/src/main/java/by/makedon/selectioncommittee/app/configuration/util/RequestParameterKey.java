@@ -1,8 +1,12 @@
 package by.makedon.selectioncommittee.app.configuration.util;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 /**
  * @author Yahor Makedon
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class RequestParameterKey {
     public static final String MESSAGE = "message";
     public static final String COMMAND = "command";
