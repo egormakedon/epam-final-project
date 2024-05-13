@@ -90,7 +90,7 @@
                 </p>
                 <p>
                     <label for="password">${password}</label>
-                    <input type="password" name="password" id="password" pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{6,}" required>
+                    <input type="password" name="password" id="password" pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!]{6,}" required>
                     <span class="form_error">${password_error}</span>
                 </p>
                 <p class="login-submit">

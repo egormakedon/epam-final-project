@@ -22,16 +22,20 @@ public final class UserFactory {
             .builder()
             .email(getEmailBy(enrolleeId))
             .username(getUsernameBy(enrolleeId))
-            .password(getUsernameBy(enrolleeId))
+            .password(getPasswordBy(enrolleeId))
             .enrollee(enrollee)
             .build();
     }
 
     private String getEmailBy(int enrolleeId) {
-        return String.format("email_%d@gmail.com", enrolleeId);
+        return String.format("user_%d@mail.com", enrolleeId);
     }
 
     private String getUsernameBy(int enrolleeId) {
         return String.format("user_%d", enrolleeId);
+    }
+
+    private String getPasswordBy(int enrolleeId) {
+        return String.format("User!%d", enrolleeId);
     }
 }

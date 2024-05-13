@@ -60,4 +60,4 @@ INSERT INTO speciality(f_id,s_name,number_of_seats) VALUE(7,'Радиотехн�
 INSERT INTO speciality(f_id,s_name,number_of_seats) VALUE(7,'Вычислительные машины, системы и сети (специального назначения)',10); -- 39
 
 -- user
-INSERT INTO user(email,username,password,type) VALUE('admin@gmail.com','admin',SHA1('admin'),'admin');
+INSERT INTO user(email,username,password,type) VALUE('admin1@mail.com','admin1',SHA1('Admin!1'),'admin');

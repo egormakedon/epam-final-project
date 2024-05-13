@@ -96,12 +96,12 @@
                     </p>
                     <p>
                         <label for="password1">${password}</label>
-                        <input type="password" name="password1" id="password1" pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{6,}" minlength="6" required>
+                        <input type="password" name="password1" id="password1" pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!]{6,}" minlength="6" required>
                         <span class="form_error">${password_error}</span>
                     </p>
                     <p>
                         <label for="password2">${password_again}</label>
-                        <input type="password" name="password2" id="password2" pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{6,}" minlength="6" required>
+                        <input type="password" name="password2" id="password2" pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!]{6,}" minlength="6" required>
                         <span class="form_error">${password_error}</span>
                     </p>
                     <p class="login-submit">
