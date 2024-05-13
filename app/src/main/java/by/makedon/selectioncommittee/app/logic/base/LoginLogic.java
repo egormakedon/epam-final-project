@@ -25,7 +25,7 @@ public class LoginLogic implements Logic {
     public void validate(@NotNull List<String> parameters) throws ValidationException {
         if (parameters.size() != VALID_PARAMETERS_SIZE) {
             final String message = String.format(
-                "Invalid input parameters size: expected=`%d`, actual=`%d`", VALID_PARAMETERS_SIZE, parameters.size());
+                "Invalid input parameters size: expected=[%d], actual=[%d]", VALID_PARAMETERS_SIZE, parameters.size());
             throw new ValidationException(message);
         }
 
@@ -33,7 +33,7 @@ public class LoginLogic implements Logic {
         String passwordValue = parameters.get(1);
 
         if (!(userValidator.validateUsername(usernameValue) && userValidator.validatePassword(passwordValue))) {
-            final String message = String.format("Invalid input username parameter: `%s` or password", usernameValue);
+            final String message = String.format("Invalid input username parameter: [%s] or password", usernameValue);
             throw new ValidationException(message);
         }
 

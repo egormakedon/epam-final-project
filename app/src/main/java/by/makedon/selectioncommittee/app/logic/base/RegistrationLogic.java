@@ -27,7 +27,7 @@ public class RegistrationLogic implements Logic {
     public void validate(@NotNull List<String> parameters) throws ValidationException {
         if (parameters.size() != VALID_PARAMETERS_SIZE) {
             final String message = String.format(
-                "Invalid input parameters size: expected=`%d`, actual=`%d`", VALID_PARAMETERS_SIZE, parameters.size());
+                "Invalid input parameters size: expected=[%d], actual=[%d]", VALID_PARAMETERS_SIZE, parameters.size());
             throw new ValidationException(message);
         }
 
@@ -39,13 +39,13 @@ public class RegistrationLogic implements Logic {
         if (!(userValidator.validateEmail(emailValue) && userValidator.validateUsername(usernameValue) &&
             userValidator.validatePassword(password1Value) && userValidator.arePasswordsEqual(password1Value, password2Value))) {
             final String message = String.format(
-                "Invalid input email parameter: `%s` or username: `%s` or password1 or password2", emailValue, usernameValue);
+                "Invalid input email parameter: [%s] or username: [%s] or password1 or password2", emailValue, usernameValue);
             throw new ValidationException(message);
         }
 
         if (baseDao.matchEmailAndUsername(emailValue, usernameValue)) {
             final String message = String.format(
-                "Such user with email:`%s`, username:`%s` already exists", emailValue, usernameValue);
+                "Such user with email: [%s] and username: [%s] already exists", emailValue, usernameValue);
             throw new ValidationException(message);
         }
     }

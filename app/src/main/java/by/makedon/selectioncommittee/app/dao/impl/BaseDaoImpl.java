@@ -119,7 +119,7 @@ public final class BaseDaoImpl implements BaseDao {
         });
 
         String result = resultOptional
-            .orElseThrow(() -> new DaoException(String.format("user with username: `%s` does not exist", usernameValue)));
+            .orElseThrow(() -> new DaoException(String.format("user with username: [%s] does not exist", usernameValue)));
         logger.info("Successfully has returned Type: `%{}` for provided username: `{}`", result, usernameValue);
         return result;
     }
@@ -164,7 +164,7 @@ public final class BaseDaoImpl implements BaseDao {
         });
 
         if (!result.isPresent()) {
-            final String message = String.format("user `%s` does not exist", usernameValue);
+            final String message = String.format("user [%s] does not exist", usernameValue);
             throw new DaoException(message);
         }
 

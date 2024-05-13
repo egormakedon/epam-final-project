@@ -24,23 +24,23 @@ public class ChangeEmailLogic implements Logic {
     public void validate(@NotNull List<String> parameters) throws ValidationException {
         if (parameters.size() != VALID_PARAMETERS_SIZE) {
             final String message = String.format(
-                "Invalid input parameters size: expected=`%d`, actual=`%d`", VALID_PARAMETERS_SIZE, parameters.size());
+                "Invalid input parameters size: expected=[%d], actual=[%d]", VALID_PARAMETERS_SIZE, parameters.size());
             throw new ValidationException(message);
         }
 
         String usernameValue = parameters.get(0);
         if (!userValidator.validateUsername(usernameValue)) {
-            final String message = String.format("Invalid input username parameter: `%s`", usernameValue);
+            final String message = String.format("Invalid input username parameter: [%s]", usernameValue);
             throw new ValidationException(message);
         }
         if (!baseDao.matchUsername(usernameValue)) {
-            final String message = String.format("Such user with username:`%s` does not exist", usernameValue);
+            final String message = String.format("Such user with username: [%s] does not exist", usernameValue);
             throw new ValidationException(message);
         }
 
         String newEmailValue = parameters.get(1);
         if (!userValidator.validateEmail(newEmailValue)) {
-            final String message = String.format("Invalid input newEmail parameter: `%s`", newEmailValue);
+            final String message = String.format("Invalid input newEmail parameter: [%s]", newEmailValue);
             throw new ValidationException(message);
         }
     }

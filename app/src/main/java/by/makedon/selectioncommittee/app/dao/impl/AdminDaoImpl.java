@@ -191,7 +191,7 @@ public final class AdminDaoImpl implements AdminDao {
         });
 
         if (!result.isPresent()) {
-            final String message = String.format("user `%s` does not exist", usernameValue);
+            final String message = String.format("user [%s] does not exist", usernameValue);
             throw new DaoException(message);
         }
 
@@ -238,7 +238,7 @@ public final class AdminDaoImpl implements AdminDao {
         });
 
         if (!result.isPresent()) {
-            final String message = String.format("speciality `%s` does not exist", specialityValue);
+            final String message = String.format("speciality [%s] does not exist", specialityValue);
             throw new DaoException(message);
         }
 
