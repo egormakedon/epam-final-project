@@ -18,6 +18,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+import static by.makedon.selectioncommittee.app.configuration.util.ErrorMessageTemplate.SPECIALITY_NOT_FOUND_WITH_SPECIALITY;
+import static by.makedon.selectioncommittee.app.configuration.util.ErrorMessageTemplate.USER_NOT_EXIST_WITH_USERNAME;
+
 public final class AdminDaoImpl implements AdminDao {
     private static final Logger logger = LoggerFactory.getLogger(AdminDaoImpl.class);
     private static final String STATEMENT_IN_PROCESS = "В процессе";
@@ -191,7 +194,7 @@ public final class AdminDaoImpl implements AdminDao {
         });
 
         if (!result.isPresent()) {
-            final String message = String.format("user [%s] does not exist", usernameValue);
+            final String message = String.format(USER_NOT_EXIST_WITH_USERNAME, usernameValue);
             throw new DaoException(message);
         }
 
@@ -238,7 +241,7 @@ public final class AdminDaoImpl implements AdminDao {
         });
 
         if (!result.isPresent()) {
-            final String message = String.format("speciality [%s] does not exist", specialityValue);
+            final String message = String.format(SPECIALITY_NOT_FOUND_WITH_SPECIALITY, specialityValue);
             throw new DaoException(message);
         }
 

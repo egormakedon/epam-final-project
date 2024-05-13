@@ -13,6 +13,9 @@ import java.sql.SQLException;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static by.makedon.selectioncommittee.app.configuration.util.ErrorMessageTemplate.USER_NOT_EXIST_WITH_EMAIL;
+import static by.makedon.selectioncommittee.app.configuration.util.ErrorMessageTemplate.USER_NOT_EXIST_WITH_USERNAME;
+
 public final class BaseDaoImpl implements BaseDao {
     private static final Logger logger = LoggerFactory.getLogger(BaseDaoImpl.class);
 
@@ -119,8 +122,8 @@ public final class BaseDaoImpl implements BaseDao {
         });
 
         String result = resultOptional
-            .orElseThrow(() -> new DaoException(String.format("user with username: [%s] does not exist", usernameValue)));
-        logger.info("Successfully has returned Type: `%{}` for provided username: `{}`", result, usernameValue);
+            .orElseThrow(() -> new DaoException(String.format(USER_NOT_EXIST_WITH_USERNAME, usernameValue)));
+        logger.info("Successfully has returned Type: `{}` for provided username: `{}`", result, usernameValue);
         return result;
     }
 
@@ -143,8 +146,8 @@ public final class BaseDaoImpl implements BaseDao {
         });
 
         String result = resultOptional
-            .orElseThrow(() -> new DaoException(String.format("user with email: `%s` does not exist", emailValue)));
-        logger.info("Successfully has returned Username: `%{}` for provided Email: `{}`", result, emailValue);
+            .orElseThrow(() -> new DaoException(String.format(USER_NOT_EXIST_WITH_EMAIL, emailValue)));
+        logger.info("Successfully has returned Username: `{}` for provided Email: `{}`", result, emailValue);
         return result;
     }
 
@@ -164,7 +167,7 @@ public final class BaseDaoImpl implements BaseDao {
         });
 
         if (!result.isPresent()) {
-            final String message = String.format("user [%s] does not exist", usernameValue);
+            final String message = String.format(USER_NOT_EXIST_WITH_USERNAME, usernameValue);
             throw new DaoException(message);
         }
 

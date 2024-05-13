@@ -11,6 +11,8 @@ import java.sql.*;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static by.makedon.selectioncommittee.app.configuration.util.ErrorMessageTemplate.*;
+
 public final class UserDaoImpl implements UserDao {
     private static final Logger logger = LoggerFactory.getLogger(UserDaoImpl.class);
     private static final String STATEMENT_IN_PROCESS = "В процессе";
@@ -164,7 +166,7 @@ public final class UserDaoImpl implements UserDao {
             logger.debug("Successfully has been updated User with provided enrolleeId");
 
             if (updatedRowsCount == 0) {
-                throw new DaoException(String.format("user with username: `%s` does not exist", usernameValue));
+                throw new DaoException(String.format(USER_NOT_EXIST_WITH_USERNAME, usernameValue));
             }
         }
     }
@@ -184,7 +186,7 @@ public final class UserDaoImpl implements UserDao {
         });
 
         if (!result.isPresent()) {
-            final String message = String.format("EnrolleeForm by username: `%s` does not exist", usernameValue);
+            final String message = String.format(ENROLLEE_FORM_NOT_FOUND_WITH_USERNAME, usernameValue);
             throw new DaoException(message);
         }
 
@@ -210,7 +212,7 @@ public final class UserDaoImpl implements UserDao {
         });
 
         String result = resultOptional
-            .orElseThrow(() -> new DaoException(String.format("user with username: `%s` does not exist", usernameValue)));
+            .orElseThrow(() -> new DaoException(String.format(USER_NOT_EXIST_WITH_USERNAME, usernameValue)));
         logger.info("Successfully has returned Email: `{}` for provided Username: `{}`", result, usernameValue);
         return result;
     }
@@ -231,7 +233,7 @@ public final class UserDaoImpl implements UserDao {
         });
 
         if (!result.isPresent()) {
-            final String message = String.format("user `%s` does not exist", usernameValue);
+            final String message = String.format(USER_NOT_EXIST_WITH_USERNAME, usernameValue);
             throw new DaoException(message);
         }
 
@@ -254,7 +256,7 @@ public final class UserDaoImpl implements UserDao {
         });
 
         if (!result.isPresent()) {
-            final String message = String.format("user `%s` does not exist", usernameValue);
+            final String message = String.format(USER_NOT_EXIST_WITH_USERNAME, usernameValue);
             throw new DaoException(message);
         }
 
@@ -280,7 +282,7 @@ public final class UserDaoImpl implements UserDao {
         });
 
         EnrolleeForm result = resultOptional
-            .orElseThrow(() -> new DaoException(String.format("enrollee form has not found by provided username: `%s`", usernameValue)));
+            .orElseThrow(() -> new DaoException(String.format(ENROLLEE_FORM_NOT_FOUND_WITH_USERNAME, usernameValue)));
         logger.info("Successfully has returned EnrolleeForm:\n`{}`\nfor provided Username: `{}`", result, usernameValue);
         return result;
     }
@@ -332,7 +334,7 @@ public final class UserDaoImpl implements UserDao {
         });
 
         String result = resultOptional
-            .orElseThrow(() -> new DaoException(String.format("enrollee form has not found by provided username: `%s`", usernameValue)));
+            .orElseThrow(() -> new DaoException(String.format(ENROLLEE_FORM_NOT_FOUND_WITH_USERNAME, usernameValue)));
         logger.info("Successfully has returned Statement: `{}` for provided Username: `{}`", result, usernameValue);
         return result;
     }
@@ -356,7 +358,7 @@ public final class UserDaoImpl implements UserDao {
         });
 
         long result = resultOptional
-            .orElseThrow(() -> new DaoException(String.format("enrollee form has not found by provided username: `%s`", usernameValue)));
+            .orElseThrow(() -> new DaoException(String.format(ENROLLEE_FORM_NOT_FOUND_WITH_USERNAME, usernameValue)));
         logger.info("Successfully has returned specialityId: `{}` for provided Username: `{}`", result, usernameValue);
         return result;
     }
@@ -381,7 +383,7 @@ public final class UserDaoImpl implements UserDao {
         });
 
         int result = resultOptional
-            .orElseThrow(() -> new DaoException(String.format("enrollee form has not found by provided username: `%s` and specialityId: `%s`", usernameValue, specialityIdValue)));
+            .orElseThrow(() -> new DaoException(String.format(ENROLLEE_FORM_NOT_FOUND_WITH_USERNAME_SPECIALITY, usernameValue, specialityIdValue)));
         logger.info("Successfully has returned Enrollee place: `{}` for provided Username: `{}` and Speciality ID: `{}`", result, usernameValue, specialityIdValue);
         return result;
     }
