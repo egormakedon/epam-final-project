@@ -17,8 +17,12 @@ public final class CommandFactory {
     }
 
     public static Optional<CommandType> getCommandTypeBy(String commandTypeName) {
+        if (commandTypeName == null || commandTypeName.isEmpty()) {
+            return Optional.empty();
+        }
+
         try {
-            CommandType commandType = CommandType.valueOf(commandTypeName.toUpperCase());
+            CommandType commandType = CommandType.valueOf(commandTypeName.trim().toUpperCase());
             return Optional.of(commandType);
         } catch (Exception e) {
             logger.warn(e.getMessage(), e);

@@ -28,7 +28,6 @@ public class AdminCommandProtectFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         String commandValue = servletRequest.getParameter(RequestParameterKey.COMMAND);
         CommandType commandType = CommandFactory.getCommandTypeBy(commandValue).orElse(null);
-
         logger.info("{}=`{}`, commandType=`{}`", RequestParameterKey.COMMAND, commandValue, commandType);
 
         if (commandTypeUtil.isAdminCommand(commandType)) {
