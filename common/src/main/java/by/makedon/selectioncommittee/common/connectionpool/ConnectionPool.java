@@ -41,6 +41,7 @@ public final class ConnectionPool {
             log.error(message);
             throw new ConnectionPoolException(message);
         }
+        registerJdbcDriver();
         initPool();
         log.debug("ConnectionPool instance is created successfully");
     }
@@ -60,6 +61,15 @@ public final class ConnectionPool {
             }
         }
         return instance;
+    }
+    private void registerJdbcDriver() {
+        try {
+            DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+            log.debug("MySQL JDBC driver is registered successfully");
+        } catch (SQLException e) {
+            final String message = "MySQL JDBC driver has not been loaded";
+            throw new ConnectionPoolException(message, e);
+        }
     }
     private void initPool() {
         PropertyHolder databaseResource = ResourceUtil.resource(DATABASE_RESOURCE_NAME);
