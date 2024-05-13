@@ -118,7 +118,7 @@
                 <display:column property="countryDomen" title="${country_domen}:" />
                 <display:column property="surname" title="${surname}:" />
                 <display:column property="name" title="${name}:" />
-                <display:column property="secondname" title="${secondname}:" />
+                <display:column property="secondName" title="${secondname}:" />
                 <display:column property="phone" title="${phone}:" />
                 <display:column property="speciality" title="${speciality}:" />
                 <display:column property="score" title="${score}:" />
