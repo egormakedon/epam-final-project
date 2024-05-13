@@ -43,7 +43,6 @@ public final class MailSessionProvider {
         properties.setProperty("mail.smtp.socketFactory.port", smtpPort);
         properties.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         properties.setProperty("mail.smtp.socketFactory.fallback", Boolean.FALSE.toString());
-        properties.setProperty("mail.smtp.socketFactory.fallback", Boolean.FALSE.toString());
     }
 
     public static Session getSession() {
